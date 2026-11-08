@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#13313B">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <style>
-:root{--paper:#F5F6F2;--sheet:#fff;--ink:#13313B;--soft:#4C6168;--sea:#2F6F73;--acc:#F2B33D;--line:#DDE2DC;--wa:#1E8E4E;--danger:#B3261E;--display:"Young Serif",Georgia,serif;--body:"Instrument Sans","Segoe UI",system-ui,sans-serif}
+:root{--paper:#F5F6F2;--sheet:#fff;--ink:#13313B;--soft:#4C6168;--sea:#2F6F73;--acc:#F2B33D;--line:#DDE2DC;--wa:#187A42;--danger:#B3261E;--display:"Young Serif",Georgia,serif;--body:"Instrument Sans","Segoe UI",system-ui,sans-serif}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--body)}
 [hidden]{display:none!important}a{color:inherit}button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
@@ -25,7 +25,8 @@ h1{font:400 clamp(34px,6vw,52px)/1.05 var(--display);margin:22px 0 12px;letter-s
 .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 label{display:grid;gap:6px;font-weight:600;font-size:15px;margin-top:14px}
 input[type=url],input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;font-size:16px}
-input:focus{outline:none;border-color:var(--ink)}
+input:focus{outline:3px solid var(--acc);outline-offset:1px;border-color:var(--ink)}
+input[aria-invalid="true"]{border-color:var(--danger)}
 .err{margin:10px 0 0;color:var(--danger);font-weight:600;font-size:15px}
 .hint{font-size:14px;color:var(--soft);margin:6px 0 0}
 .result{background:var(--ink);color:var(--paper);border-radius:18px;padding:22px;margin-top:6px}
@@ -40,6 +41,7 @@ footer{padding:26px 0 60px;color:var(--soft);font-size:14px}
 <body>
 <div class="wrap">
 <header><b>Crea tu página</b></header>
+<main>
 <h1>La página web de tu negocio, lista en 3 pasos</h1>
 <p class="lead">Gratis y desde tu celular. Tus clientas ven tus productos y te hacen el pedido por WhatsApp. Tú cambias precios, marcas agotados y cuentas dónde estás hoy desde una planilla.</p>
 <p class="conf" id="conf" hidden>Falta configurar el link de la planilla modelo (lo hace quien administra este sitio).</p>
@@ -63,7 +65,7 @@ footer{padding:26px 0 60px;color:var(--soft);font-size:14px}
 <section class="step">
   <h2><i>3</i>Publícala y pega los links aquí</h2>
   <ol>
-    <li><b>Desde el celular:</b> la app de Google Sheets no trae esta opción. Abre tu copia en <b>Chrome</b> (docs.google.com/spreadsheets), toca los tres puntos ⋮ de Chrome y activa <b>Versión para computadoras</b>.</li>
+    <li><b>Desde el celular:</b> la app de Google Sheets no trae esta opción. Abre tu copia en <b>Chrome</b> (docs.google.com/spreadsheets), toca los tres puntos ⋮ de Chrome y activa <b>Sitio para computadoras</b>.</li>
     <li>En tu planilla: <b>Archivo → Compartir → Publicar en la web</b>.</li>
     <li>Elige la hoja <b>Productos</b>, formato <b>CSV</b>, toca <b>Publicar</b> y copia el link.</li>
     <li>Repite con la hoja <b>Tienda</b>.</li>
@@ -87,6 +89,7 @@ footer{padding:26px 0 60px;color:var(--soft);font-size:14px}
   </div>
   <div class="qrbox"><canvas id="qr" width="540" height="540" aria-label="Código QR de tu página"></canvas><div><p style="margin:0 0 8px">Imprime este QR y ponlo en tu puesto: tus clientas lo escanean y entran a tu página.</p><button class="btn alt" id="dl" type="button">Descargar QR</button></div></div>
 </section>
+</main>
 <footer>Creado con el apoyo de estudiantes de Santo Tomás Puerto Montt · proyecto «Del aula a la venta». Tus datos quedan en tu planilla de Google; este sitio no los guarda.</footer>
 </div>
 <script>
@@ -2395,10 +2398,11 @@ else{$("conf").hidden=false;$("copiar").setAttribute("aria-disabled","true");}
 const parse=u=>{const m=String(u||"").match(/\/d\/e\/(2PACX-[\w-]+)/),g=String(u||"").match(/[?&]gid=(\d+)/);return{id:m?m[1]:"",gid:g?g[1]:""};};
 let url="";
 $("go").onclick=()=>{const p=parse($("lp").value),t=parse($("lt").value),e=$("err");e.hidden=true;
-  const fail=x=>{e.textContent=x;e.hidden=false;$("res").hidden=true;};
-  if(!p.id)return fail("Pega el link de la hoja Productos. Debe empezar con https://docs.google.com/spreadsheets/d/e/…");
-  if($("lt").value.trim()&&!t.id)return fail("El link de la hoja Tienda no parece correcto. Debe ser el que te da “Publicar en la web”.");
-  if(t.id&&t.id!==p.id)return fail("Los dos links deben ser de la misma planilla.");
+  ["lp","lt"].forEach(i=>{$(i).removeAttribute("aria-invalid");$(i).removeAttribute("aria-describedby");});
+  const fail=(x,...ids)=>{e.textContent=x;e.hidden=false;$("res").hidden=true;ids.forEach(i=>{$(i).setAttribute("aria-invalid","true");$(i).setAttribute("aria-describedby","err");});if(ids[0])$(ids[0]).focus();};
+  if(!p.id)return fail("Pega el link de la hoja Productos. Debe empezar con https://docs.google.com/spreadsheets/d/e/…","lp");
+  if($("lt").value.trim()&&!t.id)return fail("El link de la hoja Tienda no parece correcto. Debe ser el que te da “Publicar en la web”.","lt");
+  if(t.id&&t.id!==p.id)return fail("Los dos links deben ser de la misma planilla.","lp","lt");
   const base=new URL("../tienda/",location.href);base.searchParams.set("s",p.id);base.searchParams.set("p",p.gid||"0");if(t.id)base.searchParams.set("t",t.gid||"1");
   url=base.toString();$("link").textContent=url;$("abrir").href=url;
   const ed=new URL(url);ed.searchParams.set("editar","1");$("edit").href=ed.toString();
