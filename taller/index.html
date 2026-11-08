@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Del aula a la venta · Tu página web gratis</title>
+<meta name="description" content="Página web propia para emprendedoras, gratis y desde el celular. Tus clientas ven tus productos y te piden por WhatsApp; tú la manejas desde una planilla de Google.">
+<meta name="theme-color" content="#13313B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --paper:#F5F6F2;--sheet:#FFFFFF;--ink:#13313B;--soft:#4C6168;--line:#DDE2DC;--sea:#2F6F73;--acc:#F2B33D;--onacc:#13161A;--wa:#187A42;--wash:#EAF0EC;
+  --display:"Young Serif",Georgia,serif;--body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --r-box:12px;--r-card:18px;--shadow:0 18px 40px -24px rgba(19,49,59,.35);
+  --sec:72px;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--paper:#0E2228;--sheet:#15303A;--ink:#EEF2EE;--soft:#A9BDC0;--line:#24434D;--sea:#7FC1C2;--wa:#2BB673;--wash:#112A31;--shadow:0 18px 40px -24px rgba(0,0,0,.6)}}
+@media (min-width:900px){:root{--sec:112px}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--sea)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--acc);color:var(--onacc);padding:10px 14px;border-radius:var(--r-box);font-weight:700;z-index:10;text-decoration:none}.skip:focus{top:12px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.015em;text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,7vw,64px);line-height:1.04}
+h2{font-size:clamp(30px,4.4vw,40px);line-height:1.08}
+h3{font-size:22px;line-height:1.2}
+.lead{font-size:18px;color:var(--soft);max-width:52ch;margin:18px 0 0}
+p{margin:0}.muted{color:var(--soft)}
+.eyebrow{font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sea);margin:0 0 12px}
+.tbd{background:#FFF1D6;color:#5A3B00;border:1px dashed #C98A12;border-radius:6px;padding:0 6px;font-weight:600;overflow-wrap:anywhere;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media (prefers-color-scheme:dark){.tbd{background:#3A2C0C;color:#FFDFA3;border-color:#C98A12}}
+/* botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;font-size:16px;transition:background .15s,color .15s}
+.btn.pri{background:var(--ink);color:var(--paper)}.btn.pri:hover{background:color-mix(in srgb,var(--ink) 88%,var(--paper))}
+.btn.sec{background:transparent;color:var(--ink)}.btn.sec:hover{background:var(--wash)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0}
+.brand{display:flex;align-items:center;gap:10px;font:400 20px/1 var(--display);color:var(--ink);text-decoration:none;min-height:44px}
+.brand svg{flex:none}
+.nav nav{display:flex;align-items:center;gap:8px}
+.nav nav a.q{color:var(--ink);font-weight:600;text-decoration:none;padding:12px 10px;border-radius:999px}.nav nav a.q:hover{text-decoration:underline}
+.nav .btn{min-height:44px;padding:0 18px;font-size:15px}
+@media (max-width:640px){.nav nav a.q{display:none}}
+/* hero */
+.hero{display:grid;gap:40px;align-items:center;padding:24px 0 var(--sec)}
+@media (min-width:900px){.hero{grid-template-columns:1.15fr .85fr;padding-top:48px}}
+.hero .note{margin-top:18px;font-size:14px;color:var(--soft);display:flex;gap:8px;align-items:center}
+.phone{position:relative;width:min(300px,78vw);margin:0 auto;border-radius:40px;background:#071a1f;padding:10px;box-shadow:var(--shadow)}
+.phone img{border-radius:31px;aspect-ratio:390/844;object-fit:cover;object-position:top;width:100%;background:#fff}
+.phone.sm{width:min(240px,64vw);border-radius:34px;padding:8px}.phone.sm img{border-radius:27px}
+.hero .phone{transform:rotate(2deg)}
+.chip{position:absolute;left:-28px;bottom:70px;background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:600;box-shadow:var(--shadow);display:flex;gap:8px;align-items:center;transform:rotate(-2deg)}
+.chip i{width:10px;height:10px;border-radius:50%;background:#2BB673;flex:none}
+@media (max-width:420px){.chip{left:-6px}}
+/* secciones */
+section{padding:var(--sec) 0}
+.band{background:var(--sheet);border-block:1px solid var(--line)}
+.head{max-width:680px;margin-bottom:40px}
+.head p{margin-top:14px;color:var(--soft);font-size:18px}
+/* pasos */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:16px;counter-reset:s}
+@media (min-width:820px){.steps{grid-template-columns:repeat(3,1fr);gap:24px}}
+.steps li{counter-increment:s;position:relative;padding:24px 0 0;border-top:2px solid var(--ink)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:var(--onacc);font:400 17px/1 var(--display);margin-bottom:14px}
+.steps h3{margin-bottom:8px}.steps p{color:var(--soft)}
+.steps .small{font-size:14px;margin-top:10px}
+/* features alternadas */
+.feat{display:grid;gap:32px;align-items:center;padding:24px 0}
+.feat+.feat{border-top:1px solid var(--line);margin-top:24px;padding-top:56px}
+@media (min-width:860px){.feat{grid-template-columns:1fr 1fr;gap:64px}.feat.rev .media{order:2}}
+.feat ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.feat li{display:flex;gap:10px;align-items:flex-start}
+.feat li svg{flex:none;margin-top:3px;color:var(--sea)}
+.feat .txt p{color:var(--soft);margin-top:12px;max-width:52ch}
+.media{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+/* whatsapp burbuja */
+.wa{background:#E9E1D6;border-radius:var(--r-card);padding:18px;max-width:340px;width:100%;color:#111b21;box-shadow:var(--shadow)}
+.wa .who{font-size:13px;font-weight:700;color:#075E54;margin-bottom:8px}
+.wa .b{background:#fff;border-radius:4px 14px 14px 14px;padding:12px 14px 6px;font-size:15px;line-height:1.45;white-space:pre-line}
+.wa .b small{display:block;text-align:right;color:#667781;font-size:12px;margin-top:2px}
+.wa .r{background:#D9FDD3;border-radius:14px 4px 14px 14px;padding:10px 14px;margin:10px 0 0 auto;max-width:85%;font-size:15px}
+.themes{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:520px;margin-top:20px}
+.themes figure{margin:0}.themes img{border-radius:12px;border:1px solid var(--line);aspect-ratio:390/600;object-fit:cover;object-position:top}
+.themes figcaption{font-size:13px;color:var(--soft);text-align:center;margin-top:6px}
+/* aviso honesto */
+.honest{display:grid;gap:16px;margin-top:48px}
+@media (min-width:820px){.honest{grid-template-columns:repeat(3,1fr)}}
+.honest div{border:1px solid var(--line);border-radius:var(--r-card);padding:20px;background:var(--paper)}
+.honest b{display:block;font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:6px}
+.honest p{color:var(--soft);font-size:15px}
+/* taller */
+.taller{display:grid;gap:32px}.taller>*{min-width:0}
+@media (min-width:900px){.taller{grid-template-columns:1fr 1fr;gap:56px;align-items:start}}
+.facts{margin:24px 0 0;display:grid;gap:0;border-top:1px solid var(--line)}
+.facts div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.facts dt{font-weight:700}.facts dd{margin:0;color:var(--soft)}
+.bring{margin:20px 0 0;padding-left:20px;color:var(--soft)}.bring li{margin:4px 0}
+.video{aspect-ratio:16/9;border-radius:var(--r-card);background:var(--ink);color:var(--paper);display:grid;place-items:center;text-align:center;padding:24px;box-shadow:var(--shadow)}
+.video p{max-width:32ch;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+.video .play{width:64px;height:64px;border-radius:50%;background:var(--acc);display:grid;place-items:center;margin:0 auto 14px;color:var(--onacc)}
+/* faq */
+.faq{max-width:760px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 0;font-weight:700;font-size:18px;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 26px/1 var(--display);color:var(--sea);flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 20px;color:var(--soft);max-width:62ch}
+/* cta final */
+.cta{background:var(--ink);color:var(--paper);border-radius:28px;padding:48px 28px;display:grid;gap:20px;align-items:center}
+@media (prefers-color-scheme:dark){.cta{background:#1B3F4A;color:#EEF2EE}}
+@media (min-width:820px){.cta{grid-template-columns:1fr auto;padding:56px}}
+.cta p{color:color-mix(in srgb,currentColor 78%,transparent);margin-top:10px}
+.cta .btn{background:var(--acc);color:var(--onacc);border-color:var(--acc)}.cta .btn:hover{background:#F6C460}
+footer{padding:40px 0 56px;color:var(--soft);font-size:14px}
+footer .row{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="wrap nav">
+  <a class="brand" href="./" aria-label="Del aula a la venta, inicio">
+    <svg width="26" height="30" viewBox="0 0 30 34" aria-hidden="true"><rect x="2" y="1" width="26" height="32" rx="4" fill="currentColor"/><rect x="7" y="1" width="3" height="32" fill="#F2B33D"/><rect x="14" y="9" width="9" height="2" rx="1" fill="#F2B33D"/><rect x="14" y="14" width="6" height="2" rx="1" fill="#F2B33D" opacity=".6"/></svg>
+    Del aula a la venta
+  </a>
+  <nav aria-label="Principal">
+    <a class="q" href="#como">Cómo funciona</a>
+    <a class="q" href="#taller">El taller</a>
+    <a class="btn pri" href="../crear/">Crea tu página</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Para emprendedoras de Puerto Montt</p>
+      <h1>Tu negocio con página web propia. Gratis y desde tu celular.</h1>
+      <p class="lead">Tus clientas ven tus productos y te hacen el pedido por WhatsApp. Tú cambias precios, marcas lo que se acabó y cuentas dónde estás hoy, desde una planilla de Google.</p>
+      <div class="btns">
+        <a class="btn pri" href="../crear/">Crea tu página</a>
+        <a class="btn sec" href="../hoja-viva/">Ver una tienda de ejemplo</a>
+      </div>
+      <p class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Sin pagos, sin instalar nada. Solo necesitas una cuenta de Gmail.</p>
+    </div>
+    <div class="phone">
+      <img src="img/tienda.webp" width="390" height="844" alt="Captura de una tienda de ejemplo en el celular: nombre del negocio, aviso de dónde está hoy, buscador y productos con precio.">
+      <span class="chip" aria-hidden="true"><i></i>Hoy estoy en: Feria Angelmó</span>
+    </div>
+  </div>
+
+  <section class="band" id="como" aria-labelledby="como-t">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2 id="como-t">Tu página lista en tres pasos</h2>
+        <p>No hay que saber de computación. Si sabes usar WhatsApp, puedes hacerlo.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Haz tu copia de la planilla</h3><p>Toca «Hacer mi copia» y se crea tu planilla personal en Google, con dos hojas: Tienda y Productos.</p></li>
+        <li><h3>Escribe tus datos y productos</h3><p>El nombre de tu negocio, tu WhatsApp y dónde te encuentran. Después, un producto por fila con su precio.</p></li>
+        <li><h3>Publícala y recibe tu link</h3><p>Publicas las dos hojas, pegas los links y te entregamos tu página con su código QR para imprimir.</p>
+          <p class="small">Desde el celular, este paso se hace en Chrome con «Sitio para computadoras» activado. En el taller te ayudamos.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="hace-t">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Lo que puedes hacer</p>
+        <h2 id="hace-t">Tú mandas en tu página</h2>
+      </div>
+
+      <div class="feat">
+        <div class="media"><div class="phone sm"><img src="img/productos.webp" width="390" height="844" loading="lazy" alt="Productos con foto y precio; uno aparece en gris con la etiqueta Agotado."></div></div>
+        <div class="txt">
+          <h3>Cambia precios y marca lo que se acabó</h3>
+          <p>Escribes en tu planilla y la página se actualiza sola. Google puede demorar unos minutos en mostrar el cambio.</p>
+          <ul>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>Escribe «No» en disponible y el producto sale como Agotado.</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>Agrega productos escribiendo una fila nueva.</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>Cuenta cada día dónde estás: feria, plaza o tu casa.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feat rev">
+        <div class="media">
+          <div class="phone sm"><img src="img/pedido.webp" width="390" height="844" loading="lazy" alt="Pantalla Tu pedido con dos mermeladas, el nombre de la clienta y el botón Enviar pedido por WhatsApp."></div>
+          <div class="wa" role="img" aria-label="Ejemplo del mensaje que te llega por WhatsApp con el pedido ya escrito y tu respuesta.">
+            <div class="who" aria-hidden="true">Camila (clienta)</div>
+            <div class="b" aria-hidden="true">¡Hola Dulces del Sur! Quiero hacer este pedido:
+• 1 × Mermelada de mora — $3.500
+• 1 × Mermelada de frutilla — $3.500
+Total: $7.000
+Nombre: Camila · Retiro en feria<small>10:42</small></div>
+            <div class="r" aria-hidden="true">¡Gracias Camila! Te lo dejo listo el sábado en la feria 😊</div>
+          </div>
+        </div>
+        <div class="txt">
+          <h3>Los pedidos te llegan ordenados por WhatsApp</h3>
+          <p>Tu clienta elige sus productos, escribe su nombre y toca «Enviar pedido por WhatsApp». El mensaje sale listo, con productos y total. Tú le respondes como siempre.</p>
+        </div>
+      </div>
+
+      <div class="feat">
+        <div class="media"><div class="phone sm"><img src="img/panel.webp" width="390" height="844" loading="lazy" alt="Panel Personalizar con seis estilos de color y selectores para fondo, tarjetas y letras."></div></div>
+        <div class="txt">
+          <h3>Con tus colores y tus letras</h3>
+          <p>Con tu link especial eliges un estilo y cambias el fondo, los colores y la letra. Si algo no se lee bien, la página te avisa. Tus clientas no ven ese botón.</p>
+          <div class="themes">
+            <figure><img src="img/tema_marino.webp" width="390" height="844" loading="lazy" alt=""><figcaption>Marino</figcaption></figure>
+            <figure><img src="img/tema_ciruela.webp" width="390" height="844" loading="lazy" alt=""><figcaption>Ciruela</figcaption></figure>
+            <figure><img src="img/tema_oceano.webp" width="390" height="844" loading="lazy" alt=""><figcaption>Océano</figcaption></figure>
+            <figure><img src="img/tema_oliva.webp" width="390" height="844" loading="lazy" alt=""><figcaption>Oliva</figcaption></figure>
+          </div>
+        </div>
+      </div>
+
+      <div class="honest" aria-label="Lo que la página no hace">
+        <div><b>No cobra ni guarda dinero</b><p>El pago y la entrega los conversas tú con tu clienta por WhatsApp.</p></div>
+        <div><b>No guarda tus datos aparte</b><p>Todo vive en tu planilla de Google. Lo que escribas en Tienda y Productos queda público: no pongas tu RUT ni tu correo.</p></div>
+        <div><b>No cuesta nada</b><p>Usa Google Sheets y GitHub Pages, que son gratis. No hay planes ni letra chica.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="taller" aria-labelledby="taller-t">
+    <div class="wrap taller">
+      <div>
+        <p class="eyebrow">Taller presencial</p>
+        <h2 id="taller-t">Llega con tu celular y te vas con tu página funcionando</h2>
+        <p class="lead">Primero creamos tu página contigo, paso a paso. Después vemos en la sala un video que explica cómo usarla y practicamos con un pedido de prueba.</p>
+        <dl class="facts">
+          <div><dt>Fecha</dt><dd><span class="tbd">[POR CONFIRMAR]</span></dd></div>
+          <div><dt>Hora</dt><dd><span class="tbd">[POR CONFIRMAR]</span></dd></div>
+          <div><dt>Lugar</dt><dd>Sede Santo Tomás Puerto Montt, <span class="tbd">[POR CONFIRMAR: sala]</span></dd></div>
+          <div><dt>Inscripción</dt><dd><span class="tbd">[POR CONFIRMAR: WhatsApp, formulario o llegar directo]</span></dd></div>
+        </dl>
+        <p style="margin-top:22px;font-weight:700">Qué traer</p>
+        <ul class="bring">
+          <li>Tu celular con batería y tu cuenta de Gmail (correo y clave).</li>
+          <li>Tu lista de productos con sus precios.</li>
+          <li>Si tienes, fotos de tus productos en el celular.</li>
+        </ul>
+      </div>
+      <div class="video" role="img" aria-label="Espacio para el video del taller, todavía sin publicar">
+        <div><div class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <p>Video: cómo usar tu página <span class="tbd">[POR CONFIRMAR: link de YouTube]</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq-t">
+    <div class="wrap">
+      <div class="head"><p class="eyebrow">Preguntas frecuentes</p><h2 id="faq-t">Lo que más nos preguntan</h2></div>
+      <div class="faq">
+        <details><summary>¿Cuesta algo?</summary><p>No. La página usa una planilla de Google y se publica en GitHub Pages, que son gratis. Solo necesitas una cuenta de Gmail.</p></details>
+        <details><summary>¿Necesito computador?</summary><p>No para usarla día a día: todo se hace desde el celular. Solo para publicar la planilla la primera vez hay que abrirla en Chrome con «Sitio para computadoras» activado (en los tres puntos ⋮). En el taller lo hacemos juntas.</p></details>
+        <details><summary>¿Quién puede ver mis datos?</summary><p>Lo que escribas en las hojas Tienda y Productos queda público en internet, porque es lo que muestra tu página. No escribas ahí tu RUT, tu correo ni datos privados. Puedes elegir que tu número de WhatsApp se vea tapado o no se vea.</p></details>
+        <details><summary>¿Y si me equivoco en la planilla?</summary><p>Corriges la celda y listo: en unos minutos la página muestra el cambio. Si borras algo sin querer, Google guarda el historial de versiones.</p></details>
+        <details><summary>¿Cómo me pagan?</summary><p>Como tú quieras: transferencia, efectivo o lo que acuerdes. La página solo te manda el pedido ordenado por WhatsApp; el pago lo coordinas tú.</p></details>
+        <details><summary>¿Puedo cambiarle los colores después?</summary><p>Sí, cuantas veces quieras. Abres tu link especial (el que termina en «editar»), eliges y copias el estilo a tu planilla.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-bottom:var(--sec)">
+    <div class="cta">
+      <div><h2>Arma tu página ahora</h2><p>Toma unos 15 minutos. Si te trabas, en el taller te ayudamos.</p></div>
+      <a class="btn" href="../crear/">Crea tu página</a>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div class="row">
+    <p>Proyecto de estudiantes «Del aula a la venta» · <span class="tbd">[POR CONFIRMAR: carrera y sede, si hay permiso para nombrarla]</span></p>
+    <p>Tus datos quedan en tu planilla de Google. Este sitio no los guarda.</p>
+  </div>
+</footer>
+</body>
+</html>
