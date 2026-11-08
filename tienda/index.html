@@ -318,6 +318,7 @@ function aplicarTema(nombre,o){o=o||{};
 </footer>
 
 
+<a class="pbtn" id="ownerEdit" href="../editor/" style="bottom:calc(92px + env(safe-area-inset-bottom,0px));padding:10px 16px;font-size:15px" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m14 6 4 4"/></svg>Editar mi página</a>
 <button class="pbtn" id="pBtn" type="button" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2 0-1.5-1-1.7-1-3 0-1 .8-2 2-2h2.5A3.5 3.5 0 0 0 21 10.5C21 6.3 17 3 12 3Z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7" r="1"/></svg>Personalizar mi página</button>
 <div class="panel" id="panel" data-open="false" role="dialog" aria-labelledby="pTitle" aria-hidden="true" inert>
   <div class="p-head"><h2 id="pTitle">Personalizar</h2><button class="x" id="pClose" type="button" aria-label="Cerrar">×</button></div>
@@ -519,6 +520,8 @@ $("q").addEventListener("input",e=>{busqueda=e.target.value;renderGrid();});
 new IntersectionObserver(([en])=>$("toolbar").classList.toggle("stuck",!en.isIntersecting),{rootMargin:"-65px 0px 0px 0px"}).observe(document.querySelector(".hero"));
 
 /* ---------- personalizar (abre la página con ?editar) ---------- */
+/* Botón solo para la dueña: aparece en el celular donde ella publicó su página con el editor */
+try{if(SID&&!new URLSearchParams(location.search).has("editar")){for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith("mp:pub:")&&localStorage.getItem(k)===SID){$("ownerEdit").hidden=false;$("ownerEdit").style.textDecoration="none";break;}}}}catch(e){}
 if(new URLSearchParams(location.search).has("editar")){
   const EST={...(state.biz.estilo||{})},TNAME=()=>String(state.biz.tema||"marino");let tema0=state.biz.tema,est0={...EST};
   const COLS=[["fondo","Fondo de la página"],["tarjetas","Fondo de las tarjetas (el blanco)"],["texto","Letras y botones"],["destacado","Precios y detalles"],["acento","Categorías e íconos"]];
