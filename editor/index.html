@@ -75,6 +75,10 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 .switch input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .15s}
 .switch input:checked{background:var(--ok)}.switch input:checked::after{transform:translateX(22px)}
 .prod.out{opacity:.78}
+.fotorow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fthumb{width:72px;height:72px;border-radius:12px;object-fit:contain;background:repeating-conic-gradient(var(--line) 0 25%,var(--sheet) 0 50%) 0 0/16px 16px;border:1px solid var(--line)}
+.fthumb.empty{display:grid;place-items:center;font-size:12px;color:var(--soft)}
+.upl{position:relative;cursor:pointer}.upl:focus-within{outline:3px solid var(--acc);outline-offset:2px}
 .chk{display:flex;gap:12px;align-items:flex-start;min-height:44px;cursor:pointer;line-height:1.45}.chk input{width:24px;height:24px;margin:1px 0 0;flex:none;accent-color:var(--ink);cursor:pointer}
 .empty{text-align:center;padding:28px 16px;border:1.5px dashed var(--line);border-radius:18px;color:var(--soft)}
 /* estilo */
@@ -150,7 +154,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
     <p class="err" id="loginErr" role="alert" hidden></p>
     <ul class="points">
       <li>Tus datos quedan en <b>tu propia cuenta de Google</b>, en una planilla que crea la página. Este sitio no guarda nada.</li>
-      <li>La página solo puede ver esa planilla. No puede leer tu correo, tus fotos ni otros archivos.</li>
+      <li>La página solo puede ver esa planilla y las fotos que subas desde aquí. No puede leer tu correo, tus otras fotos ni otros archivos.</li>
       <li>Lo que escribas en tu tienda queda público en internet: no pongas tu RUT ni tu correo.</li>
       <li><a href="../terminos/">Términos y condiciones</a> · <a href="../privacidad/">Política de privacidad</a></li>
     </ul>
@@ -2585,7 +2589,7 @@ var qrcode = function() {
 </script>
 <script>
 const CONF={client_id:"738171083651-v0t20ojk1o33f5ptuf6oc2mqpfb1d8h9.apps.googleusercontent.com",form:null};
-const VERS={terminos:"2026-11-08",privacidad:"2026-11-08"};
+const VERS={terminos:"2026-11-08",privacidad:"2026-11-09"};
 const TEMAS={
  marino:{n:"Marino",paper:"#F5F6F2",ink:"#13313B",soft:"#4C6168",sea:"#2F6F73",accent:"#F2B33D",line:"#DDE2DC",dot:"#C9D2CC",art:"#FBFCFA",wash:"#F2F5F3",onink:"#BFD0D2",font:"Young Serif",dw:400},
  terracota:{n:"Terracota",paper:"#FAF3EC",ink:"#3A1F18",soft:"#6E5149",sea:"#B4492B",accent:"#E9A13B",line:"#E8D9CB",dot:"#DCC8B6",art:"#FFFAF4",wash:"#F6EADF",onink:"#E3CDBF",font:"DM Serif Display",dw:400},
@@ -2744,7 +2748,12 @@ function renderProds(){
       <label class="f">Descripción<textarea data-k="descripcion" maxlength="160">${esc(p.descripcion)}</textarea></label>
       <div class="row2"><label class="f">Etiqueta <small>Ej: Nuevo, Más vendido</small><input type="text" data-k="etiqueta" value="${esc(p.etiqueta)}" maxlength="20"></label>
       <label class="f">Color de la portada<select data-k="color">${PCOLS.map(c=>`<option ${c===(p.color||"verde")?"selected":""}>${c}</option>`).join("")}</select></label></div>
-      <label class="f">Link de una foto <small>Opcional. Si no hay, se ve un dibujo de color.</small><input type="url" data-k="foto" value="${esc(p.foto)}" placeholder="https://…"></label>
+      <div class="f"><span>Foto del producto <small>Opcional. Si no hay, se ve un dibujo de color. Para el efecto 3D usa una foto sin fondo (PNG).</small></span>
+        <div class="fotorow">${p.foto?`<img class="fthumb" src="${esc(thumb(p.foto))}" alt="Foto de ${esc(p.nombre)}">`:`<span class="fthumb empty" aria-hidden="true">Sin foto</span>`}
+          <label class="btn sec sm upl">${p.foto?"Cambiar foto":"Subir foto"}<input type="file" accept="image/*" data-up-foto="${i}" class="sr"></label>
+          ${p.foto?`<button class="btn quiet sm" type="button" data-rm-foto="${i}">Quitar foto</button>`:""}</div>
+        <p class="small muted" data-fst="${i}" role="status" style="margin:0"></p></div>
+      <label class="f">O pega el link de una foto<input type="url" data-k="foto" value="${esc(p.foto)}" placeholder="https://…"></label>
     </div></details></article>`).join("");}
 $("prods").addEventListener("input",e=>{const k=e.target.dataset.k,c=e.target.closest("[data-i]");if(!k||!c)return;const p=S.prods[+c.dataset.i];
   p[k]=e.target.type==="checkbox"?(e.target.checked?"Sí":"No"):e.target.value;
@@ -2757,6 +2766,36 @@ $("prods").addEventListener("click",e=>{const u=e.target.closest("[data-up]"),d=
 $("addProd").onclick=()=>{S.prods.push({nombre:"",precio:"",categoria:(S.prods[S.prods.length-1]||{}).categoria||"",descripcion:"",disponible:"Sí",etiqueta:"",color:PCOLS[S.prods.length%PCOLS.length],foto:""});renderProds();setDirty(true);
   const last=$("prods").lastElementChild;last.scrollIntoView({block:"center"});last.querySelector('[data-k="nombre"]').focus();};
 
+
+/* ---------- fotos: se suben a una carpeta en el Drive de la emprendedora ---------- */
+const thumb=u=>{const m=String(u||"").match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);return m?"https://lh3.googleusercontent.com/d/"+m[1]+"=w200":u;};
+let fotosFolder=null;
+async function carpetaFotos(){if(fotosFolder)return fotosFolder;
+  const q=encodeURIComponent("appProperties has { key='creatupagina' and value='fotos' } and trashed=false");
+  const l=await api(`${API.drive}/files?q=${q}&fields=files(id)&spaces=drive`);
+  if(l.files&&l.files.length)return fotosFolder=l.files[0].id;
+  const f=await api(`${API.drive}/files?fields=id`,{method:"POST",body:JSON.stringify({name:"Fotos de mi página (no borrar)",mimeType:"application/vnd.google-apps.folder",appProperties:{creatupagina:"fotos"}})});
+  return fotosFolder=f.id;}
+async function achicar(file){const bmp=await createImageBitmap(file);const k=Math.min(1,1400/Math.max(bmp.width,bmp.height));
+  const c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+  const b=await new Promise(r=>c.toBlob(r,"image/webp",.86));return b||await new Promise(r=>c.toBlob(r,"image/png"));}
+async function subirFoto(file,nombre){
+  if(!/^image\//.test(file.type))throw new Error("Ese archivo no es una imagen. Elige una foto.");
+  const blob=await achicar(file),folder=await carpetaFotos();
+  const meta={name:(nombre||"producto").slice(0,60)+(blob.type==="image/webp"?".webp":".png"),parents:[folder],mimeType:blob.type};
+  const fd=new FormData();fd.append("metadata",new Blob([JSON.stringify(meta)],{type:"application/json"}));fd.append("file",blob);
+  let r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{Authorization:"Bearer "+tok},body:fd});
+  if(r.status===401){await getToken("");r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{Authorization:"Bearer "+tok},body:fd});}
+  if(!r.ok)throw new Error("Google no aceptó la foto ("+r.status+"). Prueba otra vez.");
+  const {id}=await r.json();
+  await api(`${API.drive}/files/${id}/permissions`,{method:"POST",body:JSON.stringify({role:"reader",type:"anyone"})});
+  return "https://drive.google.com/file/d/"+id+"/view";}
+$("prods").addEventListener("change",async e=>{const inp=e.target.closest("[data-up-foto]");if(!inp||!inp.files[0])return;const i=+inp.dataset.upFoto,st=document.querySelector(`[data-fst="${i}"]`);
+  st.innerHTML='<span class="spin" aria-hidden="true"></span> Subiendo foto…';
+  try{const url=await subirFoto(inp.files[0],S.prods[i].nombre);S.prods[i].foto=url;renderProds();setDirty(true);
+    const st2=document.querySelector(`[data-fst="${i}"]`);document.querySelector(`[data-i="${i}"] details`).open=true;st2.textContent="Foto lista. Toca «Guardar» para que aparezca en tu página.";}
+  catch(err){st.textContent=err.message;}});
+$("prods").addEventListener("click",e=>{const b=e.target.closest("[data-rm-foto]");if(!b)return;const i=+b.dataset.rmFoto;S.prods[i].foto="";renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;});
 /* ---------- estilo ---------- */
 function themeVals(){const t=TEMAS[S.biz.tema]||TEMAS.marino;return{paper:t.paper,sheet:t.sheet||"#FFFFFF",ink:t.ink,accent:t.accent,sea:t.sea,font:t.font,fx:t.fx||"Instrument Sans"};}
 const RUBROS=[
