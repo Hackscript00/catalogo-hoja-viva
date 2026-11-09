@@ -222,6 +222,11 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
           <div class="seg" id="rubros" role="group" aria-label="Qué vendes"></div>
           <div class="recos" id="recos"></div>
         </div>
+        <fieldset class="card stack" style="margin:0"><legend class="sr">Portada</legend>
+          <h3>Portada de tu página</h3>
+          <div class="seg" role="radiogroup" aria-label="Tipo de portada"><label><input type="radio" name="portada" value="clasica">Clásica</label><label><input type="radio" name="portada" value="vitrina">Vitrina 3D</label></div>
+          <p class="muted small" style="margin:0">«Vitrina 3D» muestra tus productos en grande, uno por uno, con un fondo de color vivo que cambia con cada producto. Se ve mejor con fotos sin fondo (PNG).</p>
+        </fieldset>
         <h3 style="margin-top:6px">Todos los estilos</h3>
         <div class="themes" id="themes"></div>
         <div class="card stack">
@@ -2613,7 +2618,7 @@ const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Ope
 const $=id=>document.getElementById(id);
 const SCOPE="https://www.googleapis.com/auth/drive.file";
 const API={drive:"https://www.googleapis.com/drive/v3",sheets:"https://sheets.googleapis.com/v4/spreadsheets"};
-const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","devoluciones"];
+const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","devoluciones","portada"];
 const EKEYS=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
 const COLS=[["fondo","Fondo de la página","paper"],["tarjetas","Fondo de las tarjetas","sheet"],["texto","Letras y botones","ink"],["destacado","Precios y detalles","accent"],["acento","Categorías e íconos","sea"]];
 const PCOLS=["rojo","coral","amarillo","verde","salvia","azul","azul oscuro","rosa"];
@@ -2785,7 +2790,7 @@ $("recos").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;S.biz.t
 function val(k){const tv=themeVals();const m={fondo:"paper",tarjetas:"sheet",texto:"ink",destacado:"accent",acento:"sea"};return S.est[k]||tv[m[k]];}
 const fontsLoaded=new Set(["Young Serif","Instrument Sans"]);
 function loadFont(f,w){if(fontsLoaded.has(f))return;fontsLoaded.add(f);const l=document.createElement("link");l.rel="stylesheet";l.href=`https://fonts.googleapis.com/css2?family=${f.replace(/ /g,"+")}${w?":wght@"+[].concat(w).join(";"):""}&display=swap`;document.head.appendChild(l);}
-function renderEstilo(){
+function renderEstilo(){document.querySelectorAll("input[name=portada]").forEach(r=>r.checked=r.value===(/vitrina/i.test(S.biz.portada||"")?"vitrina":"clasica"));
   $("themes").innerHTML=Object.entries(TEMAS).map(([k,t])=>`<button type="button" class="th" data-t="${k}" aria-pressed="${k===(S.biz.tema||"marino")}"><span class="sw" aria-hidden="true"><span style="background:${t.paper}"></span><span style="background:${t.ink}"></span><span style="background:${t.accent}"></span><span style="background:${t.sea}"></span></span><b>${t.n}</b></button>`).join("");
   $("cols").innerHTML=COLS.map(([k,l])=>`<label class="crow">${l}<input type="color" data-c="${k}" value="${val(k)}"></label>`).join("");
   const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto||themeVals().fx;
@@ -2802,6 +2807,7 @@ function preview(){const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto
   $("cwarn").hidden=cr(val("texto"),val("fondo"))>=4.5&&cr(val("texto"),val("tarjetas"))>=4.5;}
 $("themes").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;S.biz.tema=b.dataset.t;["fondo","tarjetas","texto","destacado","acento","fuente"].forEach(k=>delete S.est[k]);renderEstilo();setDirty(true);$("themes").querySelector(`[data-t="${b.dataset.t}"]`).focus();};
 $("cols").oninput=e=>{const k=e.target.dataset.c;if(!k)return;S.est[k]=e.target.value.toUpperCase();preview();setDirty(true);};
+document.querySelectorAll("input[name=portada]").forEach(r=>r.addEventListener("change",()=>{S.biz.portada=r.value;setDirty(true);}));
 $("ft").onchange=e=>{S.est.fuente=e.target.value;preview();setDirty(true);};
 $("fx").onchange=e=>{S.est.fuente_texto=e.target.value;preview();setDirty(true);};
 $("resetCols").onclick=()=>{["fondo","tarjetas","texto","destacado","acento"].forEach(k=>delete S.est[k]);renderEstilo();setDirty(true);};

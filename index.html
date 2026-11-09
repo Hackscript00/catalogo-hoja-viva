@@ -206,10 +206,32 @@ footer p{margin:0;color:var(--ink-soft);font-size:15px}
 .art svg{transition:transform .3s ease-out}
 @media (hover:hover) and (pointer:fine){.card:hover{box-shadow:0 2px 0 rgba(var(--shadow),.05),0 28px 48px -26px rgba(var(--shadow),.6)}.card:hover .art svg{transform:translateY(-5px) scale(1.04)}}
 @media (prefers-reduced-motion:reduce){.still svg{animation:none}.still,.card{transform:none!important;transition:none}.card:hover .art svg{transform:none}}
+
+/* ===== portada «Vitrina 3D» ===== */
+.vitrina{position:relative;min-height:min(86svh,780px);overflow:hidden;display:grid;place-items:center;background:var(--vb,#FF6F59);color:var(--vt,#fff);transition:background-color .7s ease,color .7s ease;isolation:isolate}
+.vitrina::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 45%,rgba(255,255,255,.22),transparent 70%),linear-gradient(transparent 60%,rgba(0,0,0,.18));z-index:0;pointer-events:none}
+.vword{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);text-align:center;font:var(--dw) clamp(96px,27vw,330px)/.82 var(--display);letter-spacing:-.045em;color:var(--vw,rgba(255,255,255,.25));white-space:nowrap;z-index:0;user-select:none;text-transform:uppercase}
+.vprod{position:relative;z-index:2;width:min(84vw,560px);aspect-ratio:4/3;margin-top:-6vh;filter:drop-shadow(0 46px 36px rgba(0,0,0,.32));animation:vflota 6s ease-in-out infinite}
+.vprod svg,.vprod img{width:100%;height:100%;object-fit:contain;display:block}
+@keyframes vflota{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+.vinfo{position:absolute;z-index:3;left:max(20px,calc((100vw - 1180px)/2));bottom:28px;max-width:min(560px,62vw)}
+.vinfo h2{font:var(--dw) clamp(26px,4vw,44px)/1.05 var(--display);margin:4px 0 6px;letter-spacing:-.01em}
+.vcat{margin:0;font-weight:700;font-size:14px;opacity:.85}.vprice{margin:0 0 14px;font-weight:700;font-size:20px}
+.vbtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.vadd{min-height:48px;padding:0 24px;border-radius:999px;border:0;background:var(--vt,#fff);color:var(--vb,#000);font-weight:700;font-size:16px;cursor:pointer;transition:transform .15s}
+.vadd:active{transform:scale(.96)}.vadd[disabled]{opacity:.55;cursor:default}
+.vall{min-height:48px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;border:1.5px solid currentColor;color:inherit;font-weight:700;text-decoration:none}
+.vnav{position:absolute;z-index:3;right:max(20px,calc((100vw - 1180px)/2));bottom:34px;display:flex;align-items:center;gap:10px;font-weight:700}
+.vnav button{width:48px;height:48px;border-radius:50%;border:1.5px solid currentColor;background:transparent;color:inherit;display:grid;place-items:center;cursor:pointer}
+.vitrina :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.vitrina:not([hidden])~.hero .still{display:none}.vitrina:not([hidden])~.hero .wrap{grid-template-columns:1fr}
+@media (max-width:640px){.vinfo{left:20px;right:20px;bottom:96px;max-width:none}.vnav{left:20px;right:auto;bottom:28px}.vprod{margin-top:-22vh;width:92vw}.vitrina{min-height:92svh}}
+@media (prefers-reduced-motion:reduce){.vprod{animation:none}.vitrina{transition:none}}
 </style>
 <script type="application/json" id="data">{"biz": {"slug": "hoja-viva", "name": "Hoja Viva", "rubro": "Papelería hecha a mano", "titulo": "Papelería hecha a mano en Puerto Montt", "tag": "Agendas, planners, libretas y regalos de papel. Elige lo que te gusta, arma tu pedido y envíalo por WhatsApp.", "place": "Ferias del Proyecto Muelle, Puerto Montt", "envio": "Despachos a todo Chile", "hoy": "Feria del Muelle, hasta las 18:00", "wa": "56927776873", "tema": "marino", "demo": true, "historia": "Hacemos agendas y libretas a mano, una por una, con papel de buena calidad y diseños inspirados en el sur. Si buscas algo especial o una cantidad mayor, escríbenos y lo conversamos.", "planilla": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQBTS6ApkEs32ndoL0T0U16bbfgTpa8_5-iCtwMvGBFwVldjx3Yc8Y8XWrpiamKQzT-ACFuFSVDlmgk/pub?gid=268686341&single=true&output=csv", "tienda_hoja": "", "numero_visible": "parcial"}, "products": [{"id": "p1", "n": "Agenda 2027 anillada", "d": "Vista semanal, tapa dura forrada en tela, 160 hojas.", "p": 14990, "cat": "Agendas y planners", "c": "#28756E", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p2", "n": "Planner mensual sin fecha", "d": "Para partir cualquier mes. Incluye hoja de metas y presupuesto.", "p": 9990, "cat": "Agendas y planners", "c": "#E06A4E", "badge": "", "ok": true, "img": ""}, {"id": "p3", "n": "Planner de emprendedora", "d": "Ventas del día, costos, pedidos y clientes en un solo lugar.", "p": 12990, "cat": "Agendas y planners", "c": "#17363D", "badge": "Más vendido", "ok": true, "img": ""}, {"id": "p4", "n": "Libreta A5 punteada", "d": "Papel de 100 g, 120 hojas, ideal para lettering.", "p": 6990, "cat": "Libretas", "c": "#E8B35C", "badge": "", "ok": false, "img": ""}, {"id": "p5", "n": "Pack 3 libretas A6", "d": "Tamaño bolsillo, tapas de colores surtidos.", "p": 7990, "cat": "Libretas", "c": "#7A9E7E", "badge": "", "ok": true, "img": ""}, {"id": "p6", "n": "Set de stickers del sur", "d": "24 stickers ilustrados: Chiloé, el Muelle y la lluvia.", "p": 3990, "cat": "Regalos y accesorios", "c": "#5B7DB1", "badge": "", "ok": true, "img": ""}, {"id": "p7", "n": "Calendario de escritorio", "d": "12 láminas ilustradas con base de cartón reciclado.", "p": 8490, "cat": "Regalos y accesorios", "c": "#B05A7A", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p8", "n": "Tarjetas de regalo (pack 6)", "d": "Con sobre kraft. Para cumpleaños y fechas especiales.", "p": 4990, "cat": "Regalos y accesorios", "c": "#C0492F", "badge": "", "ok": true, "img": ""}]}</script>
 <script>
 const DEV_DEFAULT="Si compraste a distancia (por esta página o WhatsApp), puedes arrepentirte dentro de 10 días desde que recibes el producto, devolviéndolo sin uso y en su estado original (derecho de retracto, Ley 19.496 del Consumidor).\nNo aplica a alimentos frescos o que vencen en menos de 10 días, productos hechos a pedido o personalizados, ni artículos de higiene personal con el sello abierto.\nSi un producto nuevo viene con fallas, tienes garantía legal de 6 meses desde que lo recibes: puedes elegir cambio, reparación o devolución del dinero.\nPara cualquier cambio o devolución, escríbenos por WhatsApp.";
+const VIV={verde:"#0F7F55",coral:"#FF6F59",amarillo:"#FFC23C",azul:"#2456E0",salvia:"#6FAE7C","azul oscuro":"#23395B",rosa:"#C73A86",rojo:"#C9243A"};
 /* ===== TEMAS: cada tienda elige uno en su configuración ("tema"). Para probar: agrega ?tema=oliva al link. ===== */
 const TEMAS={
  marino:{n:"Marino",paper:"#F5F6F2",ink:"#13313B",soft:"#4C6168",sea:"#2F6F73",accent:"#F2B33D",line:"#DDE2DC",dot:"#C9D2CC",art:"#FBFCFA",wash:"#F2F5F3",onink:"#BFD0D2",font:"Young Serif",dw:400},
@@ -296,6 +318,13 @@ function aplicarTema(nombre,o){o=o||{};
 </header>
 
 <main>
+  <section class="vitrina" id="vitrina" hidden aria-roledescription="carrusel" aria-label="Productos destacados">
+    <div class="vword" id="vword" aria-hidden="true"></div>
+    <div class="vprod" id="vprod"></div>
+    <div class="vinfo"><p class="vcat" id="vcat"></p><h2 id="vname"></h2><p class="vprice" id="vprice"></p>
+      <div class="vbtns"><button class="vadd" type="button" id="vadd">Agregar</button><a class="vall" href="#grid">Ver todos</a></div></div>
+    <div class="vnav"><button type="button" id="vprev" aria-label="Producto anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span id="vcount" aria-live="polite"></span><button type="button" id="vnext" aria-label="Producto siguiente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
+  </section>
   <section class="hero" aria-labelledby="h1">
     <div class="wrap">
       <div>
@@ -479,7 +508,7 @@ async function cargarTienda(){if(!TIENDA_CSV)return;
   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),8000);
   try{const r=await fetch(TIENDA_CSV+(TIENDA_CSV.includes("?")?"&":"?")+"t="+Date.now(),{signal:ctrl.signal,cache:"no-store"});
     if(!r.ok)throw new Error("http");const rows=parseCSV(await r.text()),b=state.biz;
-    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",devoluciones:"devoluciones",envio:"envio",retiro:"retiro",numero_visible:"numero_visible"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
+    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",devoluciones:"devoluciones",portada:"portada",envio:"envio",retiro:"retiro",numero_visible:"numero_visible"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
     b.estilo=b.estilo||{};
     rows.forEach(x=>{const k0=norm(x[0]).replace(/ /g,"_"),k=map[k0];if(x[1]===undefined)return;const v=String(x[1]).trim();if(k)b[k]=v;else if(est.includes(k0))b.estilo[k0]=v;});
     if(!new URLSearchParams(location.search).get("tema"))aplicarTema(b.tema,b.estilo);}
@@ -506,7 +535,7 @@ function renderGrid(){const g=$("grid");$("notice").hidden=!aviso;$("notice").te
     <div class="body">${p.cat?`<span class="kind">${esc(p.cat)}</span>`:""}<h3>${esc(p.n)}</h3><p>${esc(p.d)}</p>
       <div class="buy">${!p.ok?`<button class="add" type="button" disabled>Sin stock</button>`
         :n?`<div class="stepper"><button type="button" data-dec="${esc(p.id)}" aria-label="Quitar uno de ${esc(p.n)}">−</button><output aria-live="polite" aria-label="${n} en tu pedido">${n}</output><button type="button" data-inc="${esc(p.id)}" aria-label="Agregar otro ${esc(p.n)}">+</button></div>`
-        :`<button class="add" type="button" data-inc="${esc(p.id)}">Agregar</button>`}</div></div></article>`;}).join("");window.__cine&&window.__cine();}
+        :`<button class="add" type="button" data-inc="${esc(p.id)}">Agregar</button>`}</div></div></article>`;}).join("");window.__cine&&window.__cine();if(vitrinaOn()&&!$("vitrina").hidden&&vList.length){const p=vList[vIdx],n=p?cart[p.id]||0:0;if(p)$("vadd").textContent=n?`Agregar otro (${n} en tu pedido)`:"Agregar a mi pedido";}}
 
 /* ---------- pedido ---------- */
 const items=()=>state.products.filter(p=>p.ok&&cart[p.id]>0).map(p=>({p,n:cart[p.id]}));
@@ -536,7 +565,25 @@ function renderCart(){
 function openCart(){const d=$("drawer");d.dataset.state="open";d.setAttribute("aria-hidden","false");d.inert=false;$("scrim").hidden=false;document.body.style.overflow="hidden";renderCart();setTimeout(()=>$("closeCart").focus(),50);}
 function closeCart(){const d=$("drawer");d.dataset.state="closed";d.setAttribute("aria-hidden","true");d.inert=true;$("scrim").hidden=true;document.body.style.overflow="";renderCart();$("openCart").focus();}
 
-function renderAll(){renderBiz();renderCats();renderGrid();renderCart();stillLife();}
+/* ---------- portada Vitrina 3D ---------- */
+let vIdx=0,vList=[];
+function vColor(p){const c=String(p.c||"").toUpperCase();const k=Object.keys(COLOR_NAMES).find(n=>COLOR_NAMES[n].toUpperCase()===c);return k?VIV[k]:(/^#[0-9A-F]{6}$/.test(c)?c:VIV.coral);}
+function vitrinaOn(){return /vitrina/i.test(String(state.biz.portada||""));}
+function renderVitrina(anim){const v=$("vitrina");if(!vitrinaOn()||cargando){v.hidden=true;return;}
+  vList=state.products.filter(p=>p.ok).sort((a,b)=>(b.badge?1:0)-(a.badge?1:0)).slice(0,6);if(!vList.length){v.hidden=true;return;}
+  v.hidden=false;vIdx=(vIdx+vList.length)%vList.length;const p=vList[vIdx],bg=vColor(p),dark=contraste("#FFFFFF",bg)>=4.5;
+  v.style.setProperty("--vb",bg);v.style.setProperty("--vt",dark?"#FFFFFF":"#16181D");v.style.setProperty("--vw",dark?"rgba(255,255,255,.2)":"rgba(0,0,0,.14)");
+  $("vword").textContent=(p.n.split(/\s+/)[0]||"").slice(0,10);$("vprod").innerHTML=picture({...p,c:shade(p.c,-.32)});$("vcat").textContent=p.cat||"";$("vname").textContent=p.n;$("vprice").textContent=clp(p.p);
+  const n=cart[p.id]||0;$("vadd").dataset.inc=p.id;$("vadd").textContent=n?`Agregar otro (${n} en tu pedido)`:"Agregar a mi pedido";
+  $("vcount").textContent=`${vIdx+1} / ${vList.length}`;$("vprev").hidden=$("vnext").hidden=vList.length<2;
+  if(anim&&window.gsap&&!matchMedia("(prefers-reduced-motion:reduce)").matches){const d=anim;
+    gsap.fromTo("#vword",{xPercent:28*d,autoAlpha:0},{xPercent:0,autoAlpha:1,duration:.8,ease:"power3.out"});
+    gsap.fromTo("#vprod svg,#vprod img",{x:140*d,rotate:14*d,scale:.7,autoAlpha:0},{x:0,rotate:0,scale:1,autoAlpha:1,duration:1,ease:"back.out(1.4)"});
+    gsap.fromTo(".vinfo > *",{y:18,autoAlpha:0},{y:0,autoAlpha:1,stagger:.06,duration:.6,ease:"power3.out"});}}
+$("vprev").onclick=()=>{vIdx--;renderVitrina(-1);};$("vnext").onclick=()=>{vIdx++;renderVitrina(1);};
+$("vitrina").addEventListener("keydown",e=>{if(e.key==="ArrowRight"){vIdx++;renderVitrina(1);}if(e.key==="ArrowLeft"){vIdx--;renderVitrina(-1);}});
+(()=>{let x0=null;const v=$("vitrina");v.addEventListener("pointerdown",e=>{if(e.target.closest("button,a"))return;x0=e.clientX;});v.addEventListener("pointerup",e=>{if(x0==null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40){vIdx+=dx<0?1:-1;renderVitrina(dx<0?1:-1);}});})();
+function renderAll(){renderBiz();renderCats();renderGrid();renderCart();stillLife();renderVitrina();}
 document.addEventListener("click",e=>{const t=e.target.closest("button,a");if(!t)return;
   if(t.dataset.cat){filtro=t.dataset.cat;renderCats();renderGrid();return;}
   if(t.dataset.inc){cart[t.dataset.inc]=(cart[t.dataset.inc]||0)+1;renderGrid();renderCart();return;}
