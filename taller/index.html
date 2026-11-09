@@ -283,5 +283,26 @@ Nombre: Camila · Retiro en feria<small>10:42</small></div>
     <p>Tus datos quedan en tu Google Drive. Este sitio no los guarda. <a href="../privacidad/">Política de privacidad</a> · <a href="../terminos/">Términos y condiciones</a></p>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script>
+/* Animación cinemática: si GSAP no carga, la página se ve igual, sin movimiento */
+document.addEventListener("DOMContentLoaded",()=>{if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",()=>{const E="power3.out";
+    gsap.timeline({defaults:{ease:E}})
+      .from(".hero h1",{y:50,autoAlpha:0,duration:1})
+      .from(".hero .eyebrow,.hero .lead,.hero .btns,.hero .note",{y:24,autoAlpha:0,stagger:.08,duration:.8},.15)
+      .fromTo(".hero .phone",{y:80,rotate:8,scale:.86,autoAlpha:0},{y:0,rotate:2,scale:1,autoAlpha:1,duration:1.4,clearProps:"transform"},.1)
+      .from(".hero .chip",{x:-30,autoAlpha:0,duration:.7},.9);
+    gsap.to(".hero .phone img",{yPercent:-6,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:.6}});
+    document.querySelectorAll(".feat .media .phone, .feat .media .wa").forEach(el=>{
+      gsap.fromTo(el,{scale:.78,clipPath:"inset(10% 6% 10% 6% round 40px)",y:60},{scale:1,clipPath:"inset(0% 0% 0% 0% round 40px)",y:0,ease:"none",scrollTrigger:{trigger:el,start:"top 95%",end:"top 45%",scrub:.7}});});
+    document.querySelectorAll(".feat .txt").forEach(el=>gsap.from(el,{y:40,autoAlpha:0,duration:.9,ease:E,scrollTrigger:{trigger:el,start:"top 88%",once:true}}));
+    gsap.from(".themes figure",{y:40,autoAlpha:0,scale:.9,stagger:.08,duration:.8,ease:E,scrollTrigger:{trigger:".themes",start:"top 90%",once:true}});
+    gsap.from(".steps li",{y:40,autoAlpha:0,stagger:.12,duration:.8,ease:E,scrollTrigger:{trigger:".steps",start:"top 85%",once:true}});
+    gsap.from(".honest div",{y:30,autoAlpha:0,stagger:.1,duration:.8,ease:E,scrollTrigger:{trigger:".honest",start:"top 88%",once:true}});
+    gsap.fromTo(".cta",{scale:.92,borderRadius:"60px"},{scale:1,borderRadius:"28px",ease:"none",scrollTrigger:{trigger:".cta",start:"top 95%",end:"top 55%",scrub:.6}});
+  });});
+</script>
 </body>
 </html>
