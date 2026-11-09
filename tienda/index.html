@@ -227,11 +227,18 @@ footer p{margin:0;color:var(--ink-soft);font-size:15px}
 .vitrina :focus-visible{outline:3px solid currentColor;outline-offset:3px}
 .vitrina:not([hidden])~.hero .still{display:none}.vitrina:not([hidden])~.hero .wrap{grid-template-columns:1fr}
 @media (max-width:640px){.vinfo{left:20px;right:20px;bottom:96px;max-width:none}.vnav{left:20px;right:auto;bottom:28px}.vprod{margin-top:-22vh;width:92vw}.vitrina{min-height:92svh}}
+.vitrina.nat::after{background:radial-gradient(70% 55% at 32% 26%,rgba(255,255,255,.34),transparent 70%),linear-gradient(180deg,transparent 0 56%,rgba(0,0,0,.10) 56.2%,rgba(0,0,0,.03) 74%,rgba(0,0,0,.14) 100%)}
+.vitrina.nat::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.22;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+.vitrina.nat .vword{text-transform:none;letter-spacing:-.03em;font-size:clamp(84px,22vw,270px);top:36%}
+.vitrina.nat .vprod{animation:none;margin-top:0;filter:drop-shadow(0 22px 20px rgba(0,0,0,.20))}
+@media (max-width:640px){.vitrina.nat .vprod{margin-top:-16vh}.vitrina.nat .vword{top:24%}.vitrina.nat::after{background:radial-gradient(90% 45% at 30% 20%,rgba(255,255,255,.34),transparent 70%),linear-gradient(180deg,transparent 0 46%,rgba(0,0,0,.10) 46.2%,rgba(0,0,0,.03) 66%,rgba(0,0,0,.14) 100%)}}
+.art:has(img.cut){background:radial-gradient(120% 85% at 40% 18%,var(--art),color-mix(in srgb,var(--art) 88%,var(--ink)))}
 @media (prefers-reduced-motion:reduce){.vprod{animation:none}.vitrina{transition:none}}
 </style>
 <script type="application/json" id="data">{"biz": {"slug": "tienda", "name": "Tu tienda", "rubro": "", "titulo": "", "tag": "", "place": "", "envio": "", "hoy": "", "wa": "", "tema": "marino", "universal": true}, "products": []}</script>
 <script>
 const DEV_DEFAULT="Si compraste a distancia (por esta página o WhatsApp), puedes arrepentirte dentro de 10 días desde que recibes el producto, devolviéndolo sin uso y en su estado original (derecho de retracto, Ley 19.496 del Consumidor).\nNo aplica a alimentos frescos o que vencen en menos de 10 días, productos hechos a pedido o personalizados, ni artículos de higiene personal con el sello abierto.\nSi un producto nuevo viene con fallas, tienes garantía legal de 6 meses desde que lo recibes: puedes elegir cambio, reparación o devolución del dinero.\nPara cualquier cambio o devolución, escríbenos por WhatsApp.";
+const NAT={verde:"#5E7A66",coral:"#C68F78",amarillo:"#D9BC83",azul:"#6E8AA3",salvia:"#A9B8A0","azul oscuro":"#2B3A4A",rosa:"#C7A3A8",rojo:"#8C4038"};
 const VIV={verde:"#0F7F55",coral:"#FF6F59",amarillo:"#FFC23C",azul:"#2456E0",salvia:"#6FAE7C","azul oscuro":"#23395B",rosa:"#C73A86",rojo:"#C9243A"};
 /* ===== TEMAS: cada tienda elige uno en su configuración ("tema"). Para probar: agrega ?tema=oliva al link. ===== */
 const TEMAS={
@@ -568,18 +575,20 @@ function closeCart(){const d=$("drawer");d.dataset.state="closed";d.setAttribute
 
 /* ---------- portada Vitrina 3D ---------- */
 let vIdx=0,vList=[];
-function vColor(p){const c=String(p.c||"").toUpperCase();const k=Object.keys(COLOR_NAMES).find(n=>COLOR_NAMES[n].toUpperCase()===c);return k?VIV[k]:(/^#[0-9A-F]{6}$/.test(c)?c:VIV.coral);}
+function vViva(){return /viva/i.test(String(state.biz.portada||""));}
+function vColor(p){const P=vViva()?VIV:NAT,c=String(p.c||"").toUpperCase();const k=Object.keys(COLOR_NAMES).find(n=>COLOR_NAMES[n].toUpperCase()===c);return k?P[k]:(/^#[0-9A-F]{6}$/.test(c)?c:P.coral);}
 function vitrinaOn(){return /vitrina/i.test(String(state.biz.portada||""));}
 function renderVitrina(anim){const v=$("vitrina");if(!vitrinaOn()||cargando){v.hidden=true;return;}
   vList=state.products.filter(p=>p.ok).sort((a,b)=>(b.badge?1:0)-(a.badge?1:0)).slice(0,6);if(!vList.length){v.hidden=true;return;}
-  v.hidden=false;vIdx=(vIdx+vList.length)%vList.length;const p=vList[vIdx],bg=vColor(p),dark=contraste("#FFFFFF",bg)>=4.5;
+  v.hidden=false;v.classList.toggle("nat",!vViva());vIdx=(vIdx+vList.length)%vList.length;const p=vList[vIdx],pap=getComputedStyle(document.documentElement).getPropertyValue("--paper").trim(),osc=!vViva()&&hexOK(pap)&&contraste("#FFFFFF",pap)>=7,bg=osc?shade(vColor(p),-.5):vColor(p),dark=contraste("#FFFFFF",bg)>=4.5;
   v.style.setProperty("--vb",bg);v.style.setProperty("--vt",dark?"#FFFFFF":"#16181D");v.style.setProperty("--vw",dark?"rgba(255,255,255,.2)":"rgba(0,0,0,.14)");
   $("vword").textContent=(p.n.split(/\s+/)[0]||"").slice(0,10);$("vprod").innerHTML=picture({...p,c:shade(p.c,-.32)});$("vcat").textContent=p.cat||"";$("vname").textContent=p.n;$("vprice").textContent=clp(p.p);
   const n=cart[p.id]||0;$("vadd").dataset.inc=p.id;$("vadd").textContent=n?`Agregar otro (${n} en tu pedido)`:"Agregar a mi pedido";
   $("vcount").textContent=`${vIdx+1} / ${vList.length}`;$("vprev").hidden=$("vnext").hidden=vList.length<2;
   if(anim&&window.gsap&&!matchMedia("(prefers-reduced-motion:reduce)").matches){const d=anim;
     gsap.fromTo("#vword",{xPercent:28*d,autoAlpha:0},{xPercent:0,autoAlpha:1,duration:.8,ease:"power3.out"});
-    gsap.fromTo("#vprod svg,#vprod img",{x:140*d,rotate:14*d,scale:.7,autoAlpha:0},{x:0,rotate:0,scale:1,autoAlpha:1,duration:1,ease:"back.out(1.4)"});
+    if(vViva())gsap.fromTo("#vprod svg,#vprod img",{x:140*d,rotate:14*d,scale:.7,autoAlpha:0},{x:0,rotate:0,scale:1,autoAlpha:1,duration:1,ease:"back.out(1.4)"});
+    else gsap.fromTo("#vprod svg,#vprod img",{x:60*d,scale:.94,autoAlpha:0},{x:0,scale:1,autoAlpha:1,duration:.9,ease:"power3.out"});
     gsap.fromTo(".vinfo > *",{y:18,autoAlpha:0},{y:0,autoAlpha:1,stagger:.06,duration:.6,ease:"power3.out"});}}
 $("vprev").onclick=()=>{vIdx--;renderVitrina(-1);};$("vnext").onclick=()=>{vIdx++;renderVitrina(1);};
 $("vitrina").addEventListener("keydown",e=>{if(e.key==="ArrowRight"){vIdx++;renderVitrina(1);}if(e.key==="ArrowLeft"){vIdx--;renderVitrina(-1);}});
