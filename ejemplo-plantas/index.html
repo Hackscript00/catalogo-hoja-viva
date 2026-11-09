@@ -658,8 +658,9 @@ document.addEventListener("DOMContentLoaded",()=>{if(!window.gsap||!window.Scrol
       .from(".still svg",{scale:1.22,duration:1.5},0)
       .from(".hero h1",{y:44,autoAlpha:0,duration:1},.15)
       .from(".hero .wrap > div:first-child > :not(h1)",{y:22,autoAlpha:0,stagger:.08,duration:.8},.4);
-    gsap.to(".still svg",{yPercent:-14,scale:1.08,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:.6}});
-    gsap.to(".hero h1",{y:-36,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:.6}});
+    /* parallax: usa yPercent (distinto de la «y» de la entrada) y valores de inicio fijos, para no quedar corrido */
+    gsap.fromTo(".still svg",{yPercent:0},{yPercent:-14,ease:"none",immediateRender:false,scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:.6}});
+    gsap.fromTo(".hero h1",{yPercent:0},{yPercent:-18,ease:"none",immediateRender:false,scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:.6}});
     const vis=new Set();
     window.__cine=()=>{const nuevos=[...document.querySelectorAll("#grid .card")].filter(c=>!vis.has(c.dataset.id));nuevos.forEach(c=>vis.add(c.dataset.id));if(!nuevos.length)return;
       gsap.set(nuevos,{autoAlpha:0,y:50});
