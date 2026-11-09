@@ -89,6 +89,19 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 .prev .pc{border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .prev .pp{font-weight:700;padding:4px 10px;border-radius:6px}
 .cwarn{margin-top:10px}
+.seg button{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--sheet);cursor:pointer;font-weight:600}
+.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+#rubros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}#rubros button{flex:none}
+.recos{display:grid;gap:12px}@media (min-width:600px){.recos{grid-template-columns:repeat(3,1fr)}}
+.reco{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--sheet);text-align:left;padding:0;display:grid}
+.reco[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}
+.reco .mini{padding:14px;display:grid;gap:10px;align-content:start}
+.reco .mt{font-size:22px;line-height:1.05}
+.reco .mc{border-radius:10px;padding:10px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 22px -14px rgba(0,0,0,.45)}
+.reco .mi{width:38px;height:38px;border-radius:9px;flex:none;box-shadow:inset -4px -6px 10px rgba(0,0,0,.18),inset 4px 4px 8px rgba(255,255,255,.35)}
+.reco .mp{margin-left:auto;font-weight:700;font-size:13px;padding:3px 8px;border-radius:6px}
+.reco .ml{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;border-top:1px solid var(--line)}
+.reco .ml small{font-weight:600;color:var(--soft)}
 /* barra guardar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--sheet);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
 .bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0}
@@ -203,6 +216,13 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
     <section class="panel" id="p-estilo" role="tabpanel" aria-labelledby="t-estilo" hidden>
       <h2>Colores y letras</h2><p class="muted">Primero elige un estilo. Después cambia lo que quieras.</p>
       <div class="stack">
+        <div class="card stack" id="recoBox">
+          <h3>Diseños recomendados para tu negocio</h3>
+          <p class="muted small" style="margin:0">Elige qué vendes y te mostramos tres diseños pensados para eso. Toca uno para usarlo.</p>
+          <div class="seg" id="rubros" role="group" aria-label="Qué vendes"></div>
+          <div class="recos" id="recos"></div>
+        </div>
+        <h3 style="margin-top:6px">Todos los estilos</h3>
         <div class="themes" id="themes"></div>
         <div class="card stack">
           <h3>Colores</h3>
@@ -2567,7 +2587,27 @@ const TEMAS={
  oliva:{n:"Oliva",paper:"#F4F5EA",ink:"#233020",soft:"#59664E",sea:"#587A2B",accent:"#DDB947",line:"#DCDFC9",dot:"#C8CFB0",art:"#FAFBF3",wash:"#EDF0DF",onink:"#C9D3BC",font:"Fraunces",dw:600},
  ciruela:{n:"Ciruela",paper:"#F9F3F7",ink:"#33173A",soft:"#6B5471",sea:"#8E3B7A",accent:"#F4B6C6",line:"#E8DAE4",dot:"#D9C4D3",art:"#FFFAFD",wash:"#F2E7EF",onink:"#DCC6DC",font:"Playfair Display",dw:600},
  oceano:{n:"Océano",paper:"#F0F6FA",ink:"#0F2A43",soft:"#4A6278",sea:"#1B6BB0",accent:"#FFC857",line:"#D4E1EB",dot:"#BFD2E1",art:"#F9FCFE",wash:"#E7F0F7",onink:"#BCD0E2",font:"Bricolage Grotesque",dw:700},
- grafito:{n:"Grafito",paper:"#F6F6F3",ink:"#1E1E1E",soft:"#5B5B58",sea:"#8A5A00",accent:"#E0A82E",line:"#DEDED8",dot:"#CFCFC8",art:"#FBFBF9",wash:"#EFEFEA",onink:"#CFCFCA",font:"Space Grotesk",dw:700}};
+ grafito:{n:"Grafito",paper:"#F6F6F3",ink:"#1E1E1E",soft:"#5B5B58",sea:"#8A5A00",accent:"#E0A82E",line:"#DEDED8",dot:"#CFCFC8",art:"#FBFBF9",wash:"#EFEFEA",onink:"#CFCFCA",font:"Space Grotesk",dw:700},
+ invernadero:{"n": "Invernadero", "paper": "#EEF1EA", "ink": "#1F3A2E", "soft": "#596D63", "sea": "#3E6B4F", "accent": "#D99A6C", "line": "#D1D7D0", "dot": "#BCC5BD", "art": "#F6F8F4", "wash": "#F2F3F2", "onink": "#C0C9C1", "font": "Fraunces", "dw": 600, "fx": "Instrument Sans", "sheet": "#FFFFFF"},
+ selva:{"n": "Selva", "paper": "#0F2A1E", "ink": "#EAF5E4", "soft": "#ADBCAD", "sea": "#8BE09C", "accent": "#F4C542", "line": "#2E463A", "dot": "#445B4E", "art": "#123224", "wash": "#234535", "onink": "#3F574A", "font": "Bricolage Grotesque", "dw": 700, "fx": "Instrument Sans", "sheet": "#163A2A", "td": 1},
+ botanica:{"n": "Botánica", "paper": "#F6F1EA", "ink": "#2E2A24", "soft": "#66625B", "sea": "#5F6E33", "accent": "#E7B7A3", "line": "#DAD5CE", "dot": "#C6C1BA", "art": "#FAF8F4", "wash": "#F2F2F2", "onink": "#CAC5BE", "font": "Playfair Display", "dw": 600, "fx": "Lora", "sheet": "#FFFFFF"},
+ lupulo:{"n": "Lúpulo", "paper": "#FFF4DC", "ink": "#2A1A0B", "soft": "#665746", "sea": "#A64D07", "accent": "#F2A516", "line": "#E1D5BF", "dot": "#CCC0AA", "art": "#FFFAEE", "wash": "#F2F1F0", "onink": "#D0C4AE", "font": "Abril Fatface", "dw": 400, "fx": "Montserrat", "sheet": "#FFFFFF", "td": 1},
+ cava:{"n": "Cava", "paper": "#15110C", "ink": "#F3E7D3", "soft": "#B5AB9B", "sea": "#E7B45E", "accent": "#E3AE55", "line": "#342F28", "dot": "#4A443C", "art": "#1B160F", "wash": "#2E261E", "onink": "#464038", "font": "Playfair Display", "dw": 600, "fx": "Instrument Sans", "sheet": "#211A12"},
+ barrica:{"n": "Barrica", "paper": "#F1EADF", "ink": "#3B2416", "soft": "#6E5B4E", "sea": "#8C3B1E", "accent": "#D9A441", "line": "#D8CEC3", "dot": "#C5BAAF", "art": "#F8F4EF", "wash": "#F3F2F1", "onink": "#C9BEB3", "font": "Josefin Sans", "dw": 700, "fx": "Montserrat", "sheet": "#FFFFFF"},
+ frutilla:{"n": "Frutilla", "paper": "#FFF1F2", "ink": "#4A0D1E", "soft": "#7D4D59", "sea": "#B0124F", "accent": "#FFB703", "line": "#E6D1D4", "dot": "#D4BABF", "art": "#FFF8F8", "wash": "#F4F0F2", "onink": "#D7BFC3", "font": "Fraunces", "dw": 600, "fx": "Nunito", "sheet": "#FFFFFF", "td": 1},
+ mora:{"n": "Mora", "paper": "#1E0F1C", "ink": "#F7E9F0", "soft": "#BAACB5", "sea": "#F29CC1", "accent": "#E7C36B", "line": "#3C2E3A", "dot": "#52434F", "art": "#241222", "wash": "#362333", "onink": "#4E3F4B", "font": "DM Serif Display", "dw": 400, "fx": "Instrument Sans", "sheet": "#2A1627"},
+ masamadre:{"n": "Masa madre", "paper": "#F7EFE3", "ink": "#3A2A1C", "soft": "#6F6154", "sea": "#8E5226", "accent": "#E8B04B", "line": "#DDD3C7", "dot": "#CAC0B3", "art": "#FBF7F1", "wash": "#F3F2F1", "onink": "#CDC4B7", "font": "Merriweather", "dw": 700, "fx": "Lora", "sheet": "#FFFFFF"},
+ pastel:{"n": "Pastel", "paper": "#FDF3F7", "ink": "#3D2240", "soft": "#735D73", "sea": "#A63D6E", "accent": "#8FD3C1", "line": "#E2D6DD", "dot": "#CFC1CB", "art": "#FEF9FB", "wash": "#F3F2F4", "onink": "#D3C5CF", "font": "Comfortaa", "dw": 700, "fx": "Quicksand", "sheet": "#FFFFFF", "td": 1},
+ tostado:{"n": "Tostado", "paper": "#1B1410", "ink": "#EFE4D6", "soft": "#B4AA9F", "sea": "#E0A872", "accent": "#E2A86E", "line": "#39312C", "dot": "#4E4640", "art": "#201812", "wash": "#312721", "onink": "#4A423C", "font": "Fraunces", "dw": 600, "fx": "Instrument Sans", "sheet": "#251B15"},
+ matcha:{"n": "Matcha", "paper": "#F2F4EC", "ink": "#263322", "soft": "#5F695B", "sea": "#4F6E27", "accent": "#D9C27A", "line": "#D5D9D0", "dot": "#C1C6BC", "art": "#F8FAF6", "wash": "#F2F3F2", "onink": "#C5CAC0", "font": "Josefin Sans", "dw": 700, "fx": "Open Sans", "sheet": "#FFFFFF"},
+ lana:{"n": "Lana", "paper": "#F4EFEA", "ink": "#2F2A3A", "soft": "#66616B", "sea": "#73478A", "accent": "#E9A86B", "line": "#D8D3D1", "dot": "#C5C0C0", "art": "#FAF7F4", "wash": "#F3F2F3", "onink": "#C9C4C3", "font": "Lora", "dw": 600, "fx": "Nunito", "sheet": "#FFFFFF"},
+ urbano:{"n": "Urbano", "paper": "#F1F1EE", "ink": "#1C1F2E", "soft": "#585A64", "sea": "#2448D8", "accent": "#FF7A59", "line": "#D3D4D3", "dot": "#BEBFC0", "art": "#F8F8F6", "wash": "#F1F2F2", "onink": "#C2C3C4", "font": "Space Grotesk", "dw": 700, "fx": "Instrument Sans", "sheet": "#FFFFFF", "td": 1},
+ oro:{"n": "Oro", "paper": "#14161C", "ink": "#F2EDE4", "soft": "#B4B1AC", "sea": "#D9B676", "accent": "#D4AF6A", "line": "#333438", "dot": "#494A4C", "art": "#181A22", "wash": "#292B32", "onink": "#454548", "font": "Playfair Display", "dw": 600, "fx": "Montserrat", "sheet": "#1C1F27"},
+ perla:{"n": "Perla", "paper": "#F7F5F2", "ink": "#2B2B33", "soft": "#646468", "sea": "#7A5F45", "accent": "#E3C9A8", "line": "#DAD9D7", "dot": "#C6C5C4", "art": "#FBFAF8", "wash": "#F2F2F3", "onink": "#CAC9C8", "font": "DM Serif Display", "dw": 400, "fx": "Instrument Sans", "sheet": "#FFFFFF"},
+ arcilla:{"n": "Arcilla", "paper": "#F5EEE8", "ink": "#3B2B2A", "soft": "#6F625F", "sea": "#9A4F42", "accent": "#E8C5B0", "line": "#DBD3CD", "dot": "#C8BFBA", "art": "#FAF6F4", "wash": "#F3F2F2", "onink": "#CCC3BE", "font": "Fraunces", "dw": 600, "fx": "Quicksand", "sheet": "#FFFFFF"},
+ lavanda:{"n": "Lavanda", "paper": "#F4F1FA", "ink": "#2E2547", "soft": "#655E79", "sea": "#6447A8", "accent": "#F2C14E", "line": "#D8D4E1", "dot": "#C4C0CF", "art": "#FAF8FC", "wash": "#F2F2F4", "onink": "#C8C4D3", "font": "Josefin Sans", "dw": 700, "fx": "Nunito", "sheet": "#FFFFFF"},
+ telar:{"n": "Telar", "paper": "#FFF6E8", "ink": "#2B1D3A", "soft": "#665A6B", "sea": "#C13A4D", "accent": "#EDAE49", "line": "#E1D8D0", "dot": "#CCC2BE", "art": "#FFFAF4", "wash": "#F2F1F3", "onink": "#D0C6C2", "font": "Bricolage Grotesque", "dw": 700, "fx": "Instrument Sans", "sheet": "#FFFFFF", "td": 1},
+ sazon:{"n": "Sazón", "paper": "#FFF5EC", "ink": "#3A1408", "soft": "#715348", "sea": "#B53A0A", "accent": "#FFC93C", "line": "#E3D6CC", "dot": "#D0BFB5", "art": "#FFFAF6", "wash": "#F3F1F0", "onink": "#D4C4BA", "font": "Poppins", "dw": 700, "fx": "Poppins", "sheet": "#FFFFFF", "td": 1}};
 const FUENTES_T={"Young Serif":400,"DM Serif Display":400,"Fraunces":600,"Playfair Display":600,"Abril Fatface":400,"Merriweather":700,"Lora":600,"Bricolage Grotesque":700,"Space Grotesk":700,"Montserrat":700,"Poppins":700,"Josefin Sans":700,"Comfortaa":700,"Nunito":800,"Pacifico":400,"Caveat":700};
 const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Open Sans":[400,600,700],"Poppins":[400,600,700],"Montserrat":[400,600,700],"Quicksand":[400,600,700],"Lora":[400,600,700],"Merriweather":[400,700]};
 const $=id=>document.getElementById(id);
@@ -2671,7 +2711,7 @@ $("login").onclick=start;
 
 /* ---------- tabs ---------- */
 const TABS=["negocio","productos","estilo","publicar"];
-function selectTab(n){TABS.forEach(t=>{const b=$("t-"+t),p=$("p-"+t),on=t===n;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;p.hidden=!on;if(on)b.scrollIntoView({inline:"nearest",block:"nearest"});});cur=n;if(n==="publicar")renderCheck();window.scrollTo({top:0});}
+function selectTab(n){TABS.forEach(t=>{const b=$("t-"+t),p=$("p-"+t),on=t===n;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;p.hidden=!on;if(on)b.scrollIntoView({inline:"nearest",block:"nearest"});});cur=n;if(n==="publicar")renderCheck();if(n==="estilo"){renderRecos();preview();}window.scrollTo({top:0});}
 let cur="negocio";
 TABS.forEach((t,i)=>{const b=$("t-"+t);b.onclick=()=>selectTab(t);b.onkeydown=e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%4;if(e.key==="ArrowLeft")j=(i+3)%4;if(j!=null){e.preventDefault();selectTab(TABS[j]);$("t-"+TABS[j]).focus();}};});
 
@@ -2713,20 +2753,48 @@ $("addProd").onclick=()=>{S.prods.push({nombre:"",precio:"",categoria:(S.prods[S
   const last=$("prods").lastElementChild;last.scrollIntoView({block:"center"});last.querySelector('[data-k="nombre"]').focus();};
 
 /* ---------- estilo ---------- */
-function themeVals(){const t=TEMAS[S.biz.tema]||TEMAS.marino;return{paper:t.paper,sheet:"#FFFFFF",ink:t.ink,accent:t.accent,sea:t.sea,font:t.font,fx:"Instrument Sans"};}
+function themeVals(){const t=TEMAS[S.biz.tema]||TEMAS.marino;return{paper:t.paper,sheet:t.sheet||"#FFFFFF",ink:t.ink,accent:t.accent,sea:t.sea,font:t.font,fx:t.fx||"Instrument Sans"};}
+const RUBROS=[
+ {id:"plantas",n:"Plantas y flores",re:/planta|suculent|flor|vivero|macet|jardin|cactus/,s:[["invernadero","Sofisticado"],["selva","Vivo"],["botanica","Natural"]]},
+ {id:"bebidas",n:"Cerveza y bebidas",re:/cervez|bebida|vino|licor|jugo|kombucha|chicha/,s:[["lupulo","Vivo"],["cava","Lujoso"],["barrica","Artesanal"]]},
+ {id:"dulces",n:"Dulces y mermeladas",re:/dulce|mermelad|chocolate|miel|manjar|confit/,s:[["frutilla","Vivo"],["mora","Lujoso"],["ciruela","Elegante"]]},
+ {id:"pan",n:"Panadería y pastelería",re:/\bpan\b|panader|pasteler|torta|kuchen|reposter|galleta/,s:[["masamadre","Cálido"],["pastel","Dulce y vivo"],["terracota","Clásico"]]},
+ {id:"cafe",n:"Café y té",re:/cafe|\bte\b|infusion/,s:[["tostado","Lujoso"],["matcha","Fresco"],["barrica","Artesanal"]]},
+ {id:"ropa",n:"Ropa y tejidos",re:/ropa|tejid|\blana|polera|vestido|crochet/,s:[["lana","Suave"],["urbano","Vivo"],["grafito","Minimalista"]]},
+ {id:"joyas",n:"Joyas y accesorios",re:/joya|\baros?\b|collar|plata|accesorio|bisuter/,s:[["oro","Lujoso"],["perla","Elegante"],["ciruela","Romántico"]]},
+ {id:"cosmetica",n:"Cosmética natural",re:/cosmet|jabon|crema|\bvela|piel|aromat/,s:[["arcilla","Natural"],["lavanda","Fresco"],["perla","Elegante"]]},
+ {id:"artesania",n:"Artesanía y decoración",re:/artesan|decora|ceramic|madera|cuadro|greda/,s:[["telar","Vivo"],["terracota","Clásico"],["botanica","Natural"]]},
+ {id:"comida",n:"Comida preparada",re:/comida|empanada|almuerzo|colacion|sopaipilla|sushi|completo/,s:[["sazon","Vivo"],["masamadre","Casero"],["marino","Clásico"]]},
+ {id:"papeleria",n:"Papelería y regalos",re:/papeler|agenda|libreta|regalo|sticker|tarjeta/,s:[["marino","Clásico"],["oceano","Fresco"],["urbano","Vivo"]]}];
+let rubroSel=null;
+const nrm=x=>String(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function guessRubro(){const t=nrm((S.biz.rubro||"")+" "+(S.biz.nombre||"")+" "+S.prods.map(p=>p.nombre+" "+p.categoria).join(" "));const r=RUBROS.find(r=>r.re.test(t));return r?r.id:"papeleria";}
+let rubroUser=false;
+function renderRecos(){if(!rubroUser)rubroSel=guessRubro();
+  $("rubros").innerHTML=RUBROS.map(r=>`<button type="button" data-r="${r.id}" aria-pressed="${r.id===rubroSel}">${r.n}</button>`).join("");
+  const R0=RUBROS.find(r=>r.id===rubroSel);
+  $("recos").innerHTML=R0.s.map(([k,mood])=>{const t=TEMAS[k];if(!t)return"";const sh=t.sheet||"#FFFFFF",fx=t.fx||"Instrument Sans";loadFont(t.font,FUENTES_T[t.font]);loadFont(fx,FUENTES_X[fx]);
+    const td=t.td?`text-shadow:1px 1px 0 ${t.accent},2px 2px 0 ${t.accent},3px 3px 0 ${t.accent},4px 5px 8px rgba(0,0,0,.25);`:"";
+    return`<button type="button" class="reco" data-t="${k}" aria-pressed="${k===S.biz.tema}" aria-label="Usar el diseño ${t.n}, ${mood}">
+      <span class="mini" style="background:${t.paper};color:${t.ink};font-family:'${fx}',sans-serif">
+        <span class="mt" style="font-family:'${t.font}',Georgia,serif;font-weight:${t.dw};${td}">${esc(S.biz.nombre||"Tu negocio")}</span>
+        <span class="mc" style="background:${sh};color:${t.ink}"><span class="mi" style="background:${t.sea}"></span><span style="font-size:13px;font-weight:600">Producto</span><span class="mp" style="background:${t.accent};color:#13161A">$3.500</span></span>
+      </span><span class="ml">${t.n}<small>${mood}</small></span></button>`;}).join("");}
+$("rubros").onclick=e=>{const b=e.target.closest("[data-r]");if(!b)return;rubroSel=b.dataset.r;rubroUser=true;renderRecos();$("rubros").querySelector(`[data-r="${rubroSel}"]`).focus();};
+$("recos").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;S.biz.tema=b.dataset.t;["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"].forEach(k=>delete S.est[k]);renderEstilo();setDirty(true);$("recos").querySelector(`[data-t="${b.dataset.t}"]`).focus();};
 function val(k){const tv=themeVals();const m={fondo:"paper",tarjetas:"sheet",texto:"ink",destacado:"accent",acento:"sea"};return S.est[k]||tv[m[k]];}
 const fontsLoaded=new Set(["Young Serif","Instrument Sans"]);
 function loadFont(f,w){if(fontsLoaded.has(f))return;fontsLoaded.add(f);const l=document.createElement("link");l.rel="stylesheet";l.href=`https://fonts.googleapis.com/css2?family=${f.replace(/ /g,"+")}${w?":wght@"+[].concat(w).join(";"):""}&display=swap`;document.head.appendChild(l);}
 function renderEstilo(){
   $("themes").innerHTML=Object.entries(TEMAS).map(([k,t])=>`<button type="button" class="th" data-t="${k}" aria-pressed="${k===(S.biz.tema||"marino")}"><span class="sw" aria-hidden="true"><span style="background:${t.paper}"></span><span style="background:${t.ink}"></span><span style="background:${t.accent}"></span><span style="background:${t.sea}"></span></span><b>${t.n}</b></button>`).join("");
   $("cols").innerHTML=COLS.map(([k,l])=>`<label class="crow">${l}<input type="color" data-c="${k}" value="${val(k)}"></label>`).join("");
-  const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto||"Instrument Sans";
+  const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto||themeVals().fx;
   $("ft").innerHTML=Object.keys(FUENTES_T).map(f=>`<option ${f===ft?"selected":""}>${f}</option>`).join("");
   $("fx").innerHTML=Object.keys(FUENTES_X).map(f=>`<option ${f===fx?"selected":""}>${f}</option>`).join("");
-  preview();}
+  renderRecos();preview();}
 function lum(h){h=h.replace("#","");const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:((x+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2];}
 const cr=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
-function preview(){const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto||"Instrument Sans";loadFont(ft,FUENTES_T[ft]);loadFont(fx,FUENTES_X[fx]);
+function preview(){const ft=S.est.fuente||themeVals().font,fx=S.est.fuente_texto||themeVals().fx;loadFont(ft,FUENTES_T[ft]);loadFont(fx,FUENTES_X[fx]);
   const pv=$("prev");pv.style.background=val("fondo");pv.style.color=val("texto");pv.style.fontFamily=`"${fx}",sans-serif`;
   $("pvT").style.fontFamily=`"${ft}",Georgia,serif`;$("pvT").style.fontWeight=FUENTES_T[ft]||400;$("pvT").textContent=S.biz.nombre||"Tu negocio";
   $("pvP").textContent=S.biz.titulo||S.biz.rubro||"Una frase sobre lo que vendes.";

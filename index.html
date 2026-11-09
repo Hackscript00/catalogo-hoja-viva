@@ -195,6 +195,17 @@ footer p{margin:0;color:var(--ink-soft);font-size:15px}
 .p-foot .main{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .p-foot small{color:var(--ink-soft);text-align:center;font-size:13px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===== profundidad 3D ===== */
+.hero .wrap{perspective:1100px}
+.still{transform-style:preserve-3d;transition:transform .25s ease-out;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));box-shadow:0 30px 60px -36px rgba(var(--shadow),.55)}
+.still svg{animation:flota 7s ease-in-out infinite}
+@keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+[data-td="1"] .hero h1{text-shadow:1px 1px 0 var(--marigold),2px 2px 0 var(--marigold),3px 3px 0 var(--marigold),4px 4px 0 var(--marigold),5px 5px 0 var(--marigold),8px 10px 18px rgba(var(--shadow),.28)}
+.card{transition:transform .22s ease-out,box-shadow .22s ease-out;box-shadow:0 1px 0 rgba(var(--shadow),.04),0 18px 34px -28px rgba(var(--shadow),.55);transform-style:preserve-3d}
+.art svg{transition:transform .3s ease-out}
+@media (hover:hover) and (pointer:fine){.card:hover{box-shadow:0 2px 0 rgba(var(--shadow),.05),0 28px 48px -26px rgba(var(--shadow),.6)}.card:hover .art svg{transform:translateY(-5px) scale(1.04)}}
+@media (prefers-reduced-motion:reduce){.still svg{animation:none}.still,.card{transform:none!important;transition:none}.card:hover .art svg{transform:none}}
 </style>
 <script type="application/json" id="data">{"biz": {"slug": "hoja-viva", "name": "Hoja Viva", "rubro": "Papelería hecha a mano", "titulo": "Papelería hecha a mano en Puerto Montt", "tag": "Agendas, planners, libretas y regalos de papel. Elige lo que te gusta, arma tu pedido y envíalo por WhatsApp.", "place": "Ferias del Proyecto Muelle, Puerto Montt", "envio": "Despachos a todo Chile", "hoy": "Feria del Muelle, hasta las 18:00", "wa": "56927776873", "tema": "marino", "demo": true, "historia": "Hacemos agendas y libretas a mano, una por una, con papel de buena calidad y diseños inspirados en el sur. Si buscas algo especial o una cantidad mayor, escríbenos y lo conversamos.", "planilla": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQBTS6ApkEs32ndoL0T0U16bbfgTpa8_5-iCtwMvGBFwVldjx3Yc8Y8XWrpiamKQzT-ACFuFSVDlmgk/pub?gid=268686341&single=true&output=csv", "tienda_hoja": "", "numero_visible": "parcial"}, "products": [{"id": "p1", "n": "Agenda 2027 anillada", "d": "Vista semanal, tapa dura forrada en tela, 160 hojas.", "p": 14990, "cat": "Agendas y planners", "c": "#28756E", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p2", "n": "Planner mensual sin fecha", "d": "Para partir cualquier mes. Incluye hoja de metas y presupuesto.", "p": 9990, "cat": "Agendas y planners", "c": "#E06A4E", "badge": "", "ok": true, "img": ""}, {"id": "p3", "n": "Planner de emprendedora", "d": "Ventas del día, costos, pedidos y clientes en un solo lugar.", "p": 12990, "cat": "Agendas y planners", "c": "#17363D", "badge": "Más vendido", "ok": true, "img": ""}, {"id": "p4", "n": "Libreta A5 punteada", "d": "Papel de 100 g, 120 hojas, ideal para lettering.", "p": 6990, "cat": "Libretas", "c": "#E8B35C", "badge": "", "ok": false, "img": ""}, {"id": "p5", "n": "Pack 3 libretas A6", "d": "Tamaño bolsillo, tapas de colores surtidos.", "p": 7990, "cat": "Libretas", "c": "#7A9E7E", "badge": "", "ok": true, "img": ""}, {"id": "p6", "n": "Set de stickers del sur", "d": "24 stickers ilustrados: Chiloé, el Muelle y la lluvia.", "p": 3990, "cat": "Regalos y accesorios", "c": "#5B7DB1", "badge": "", "ok": true, "img": ""}, {"id": "p7", "n": "Calendario de escritorio", "d": "12 láminas ilustradas con base de cartón reciclado.", "p": 8490, "cat": "Regalos y accesorios", "c": "#B05A7A", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p8", "n": "Tarjetas de regalo (pack 6)", "d": "Con sobre kraft. Para cumpleaños y fechas especiales.", "p": 4990, "cat": "Regalos y accesorios", "c": "#C0492F", "badge": "", "ok": true, "img": ""}]}</script>
 <script>
@@ -206,7 +217,27 @@ const TEMAS={
  oliva:{n:"Oliva",paper:"#F4F5EA",ink:"#233020",soft:"#59664E",sea:"#587A2B",accent:"#DDB947",line:"#DCDFC9",dot:"#C8CFB0",art:"#FAFBF3",wash:"#EDF0DF",onink:"#C9D3BC",font:"Fraunces",dw:600},
  ciruela:{n:"Ciruela",paper:"#F9F3F7",ink:"#33173A",soft:"#6B5471",sea:"#8E3B7A",accent:"#F4B6C6",line:"#E8DAE4",dot:"#D9C4D3",art:"#FFFAFD",wash:"#F2E7EF",onink:"#DCC6DC",font:"Playfair Display",dw:600},
  oceano:{n:"Océano",paper:"#F0F6FA",ink:"#0F2A43",soft:"#4A6278",sea:"#1B6BB0",accent:"#FFC857",line:"#D4E1EB",dot:"#BFD2E1",art:"#F9FCFE",wash:"#E7F0F7",onink:"#BCD0E2",font:"Bricolage Grotesque",dw:700},
- grafito:{n:"Grafito",paper:"#F6F6F3",ink:"#1E1E1E",soft:"#5B5B58",sea:"#8A5A00",accent:"#E0A82E",line:"#DEDED8",dot:"#CFCFC8",art:"#FBFBF9",wash:"#EFEFEA",onink:"#CFCFCA",font:"Space Grotesk",dw:700}
+ grafito:{n:"Grafito",paper:"#F6F6F3",ink:"#1E1E1E",soft:"#5B5B58",sea:"#8A5A00",accent:"#E0A82E",line:"#DEDED8",dot:"#CFCFC8",art:"#FBFBF9",wash:"#EFEFEA",onink:"#CFCFCA",font:"Space Grotesk",dw:700},
+ invernadero:{"n": "Invernadero", "paper": "#EEF1EA", "ink": "#1F3A2E", "soft": "#596D63", "sea": "#3E6B4F", "accent": "#D99A6C", "line": "#D1D7D0", "dot": "#BCC5BD", "art": "#F6F8F4", "wash": "#F2F3F2", "onink": "#C0C9C1", "font": "Fraunces", "dw": 600, "fx": "Instrument Sans", "sheet": "#FFFFFF"},
+ selva:{"n": "Selva", "paper": "#0F2A1E", "ink": "#EAF5E4", "soft": "#ADBCAD", "sea": "#8BE09C", "accent": "#F4C542", "line": "#2E463A", "dot": "#445B4E", "art": "#123224", "wash": "#234535", "onink": "#3F574A", "font": "Bricolage Grotesque", "dw": 700, "fx": "Instrument Sans", "sheet": "#163A2A", "td": 1},
+ botanica:{"n": "Botánica", "paper": "#F6F1EA", "ink": "#2E2A24", "soft": "#66625B", "sea": "#5F6E33", "accent": "#E7B7A3", "line": "#DAD5CE", "dot": "#C6C1BA", "art": "#FAF8F4", "wash": "#F2F2F2", "onink": "#CAC5BE", "font": "Playfair Display", "dw": 600, "fx": "Lora", "sheet": "#FFFFFF"},
+ lupulo:{"n": "Lúpulo", "paper": "#FFF4DC", "ink": "#2A1A0B", "soft": "#665746", "sea": "#A64D07", "accent": "#F2A516", "line": "#E1D5BF", "dot": "#CCC0AA", "art": "#FFFAEE", "wash": "#F2F1F0", "onink": "#D0C4AE", "font": "Abril Fatface", "dw": 400, "fx": "Montserrat", "sheet": "#FFFFFF", "td": 1},
+ cava:{"n": "Cava", "paper": "#15110C", "ink": "#F3E7D3", "soft": "#B5AB9B", "sea": "#E7B45E", "accent": "#E3AE55", "line": "#342F28", "dot": "#4A443C", "art": "#1B160F", "wash": "#2E261E", "onink": "#464038", "font": "Playfair Display", "dw": 600, "fx": "Instrument Sans", "sheet": "#211A12"},
+ barrica:{"n": "Barrica", "paper": "#F1EADF", "ink": "#3B2416", "soft": "#6E5B4E", "sea": "#8C3B1E", "accent": "#D9A441", "line": "#D8CEC3", "dot": "#C5BAAF", "art": "#F8F4EF", "wash": "#F3F2F1", "onink": "#C9BEB3", "font": "Josefin Sans", "dw": 700, "fx": "Montserrat", "sheet": "#FFFFFF"},
+ frutilla:{"n": "Frutilla", "paper": "#FFF1F2", "ink": "#4A0D1E", "soft": "#7D4D59", "sea": "#B0124F", "accent": "#FFB703", "line": "#E6D1D4", "dot": "#D4BABF", "art": "#FFF8F8", "wash": "#F4F0F2", "onink": "#D7BFC3", "font": "Fraunces", "dw": 600, "fx": "Nunito", "sheet": "#FFFFFF", "td": 1},
+ mora:{"n": "Mora", "paper": "#1E0F1C", "ink": "#F7E9F0", "soft": "#BAACB5", "sea": "#F29CC1", "accent": "#E7C36B", "line": "#3C2E3A", "dot": "#52434F", "art": "#241222", "wash": "#362333", "onink": "#4E3F4B", "font": "DM Serif Display", "dw": 400, "fx": "Instrument Sans", "sheet": "#2A1627"},
+ masamadre:{"n": "Masa madre", "paper": "#F7EFE3", "ink": "#3A2A1C", "soft": "#6F6154", "sea": "#8E5226", "accent": "#E8B04B", "line": "#DDD3C7", "dot": "#CAC0B3", "art": "#FBF7F1", "wash": "#F3F2F1", "onink": "#CDC4B7", "font": "Merriweather", "dw": 700, "fx": "Lora", "sheet": "#FFFFFF"},
+ pastel:{"n": "Pastel", "paper": "#FDF3F7", "ink": "#3D2240", "soft": "#735D73", "sea": "#A63D6E", "accent": "#8FD3C1", "line": "#E2D6DD", "dot": "#CFC1CB", "art": "#FEF9FB", "wash": "#F3F2F4", "onink": "#D3C5CF", "font": "Comfortaa", "dw": 700, "fx": "Quicksand", "sheet": "#FFFFFF", "td": 1},
+ tostado:{"n": "Tostado", "paper": "#1B1410", "ink": "#EFE4D6", "soft": "#B4AA9F", "sea": "#E0A872", "accent": "#E2A86E", "line": "#39312C", "dot": "#4E4640", "art": "#201812", "wash": "#312721", "onink": "#4A423C", "font": "Fraunces", "dw": 600, "fx": "Instrument Sans", "sheet": "#251B15"},
+ matcha:{"n": "Matcha", "paper": "#F2F4EC", "ink": "#263322", "soft": "#5F695B", "sea": "#4F6E27", "accent": "#D9C27A", "line": "#D5D9D0", "dot": "#C1C6BC", "art": "#F8FAF6", "wash": "#F2F3F2", "onink": "#C5CAC0", "font": "Josefin Sans", "dw": 700, "fx": "Open Sans", "sheet": "#FFFFFF"},
+ lana:{"n": "Lana", "paper": "#F4EFEA", "ink": "#2F2A3A", "soft": "#66616B", "sea": "#73478A", "accent": "#E9A86B", "line": "#D8D3D1", "dot": "#C5C0C0", "art": "#FAF7F4", "wash": "#F3F2F3", "onink": "#C9C4C3", "font": "Lora", "dw": 600, "fx": "Nunito", "sheet": "#FFFFFF"},
+ urbano:{"n": "Urbano", "paper": "#F1F1EE", "ink": "#1C1F2E", "soft": "#585A64", "sea": "#2448D8", "accent": "#FF7A59", "line": "#D3D4D3", "dot": "#BEBFC0", "art": "#F8F8F6", "wash": "#F1F2F2", "onink": "#C2C3C4", "font": "Space Grotesk", "dw": 700, "fx": "Instrument Sans", "sheet": "#FFFFFF", "td": 1},
+ oro:{"n": "Oro", "paper": "#14161C", "ink": "#F2EDE4", "soft": "#B4B1AC", "sea": "#D9B676", "accent": "#D4AF6A", "line": "#333438", "dot": "#494A4C", "art": "#181A22", "wash": "#292B32", "onink": "#454548", "font": "Playfair Display", "dw": 600, "fx": "Montserrat", "sheet": "#1C1F27"},
+ perla:{"n": "Perla", "paper": "#F7F5F2", "ink": "#2B2B33", "soft": "#646468", "sea": "#7A5F45", "accent": "#E3C9A8", "line": "#DAD9D7", "dot": "#C6C5C4", "art": "#FBFAF8", "wash": "#F2F2F3", "onink": "#CAC9C8", "font": "DM Serif Display", "dw": 400, "fx": "Instrument Sans", "sheet": "#FFFFFF"},
+ arcilla:{"n": "Arcilla", "paper": "#F5EEE8", "ink": "#3B2B2A", "soft": "#6F625F", "sea": "#9A4F42", "accent": "#E8C5B0", "line": "#DBD3CD", "dot": "#C8BFBA", "art": "#FAF6F4", "wash": "#F3F2F2", "onink": "#CCC3BE", "font": "Fraunces", "dw": 600, "fx": "Quicksand", "sheet": "#FFFFFF"},
+ lavanda:{"n": "Lavanda", "paper": "#F4F1FA", "ink": "#2E2547", "soft": "#655E79", "sea": "#6447A8", "accent": "#F2C14E", "line": "#D8D4E1", "dot": "#C4C0CF", "art": "#FAF8FC", "wash": "#F2F2F4", "onink": "#C8C4D3", "font": "Josefin Sans", "dw": 700, "fx": "Nunito", "sheet": "#FFFFFF"},
+ telar:{"n": "Telar", "paper": "#FFF6E8", "ink": "#2B1D3A", "soft": "#665A6B", "sea": "#C13A4D", "accent": "#EDAE49", "line": "#E1D8D0", "dot": "#CCC2BE", "art": "#FFFAF4", "wash": "#F2F1F3", "onink": "#D0C6C2", "font": "Bricolage Grotesque", "dw": 700, "fx": "Instrument Sans", "sheet": "#FFFFFF", "td": 1},
+ sazon:{"n": "Sazón", "paper": "#FFF5EC", "ink": "#3A1408", "soft": "#715348", "sea": "#B53A0A", "accent": "#FFC93C", "line": "#E3D6CC", "dot": "#D0BFB5", "art": "#FFFAF6", "wash": "#F3F1F0", "onink": "#D4C4BA", "font": "Poppins", "dw": 700, "fx": "Poppins", "sheet": "#FFFFFF", "td": 1}
 };
 const FUENTES_T={"Young Serif":400,"DM Serif Display":400,"Fraunces":600,"Playfair Display":600,"Abril Fatface":400,"Merriweather":700,"Lora":600,"Bricolage Grotesque":700,"Space Grotesk":700,"Montserrat":700,"Poppins":700,"Josefin Sans":700,"Comfortaa":700,"Nunito":800,"Pacifico":400,"Caveat":700};
 const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Open Sans":[400,600,700],"Poppins":[400,600,700],"Montserrat":[400,600,700],"Quicksand":[400,600,700],"Lora":[400,600,700],"Merriweather":[400,700]};
@@ -220,10 +251,10 @@ function aplicarTema(nombre,o){o=o||{};
   const k=String(nombre||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
   const t={...(TEMAS[k]||TEMAS.marino)},ok=x=>hexOK(o[x])?o[x]:"";
   const custom=!!(ok("fondo")||ok("texto")||ok("tarjetas"));
-  t.paper=ok("fondo")||t.paper;t.ink=ok("texto")||t.ink;t.accent=ok("destacado")||t.accent;t.sea=ok("acento")||t.sea;t.sheet=ok("tarjetas")||"#FFFFFF";
+  t.paper=ok("fondo")||t.paper;t.ink=ok("texto")||t.ink;t.accent=ok("destacado")||t.accent;t.sea=ok("acento")||t.sea;t.sheet=ok("tarjetas")||t.sheet||"#FFFFFF";
   if(custom){t.soft=mezcla(t.ink,t.paper,.72);t.line=mezcla(t.ink,t.paper,.14);t.dot=mezcla(t.ink,t.paper,.22);t.art=mezcla(t.sheet,t.paper,.55);t.wash=mezcla(t.ink,t.sheet,.06);t.onink=mezcla(t.paper,t.ink,.78);}
   t.fuente=FUENTES_T[o.fuente]?o.fuente:t.font;t.dw=FUENTES_T[t.fuente];
-  t.fuenteX=FUENTES_X[o.fuente_texto]?o.fuente_texto:"Instrument Sans";
+  t.fuenteX=FUENTES_X[o.fuente_texto]?o.fuente_texto:(FUENTES_X[t.fx]?t.fx:"Instrument Sans");
   t.contraste=contraste(t.ink,t.paper);TEMA=t;const r=document.documentElement.style;
   const set=(n,v)=>r.setProperty(n,v);
   set("--paper",t.paper);set("--ink",t.ink);set("--ink-soft",t.soft);set("--sea",t.sea);set("--marigold",t.accent);set("--sheet",t.sheet);
@@ -231,7 +262,7 @@ function aplicarTema(nombre,o){o=o||{};
   set("--paper-rgb",rgb(t.paper));set("--ink-rgb",rgb(t.ink));set("--dw",t.dw);set("--onacc",lum(t.accent)>.35?"#13161A":"#FFFFFF");
   set("--display",`"${t.fuente}", Georgia, "Times New Roman", serif`);
   set("--body",`"${t.fuenteX}", "Segoe UI", system-ui, -apple-system, sans-serif`);
-  r.colorScheme=lum(t.paper)<.2?"dark":"light";
+  r.colorScheme=lum(t.paper)<.2?"dark":"light";document.documentElement.dataset.td=t.td&&!custom?"1":"";set("--shadow",lum(t.paper)<.2?"0,0,0":rgb(t.ink));
   const fam={};fam[t.fuente]=new Set([t.dw]);(fam[t.fuenteX]=fam[t.fuenteX]||new Set());FUENTES_X[t.fuenteX].forEach(w=>fam[t.fuenteX].add(w));
   const url="https://fonts.googleapis.com/css2?"+Object.keys(fam).map(f=>`family=${f.replace(/ /g,"+")}:wght@${[...fam[f]].sort((a,b)=>a-b).join(";")}`).join("&")+"&display=swap";
   let l=document.getElementById("fontTema");if(!l){l=document.createElement("link");l.id="fontTema";l.rel="stylesheet";document.head.appendChild(l);}
@@ -244,6 +275,7 @@ function aplicarTema(nombre,o){o=o||{};
 </script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><filter id="f3d" x="-15%" y="-15%" width="130%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="b"/><feSpecularLighting in="b" surfaceScale="5" specularConstant=".85" specularExponent="18" lighting-color="#ffffff" result="s"><fePointLight x="40" y="-40" z="120"/></feSpecularLighting><feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b2"/><feOffset in="b2" dx="4" dy="6" result="o"/><feComposite in="SourceAlpha" in2="o" operator="out" result="edge"/><feFlood flood-color="#000" flood-opacity=".22"/><feComposite in2="edge" operator="in" result="shade"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="shade"/></feMerge><feComposite operator="arithmetic" k1="0" k2="1" k3=".6" k4="0" in2="s2"/></filter><filter id="fsh" x="-30%" y="-200%" width="160%" height="500%"><feGaussianBlur stdDeviation="3.5"/></filter></defs></svg>
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#" aria-label="Inicio">
@@ -375,12 +407,13 @@ const save=()=>{try{localStorage.setItem(KEY+":cart",JSON.stringify(cart));local
 function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;
   const f=v=>Math.max(0,Math.min(255,Math.round(amt<0?v*(1+amt):v+(255-v)*amt)));return"#"+[f(r),f(g),f(b)].map(v=>v.toString(16).padStart(2,"0")).join("");}
 function kindOf(p){const t=norm(p.n+" "+p.cat);
+  if(/\bcafe|\bte\b|matcha|infusion|\btaza/.test(t))return"cup";if(/planta|suculent|cactus|macet|\bflor|orquid|helecho|vivero|bonsai|hierba/.test(t))return"plant";if(/cervez|birra|\bipa\b|stout|lager|\bvino|licor|bebida|jugo|kombucha|botella|chicha|cerveceri/.test(t))return"bottle";if(/torta|pastel|cupcake|queque|tarta/.test(t))return"cake";if(/polera|camisa|\bropa\b|vestido|blusa|poleron|chaqueta/.test(t))return"shirt";if(/jabon|crema|shampoo|cosmet|serum|balsamo|labial|\bvela|esencia|perfume/.test(t))return"soap";
   if(/mermelad|miel\b|conserva|frasco|salsa|manjar|chutney|aceite/.test(t))return"jar";if(/\bpan\b|panader|kuchen|torta|galleta|queque|pastel|empanada|brownie/.test(t))return"bread";if(/\baros?\b|collar|pulsera|joya|anillo|bisuter|arete/.test(t))return"jewel";if(/tejid|\blana\b|chal\b|gorro|bufanda|crochet|amigurumi|calcet|ovillo/.test(t))return"yarn";
   if(/sticker|calcoman/.test(t))return"stickers";if(/calendar/.test(t))return"calendar";if(/tarjeta|postal|sobre/.test(t))return"cards";
   if(/pack|set de libretas/.test(t)&&/libret|cuadern/.test(t))return"stack";if(/libret|cuadern|bitacora|sketch/.test(t))return"notebook";
   if(/agenda|planner|planificador/.test(t))return"planner";return"bag";}
 function art(p){const c=/^#[0-9a-f]{6}$/i.test(p.c||"")?p.c:"#28756E",d=shade(c,-.28),l=shade(c,.55),k=kindOf(p);
-  const sh=`<ellipse cx="100" cy="132" rx="58" ry="6" fill="${TEMA.ink}" opacity=".08"/>`;
+  const sh="";
   const S={
   planner:`${sh}<g transform="rotate(-6 100 75)"><rect x="60" y="22" width="80" height="104" rx="8" fill="${c}"/><rect x="60" y="22" width="12" height="104" rx="6" fill="${d}"/>
     ${[34,48,62,76,90,104].map(y=>`<circle cx="66" cy="${y}" r="3.2" fill="${TEMA.paper}"/>`).join("")}<rect x="84" y="40" width="42" height="22" rx="3" fill="${TEMA.paper}"/><rect x="90" y="47" width="30" height="3" rx="1.5" fill="${c}"/><rect x="90" y="53" width="20" height="3" rx="1.5" fill="${l}"/>
@@ -401,8 +434,14 @@ function art(p){const c=/^#[0-9a-f]{6}$/i.test(p.c||"")?p.c:"#28756E",d=shade(c,
   bread:`${sh}<path d="M46 110c-8-30 10-58 54-58s62 28 54 58c-2 8-10 12-20 12H66c-10 0-18-4-20-12z" fill="${shade(c,.3)}" stroke="${d}" stroke-width="3"/><path d="M72 66l10 22M96 62l10 26M120 66l10 22" stroke="${d}" stroke-width="4" stroke-linecap="round" fill="none"/>`,
   jewel:`${sh}${[70,114].map(x=>`<path d="M${x+8} 22v14" stroke="${d}" stroke-width="3" stroke-linecap="round"/><circle cx="${x+8}" cy="42" r="5" fill="${TEMA.accent}"/><path d="M${x+8} 50l17 22-17 42-17-42z" fill="${c}"/><path d="M${x+8} 50l17 22h-34z" fill="${l}"/>`).join("")}`,
   yarn:`${sh}<circle cx="100" cy="76" r="44" fill="${c}"/><g fill="none" stroke="${l}" stroke-width="3" stroke-linecap="round"><path d="M62 62c26 14 50 14 76-2"/><path d="M58 80c28 16 56 16 84 0"/><path d="M66 98c24 10 44 10 68-4"/><path d="M80 36c-10 20-6 50 8 80"/></g><path d="M138 100c20 8 30 18 24 26" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`,
+  plant:`<path d="M100 92V60" stroke="#2F6B44" stroke-width="4"/><ellipse cx="100" cy="50" rx="11" ry="30" fill="#3E8E5A"/><ellipse cx="80" cy="64" rx="9" ry="25" transform="rotate(-34 80 64)" fill="#2F7449"/><ellipse cx="120" cy="64" rx="9" ry="25" transform="rotate(34 120 64)" fill="#4FA56B"/><ellipse cx="88" cy="80" rx="7" ry="16" transform="rotate(-60 88 80)" fill="#3E8E5A"/><path d="M74 94h52l-7 34H81z" fill="${c}"/><rect x="69" y="86" width="62" height="13" rx="4" fill="${d}"/>`,
+  bottle:`<path d="M92 22h16v20c0 6 14 12 14 26v52a8 8 0 0 1-8 8H86a8 8 0 0 1-8-8V68c0-14 14-20 14-26z" fill="${c}"/><rect x="89" y="15" width="22" height="9" rx="2" fill="${TEMA.accent}"/><rect x="80" y="78" width="40" height="32" rx="3" fill="${TEMA.paper}"/><rect x="86" y="86" width="28" height="4" rx="2" fill="${c}"/><rect x="90" y="95" width="20" height="3" rx="1.5" fill="${l}"/><path d="M134 128h22l-3-44h-16z" fill="${l}" opacity=".9"/><path d="M137 92h16l-.6 9h-14.8z" fill="#FFFFFF" opacity=".75"/>`,
+  cup:`<g fill="none" stroke="${l}" stroke-width="3" stroke-linecap="round"><path d="M84 54c-6-8 6-12 0-20"/><path d="M100 54c-6-8 6-12 0-20"/><path d="M116 54c-6-8 6-12 0-20"/></g><ellipse cx="100" cy="122" rx="50" ry="8" fill="${l}"/><path d="M130 78h7a12 12 0 0 1 0 24h-9" fill="none" stroke="${c}" stroke-width="7"/><path d="M62 68h68v24a30 30 0 0 1-30 30h-8a30 30 0 0 1-30-30z" fill="${c}"/><ellipse cx="96" cy="68" rx="34" ry="6" fill="${d}"/>`,
+  cake:`<path d="M56 82h88v40a6 6 0 0 1-6 6H62a6 6 0 0 1-6-6z" fill="${c}"/><rect x="56" y="100" width="88" height="7" fill="${l}"/><path d="M56 84c0-12 20-20 44-20s44 8 44 20c-4 8-8 2-12 8s-8 0-12 6-8-2-12 3-8-3-12 1-8-2-12-3-8 4-12-3-8 2-12-12z" fill="${TEMA.paper}"/><circle cx="100" cy="56" r="8" fill="#D2364B"/><path d="M100 48c2-6 6-8 10-8" stroke="#2F7449" stroke-width="3" fill="none"/>`,
+  shirt:`<path d="M76 32l-28 15 11 23 15-7v58h52V63l15 7 11-23-28-15c-4 8-12 13-24 13s-20-5-24-13z" fill="${c}"/><path d="M88 33c4 6 8 9 12 9s8-3 12-9" fill="none" stroke="${d}" stroke-width="3"/><rect x="106" y="74" width="12" height="12" rx="2" fill="${l}"/>`,
+  soap:`<rect x="64" y="56" width="42" height="70" rx="11" fill="${c}"/><rect x="79" y="38" width="12" height="18" fill="${d}"/><path d="M76 33h26v6H76z" fill="${d}"/><path d="M100 33h14v5h-14z" fill="${d}"/><rect x="70" y="78" width="30" height="24" rx="3" fill="${TEMA.paper}"/><rect x="75" y="86" width="20" height="3" rx="1.5" fill="${c}"/><rect x="112" y="94" width="36" height="32" rx="8" fill="${l}"/><rect x="110" y="86" width="40" height="11" rx="4" fill="${TEMA.accent}"/>`,
   bag:`${sh}<path d="M64 46h72l-6 80H70z" fill="${c}"/><path d="M84 46a16 16 0 0 1 32 0" fill="none" stroke="${d}" stroke-width="5" stroke-linecap="round"/><rect x="82" y="70" width="36" height="22" rx="3" fill="${TEMA.paper}"/><rect x="88" y="78" width="24" height="3" rx="1.5" fill="${c}"/>`};
-  return`<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${S[k]}</svg>`;}
+  return`<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><ellipse cx="100" cy="133" rx="54" ry="6.5" fill="rgb(${getComputedStyle(document.documentElement).getPropertyValue("--shadow")||"0,0,0"})" opacity=".28" filter="url(#fsh)"/><g filter="url(#f3d)">${S[k]}</g></svg>`;}
 function picture(p){return p.img?`<img src="${esc(p.img)}" alt="" loading="lazy" onerror="this.outerHTML=window.__art(${JSON.stringify(p.id)})">`:art(p);}
 window.__art=id=>{const p=state.products.find(x=>x.id===id);return p?art({...p,img:""}):"";};
 function stillLife(){const pick=["planner","stack","calendar"].map((k,i)=>state.products.find(p=>kindOf(p)===k&&p.ok)||state.products[i]).filter(Boolean);
@@ -520,6 +559,12 @@ $("dBody").addEventListener("input",e=>{const id=e.target.id;
   const tx=mensaje();$("send").href=`https://wa.me/${waNum()}?text=${encodeURIComponent(tx)}`;save();});
 $("dBody").addEventListener("change",e=>{if(e.target.name==="ent"){form.entrega=e.target.value;$("w_ciudad").hidden=form.entrega!=="despacho";$("send").href=`https://wa.me/${waNum()}?text=${encodeURIComponent(mensaje())}`;save();}});
 $("q").addEventListener("input",e=>{busqueda=e.target.value;renderGrid();});
+/* ---------- profundidad 3D al mover el mouse ---------- */
+if(matchMedia("(hover:hover) and (pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
+  const st=document.querySelector(".still"),hr=document.querySelector(".hero");
+  if(st&&hr){hr.addEventListener("pointermove",e=>{const r=st.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;st.style.setProperty("--ry",(x*10).toFixed(2)+"deg");st.style.setProperty("--rx",(-y*8).toFixed(2)+"deg");});hr.addEventListener("pointerleave",()=>{st.style.setProperty("--ry","0deg");st.style.setProperty("--rx","0deg");});}
+  const g=$("grid");g.addEventListener("pointermove",e=>{const c=e.target.closest(".card");if(!c||c.classList.contains("out"))return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateY(-3px)`;});
+  g.addEventListener("pointerout",e=>{const c=e.target.closest(".card");if(c&&!c.contains(e.relatedTarget))c.style.transform="";});}
 new IntersectionObserver(([en])=>$("toolbar").classList.toggle("stuck",!en.isIntersecting),{rootMargin:"-65px 0px 0px 0px"}).observe(document.querySelector(".hero"));
 
 /* ---------- personalizar (abre la página con ?editar) ---------- */
