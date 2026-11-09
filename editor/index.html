@@ -106,6 +106,10 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 .reco .mp{margin-left:auto;font-weight:700;font-size:13px;padding:3px 8px;border-radius:6px}
 .reco .ml{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;border-top:1px solid var(--line)}
 .reco .ml small{font-weight:600;color:var(--soft)}
+.reco .mv{position:relative;height:70px;overflow:hidden;display:grid;place-items:center}
+.reco .mw{position:absolute;font-size:52px;line-height:1;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:-.03em;white-space:nowrap}
+.reco .mo{position:relative;width:34px;height:42px;border-radius:10px 10px 8px 8px;box-shadow:0 10px 12px -6px rgba(0,0,0,.45),inset -5px -7px 10px rgba(0,0,0,.2),inset 4px 4px 8px rgba(255,255,255,.4)}
+.tips{background:var(--wash);border-radius:14px;padding:12px 14px;font-size:15px}.tips ul{margin:6px 0 0;padding-left:20px}.tips li{margin:4px 0;color:var(--soft)}
 /* barra guardar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--sheet);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
 .bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0}
@@ -193,6 +197,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
       <div class="stack">
         <label class="f">Nombre de tu negocio<input type="text" data-b="nombre" maxlength="60" placeholder="Ej: Dulces del Sur"></label>
         <label class="f">Qué vendes <small>En pocas palabras.</small><input type="text" data-b="rubro" maxlength="80" placeholder="Ej: Mermeladas y pan casero"></label>
+        <button type="button" class="btn sec sm" id="goReco" style="justify-self:start">Ver diseños recomendados para lo que vendes</button>
         <label class="f">Frase grande de la portada<input type="text" data-b="titulo" maxlength="80" placeholder="Ej: Sabores caseros de Puerto Montt"></label>
         <label class="f">Descripción corta<textarea data-b="descripcion" maxlength="220" placeholder="Ej: Hecho en casa con fruta de la zona. Pide por WhatsApp."></textarea></label>
         <label class="f">Tu WhatsApp <small>Con o sin 56. Ej: 9 1234 5678</small><input type="tel" data-b="whatsapp" inputmode="tel" autocomplete="tel" placeholder="9 1234 5678"></label>
@@ -225,6 +230,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
           <p class="muted small" style="margin:0">Elige qué vendes y te mostramos tres diseños pensados para eso. Toca uno para usarlo.</p>
           <div class="seg" id="rubros" role="group" aria-label="Qué vendes"></div>
           <div class="recos" id="recos"></div>
+          <div class="tips" id="tips"></div>
         </div>
         <fieldset class="card stack" style="margin:0"><legend class="sr">Portada</legend>
           <h3>Portada de tu página</h3>
@@ -2799,17 +2805,17 @@ $("prods").addEventListener("click",e=>{const b=e.target.closest("[data-rm-foto]
 /* ---------- estilo ---------- */
 function themeVals(){const t=TEMAS[S.biz.tema]||TEMAS.marino;return{paper:t.paper,sheet:t.sheet||"#FFFFFF",ink:t.ink,accent:t.accent,sea:t.sea,font:t.font,fx:t.fx||"Instrument Sans"};}
 const RUBROS=[
- {id:"plantas",n:"Plantas y flores",re:/planta|suculent|flor|vivero|macet|jardin|cactus/,s:[["invernadero","Sofisticado"],["selva","Vivo"],["botanica","Natural"]]},
- {id:"bebidas",n:"Cerveza y bebidas",re:/cervez|bebida|vino|licor|jugo|kombucha|chicha/,s:[["lupulo","Vivo"],["cava","Lujoso"],["barrica","Artesanal"]]},
- {id:"dulces",n:"Dulces y mermeladas",re:/dulce|mermelad|chocolate|miel|manjar|confit/,s:[["frutilla","Vivo"],["mora","Lujoso"],["ciruela","Elegante"]]},
- {id:"pan",n:"Panadería y pastelería",re:/\bpan\b|panader|pasteler|torta|kuchen|reposter|galleta/,s:[["masamadre","Cálido"],["pastel","Dulce y vivo"],["terracota","Clásico"]]},
- {id:"cafe",n:"Café y té",re:/cafe|\bte\b|infusion/,s:[["tostado","Lujoso"],["matcha","Fresco"],["barrica","Artesanal"]]},
- {id:"ropa",n:"Ropa y tejidos",re:/ropa|tejid|\blana|polera|vestido|crochet/,s:[["lana","Suave"],["urbano","Vivo"],["grafito","Minimalista"]]},
- {id:"joyas",n:"Joyas y accesorios",re:/joya|\baros?\b|collar|plata|accesorio|bisuter/,s:[["oro","Lujoso"],["perla","Elegante"],["ciruela","Romántico"]]},
- {id:"cosmetica",n:"Cosmética natural",re:/cosmet|jabon|crema|\bvela|piel|aromat/,s:[["arcilla","Natural"],["lavanda","Fresco"],["perla","Elegante"]]},
- {id:"artesania",n:"Artesanía y decoración",re:/artesan|decora|ceramic|madera|cuadro|greda/,s:[["telar","Vivo"],["terracota","Clásico"],["botanica","Natural"]]},
- {id:"comida",n:"Comida preparada",re:/comida|empanada|almuerzo|colacion|sopaipilla|sushi|completo/,s:[["sazon","Vivo"],["masamadre","Casero"],["marino","Clásico"]]},
- {id:"papeleria",n:"Papelería y regalos",re:/papeler|agenda|libreta|regalo|sticker|tarjeta/,s:[["marino","Clásico"],["oceano","Fresco"],["urbano","Vivo"]]}];
+ {id:"plantas",n:"Plantas y flores",re:/planta|suculent|flor|vivero|macet|jardin|cactus/,w:"Verde",vb:"#0F7F55",s:[["invernadero","Sofisticado","clasica"],["selva","Vivo","vitrina"],["botanica","Natural","clasica"]],tips:["Fotografía cada planta con luz natural, cerca de una ventana.","Para la Vitrina 3D, quita el fondo de la foto: la maceta se verá flotando.","Usa categorías como «Interior», «Suculentas» y «Maceteros»."]},
+ {id:"bebidas",n:"Cerveza y bebidas",re:/cervez|bebida|vino|licor|jugo|kombucha|chicha/,w:"Cerveza",vb:"#FFC23C",s:[["lupulo","Vivo","vitrina"],["cava","Lujoso","vitrina"],["barrica","Artesanal","clasica"]],tips:["Saca la foto de la botella de frente, con la etiqueta bien visible.","Una botella sin fondo en la Vitrina 3D es lo que más llama la atención.","Si vendes alcohol, recuerda que solo puedes venderlo a mayores de 18 años."]},
+ {id:"dulces",n:"Dulces y mermeladas",re:/dulce|mermelad|chocolate|miel|manjar|confit/,w:"Dulce",vb:"#C9243A",s:[["frutilla","Vivo","vitrina"],["mora","Lujoso","vitrina"],["ciruela","Elegante","clasica"]],tips:["Muestra el frasco con la fruta al lado: se entiende el sabor al tiro.","Marca con la etiqueta «Más vendido» tu producto estrella: sale primero en la vitrina.","Indica el tamaño (por ejemplo «250 g») en la descripción."]},
+ {id:"pan",n:"Panadería y pastelería",re:/\bpan\b|panader|pasteler|torta|kuchen|reposter|galleta/,w:"Horno",vb:"#C73A86",s:[["masamadre","Cálido","clasica"],["pastel","Dulce y vivo","vitrina"],["terracota","Clásico","clasica"]],tips:["Fotografía las tortas desde arriba o en ángulo, con buena luz.","Pon en la descripción para cuántas personas alcanza.","Si haces pedidos por encargo, dilo en «Cambios y devoluciones»: no aplica el retracto."]},
+ {id:"cafe",n:"Café y té",re:/cafe|\bte\b|infusion/,w:"Café",vb:"#23395B",s:[["tostado","Lujoso","vitrina"],["matcha","Fresco","clasica"],["barrica","Artesanal","clasica"]],tips:["Muestra el paquete y una taza servida en la misma foto.","Cuenta el origen o el tostado en la descripción.","Los estilos oscuros hacen ver el café más premium."]},
+ {id:"ropa",n:"Ropa y tejidos",re:/ropa|tejid|\blana|polera|vestido|crochet/,w:"Moda",vb:"#2456E0",s:[["lana","Suave","clasica"],["urbano","Vivo","vitrina"],["grafito","Minimalista","clasica"]],tips:["Fotografía la prenda extendida sobre un fondo liso, o puesta.","Escribe las tallas disponibles en la descripción.","Una prenda sin fondo en la Vitrina 3D se ve como tienda de marca."]},
+ {id:"joyas",n:"Joyas y accesorios",re:/joya|\baros?\b|collar|plata|accesorio|bisuter/,w:"Plata",vb:"#23395B",s:[["oro","Lujoso","vitrina"],["perla","Elegante","clasica"],["ciruela","Romántico","clasica"]],tips:["Saca fotos de cerca, sobre fondo oscuro o claro liso.","El estilo «Oro» con la Vitrina 3D da un aire de joyería exclusiva.","Indica el material (plata 950, acero, cuarzo) en la descripción."]},
+ {id:"cosmetica",n:"Cosmética natural",re:/cosmet|jabon|crema|\bvela|piel|aromat/,w:"Natural",vb:"#6FAE7C",s:[["arcilla","Natural","clasica"],["lavanda","Fresco","vitrina"],["perla","Elegante","clasica"]],tips:["Muestra el envase con algún ingrediente al lado (flores, avena).","Indica el tamaño y para qué tipo de piel es.","Los productos de higiene abiertos no tienen retracto: ya viene en el texto de devoluciones."]},
+ {id:"artesania",n:"Artesanía y decoración",re:/artesan|decora|ceramic|madera|cuadro|greda/,w:"Hecho",vb:"#FF6F59",s:[["telar","Vivo","vitrina"],["terracota","Clásico","clasica"],["botanica","Natural","clasica"]],tips:["Muestra la pieza en uso (en una mesa, colgada) para que se vea el tamaño.","Cuenta en «Sobre ti» cómo y dónde lo haces: eso vende.","Los trabajos por encargo no tienen retracto."]},
+ {id:"comida",n:"Comida preparada",re:/comida|empanada|almuerzo|colacion|sopaipilla|sushi|completo/,w:"Sabor",vb:"#C9243A",s:[["sazon","Vivo","vitrina"],["masamadre","Casero","clasica"],["marino","Clásico","clasica"]],tips:["Fotografía el plato recién hecho, de cerca y con luz natural.","Escribe en «Dónde estás HOY» tu horario de entrega.","Los alimentos frescos no tienen retracto: ya viene en el texto de devoluciones."]},
+ {id:"papeleria",n:"Papelería y regalos",re:/papeler|agenda|libreta|regalo|sticker|tarjeta/,w:"Regalo",vb:"#2456E0",s:[["marino","Clásico","clasica"],["oceano","Fresco","clasica"],["urbano","Vivo","vitrina"]],tips:["Muestra el producto abierto para que se vean las hojas o el diseño.","Arma packs y ponles la etiqueta «Regalo».","Usa categorías como «Agendas», «Libretas» y «Regalos»."]}];
 let rubroSel=null;
 const nrm=x=>String(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 function guessRubro(){const t=nrm((S.biz.rubro||"")+" "+(S.biz.nombre||"")+" "+S.prods.map(p=>p.nombre+" "+p.categoria).join(" "));const r=RUBROS.find(r=>r.re.test(t));return r?r.id:"papeleria";}
@@ -2817,15 +2823,19 @@ let rubroUser=false;
 function renderRecos(){if(!rubroUser)rubroSel=guessRubro();
   $("rubros").innerHTML=RUBROS.map(r=>`<button type="button" data-r="${r.id}" aria-pressed="${r.id===rubroSel}">${r.n}</button>`).join("");
   const R0=RUBROS.find(r=>r.id===rubroSel);
-  $("recos").innerHTML=R0.s.map(([k,mood])=>{const t=TEMAS[k];if(!t)return"";const sh=t.sheet||"#FFFFFF",fx=t.fx||"Instrument Sans";loadFont(t.font,FUENTES_T[t.font]);loadFont(fx,FUENTES_X[fx]);
+  $("recos").innerHTML=R0.s.map(([k,mood,port])=>{const t=TEMAS[k];if(!t)return"";const sh=t.sheet||"#FFFFFF",fx=t.fx||"Instrument Sans";loadFont(t.font,FUENTES_T[t.font]);loadFont(fx,FUENTES_X[fx]);
     const td=t.td?`text-shadow:1px 1px 0 ${t.accent},2px 2px 0 ${t.accent},3px 3px 0 ${t.accent},4px 5px 8px rgba(0,0,0,.25);`:"";
-    return`<button type="button" class="reco" data-t="${k}" aria-pressed="${k===S.biz.tema}" aria-label="Usar el diseño ${t.n}, ${mood}">
-      <span class="mini" style="background:${t.paper};color:${t.ink};font-family:'${fx}',sans-serif">
+    const on=k===S.biz.tema&&(/vitrina/i.test(S.biz.portada||"")?"vitrina":"clasica")===port;
+    const vit=port==="vitrina"?`<span class="mv" style="background:${R0.vb}"><span class="mw" style="font-family:'${t.font}',Georgia,serif">${R0.w}</span><span class="mo" style="background:${t.sea}"></span></span>`:"";
+    return`<button type="button" class="reco" data-t="${k}" data-p="${port}" aria-pressed="${on}" aria-label="Usar el diseño ${t.n}, ${mood}, portada ${port==="vitrina"?"Vitrina 3D":"clásica"}">
+      ${vit}<span class="mini" style="background:${t.paper};color:${t.ink};font-family:'${fx}',sans-serif">
         <span class="mt" style="font-family:'${t.font}',Georgia,serif;font-weight:${t.dw};${td}">${esc(S.biz.nombre||"Tu negocio")}</span>
         <span class="mc" style="background:${sh};color:${t.ink}"><span class="mi" style="background:${t.sea}"></span><span style="font-size:13px;font-weight:600">Producto</span><span class="mp" style="background:${t.accent};color:#13161A">$3.500</span></span>
-      </span><span class="ml">${t.n}<small>${mood}</small></span></button>`;}).join("");}
+      </span><span class="ml">${t.n}<small>${mood}${port==="vitrina"?" · Vitrina 3D":""}</small></span></button>`;}).join("");
+  $("tips").innerHTML=`<b>Consejos para ${esc(R0.n.toLowerCase())}</b><ul>${R0.tips.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;}
+$("goReco").onclick=()=>{selectTab("estilo");$("t-estilo").focus();$("recoBox").scrollIntoView({block:"start"});};
 $("rubros").onclick=e=>{const b=e.target.closest("[data-r]");if(!b)return;rubroSel=b.dataset.r;rubroUser=true;renderRecos();$("rubros").querySelector(`[data-r="${rubroSel}"]`).focus();};
-$("recos").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;S.biz.tema=b.dataset.t;["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"].forEach(k=>delete S.est[k]);renderEstilo();setDirty(true);$("recos").querySelector(`[data-t="${b.dataset.t}"]`).focus();};
+$("recos").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;S.biz.tema=b.dataset.t;S.biz.portada=b.dataset.p;["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"].forEach(k=>delete S.est[k]);renderEstilo();setDirty(true);$("recos").querySelector(`[data-t="${b.dataset.t}"][data-p="${b.dataset.p}"]`).focus();};
 function val(k){const tv=themeVals();const m={fondo:"paper",tarjetas:"sheet",texto:"ink",destacado:"accent",acento:"sea"};return S.est[k]||tv[m[k]];}
 const fontsLoaded=new Set(["Young Serif","Instrument Sans"]);
 function loadFont(f,w){if(fontsLoaded.has(f))return;fontsLoaded.add(f);const l=document.createElement("link");l.rel="stylesheet";l.href=`https://fonts.googleapis.com/css2?family=${f.replace(/ /g,"+")}${w?":wght@"+[].concat(w).join(";"):""}&display=swap`;document.head.appendChild(l);}
