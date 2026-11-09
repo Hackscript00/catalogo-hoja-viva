@@ -90,6 +90,7 @@ a{color:inherit}
   background-image:radial-gradient(var(--dot) 1.1px,transparent 1.2px);background-size:16px 16px;background-position:8px 8px}
 .art svg,.art img{position:absolute;inset:0;width:100%;height:100%}
 .art img{object-fit:cover}
+.art img.cut{object-fit:contain;padding:6% 10% 4%;filter:drop-shadow(0 18px 16px rgba(var(--shadow),.28))}
 .flag{position:absolute;top:12px;left:12px;font-size:12px;font-weight:700;background:var(--ink);color:var(--paper);border-radius:999px;padding:4px 10px}
 .tag{position:absolute;right:14px;bottom:-14px;z-index:1;font:var(--dw) 18px/1 var(--display);background:var(--marigold);color:var(--onacc);padding:9px 12px 8px;border-radius:6px;transform:rotate(-3deg);box-shadow:0 2px 0 rgba(var(--ink-rgb),.18);font-variant-numeric:tabular-nums}
 .body{display:flex;flex-direction:column;gap:6px;padding:22px 18px 18px;flex:1}
@@ -471,7 +472,7 @@ function art(p){const c=/^#[0-9a-f]{6}$/i.test(p.c||"")?p.c:"#28756E",d=shade(c,
   soap:`<rect x="64" y="56" width="42" height="70" rx="11" fill="${c}"/><rect x="79" y="38" width="12" height="18" fill="${d}"/><path d="M76 33h26v6H76z" fill="${d}"/><path d="M100 33h14v5h-14z" fill="${d}"/><rect x="70" y="78" width="30" height="24" rx="3" fill="${TEMA.paper}"/><rect x="75" y="86" width="20" height="3" rx="1.5" fill="${c}"/><rect x="112" y="94" width="36" height="32" rx="8" fill="${l}"/><rect x="110" y="86" width="40" height="11" rx="4" fill="${TEMA.accent}"/>`,
   bag:`${sh}<path d="M64 46h72l-6 80H70z" fill="${c}"/><path d="M84 46a16 16 0 0 1 32 0" fill="none" stroke="${d}" stroke-width="5" stroke-linecap="round"/><rect x="82" y="70" width="36" height="22" rx="3" fill="${TEMA.paper}"/><rect x="88" y="78" width="24" height="3" rx="1.5" fill="${c}"/>`};
   return`<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><ellipse cx="100" cy="133" rx="54" ry="6.5" fill="rgb(${getComputedStyle(document.documentElement).getPropertyValue("--shadow")||"0,0,0"})" opacity=".28" filter="url(#fsh)"/><g filter="url(#f3d)">${S[k]}</g></svg>`;}
-function picture(p){return p.img?`<img src="${esc(p.img)}" alt="" loading="lazy" onerror="this.outerHTML=window.__art(${JSON.stringify(p.id)})">`:art(p);}
+function picture(p){return p.img?`<img src="${esc(p.img)}" alt=""${p.cut?' class="cut"':""} loading="lazy" onerror="this.outerHTML=window.__art(${JSON.stringify(p.id)})">`:art(p);}
 window.__art=id=>{const p=state.products.find(x=>x.id===id);return p?art({...p,img:""}):"";};
 function stillLife(){const pick=["planner","stack","calendar"].map((k,i)=>state.products.find(p=>kindOf(p)===k&&p.ok)||state.products[i]).filter(Boolean);
   const pos=[[-44,2,.92],[12,8,.85],[56,4,.88]];
@@ -494,7 +495,7 @@ function productosDesdeCSV(text){const rows=parseCSV(text);if(rows.length<2)retu
   return rows.map(r=>{const disp=norm(get(r,"disponible")),n=get(r,"nombre");
     return{id:"s_"+norm(n).replace(/[^a-z0-9]+/g,"-"),n,p:Number(get(r,"precio").replace(/\D/g,"")),cat:get(r,"categoria"),d:get(r,"descripcion"),
       ok:!["no","agotado","false","0"].includes(disp),badge:get(r,"etiqueta"),
-      c:COLOR_NAMES[norm(get(r,"color"))]||(/^#[0-9a-f]{6}$/i.test(get(r,"color"))?get(r,"color"):COLOR_NAMES.verde),img:fotoURL(get(r,"foto"))};
+      c:COLOR_NAMES[norm(get(r,"color"))]||(/^#[0-9a-f]{6}$/i.test(get(r,"color"))?get(r,"color"):COLOR_NAMES.verde),img:fotoURL(get(r,"foto")),cut:/#sinfondo/i.test(get(r,"foto"))};
   }).filter(p=>p.n&&p.p>0).map((p,i,a)=>{const k=a.slice(0,i).filter(x=>x.id.replace(/-\d+$/,"")===p.id).length;return k?{...p,id:p.id+"-"+(k+1)}:p;});}
 async function cargarPlanilla(){if(!PLANILLA_CSV)return;
   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),8000);

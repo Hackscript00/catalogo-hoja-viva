@@ -156,6 +156,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
       Entrar con Google
     </button>
     <p class="err" id="loginErr" role="alert" hidden></p>
+    <p style="margin:14px 0 0"><a href="../ejemplos/">Mira cómo pueden quedar: 6 tiendas de ejemplo</a></p>
     <ul class="points">
       <li>Tus datos quedan en <b>tu propia cuenta de Google</b>, en una planilla que crea la página. Este sitio no guarda nada.</li>
       <li>La página solo puede ver esa planilla y las fotos que subas desde aquí. No puede leer tu correo, tus otras fotos ni otros archivos.</li>
@@ -2784,7 +2785,8 @@ async function carpetaFotos(){if(fotosFolder)return fotosFolder;
   return fotosFolder=f.id;}
 async function achicar(file){const bmp=await createImageBitmap(file);const k=Math.min(1,1400/Math.max(bmp.width,bmp.height));
   const c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
-  const b=await new Promise(r=>c.toBlob(r,"image/webp",.86));return b||await new Promise(r=>c.toBlob(r,"image/png"));}
+  let cut=false;try{const d=c.getContext("2d").getImageData(0,0,c.width,c.height).data;let n=0;for(let i=3;i<d.length;i+=4*7)if(d[i]<200)n++;cut=n>d.length/4/7*.04;}catch(e){}
+  const b=await new Promise(r=>c.toBlob(r,"image/webp",.86))||await new Promise(r=>c.toBlob(r,"image/png"));b.cut=cut;return b;}
 async function subirFoto(file,nombre){
   if(!/^image\//.test(file.type))throw new Error("Ese archivo no es una imagen. Elige una foto.");
   const blob=await achicar(file),folder=await carpetaFotos();
@@ -2795,11 +2797,11 @@ async function subirFoto(file,nombre){
   if(!r.ok)throw new Error("Google no aceptó la foto ("+r.status+"). Prueba otra vez.");
   const {id}=await r.json();
   await api(`${API.drive}/files/${id}/permissions`,{method:"POST",body:JSON.stringify({role:"reader",type:"anyone"})});
-  return "https://drive.google.com/file/d/"+id+"/view";}
+  return "https://drive.google.com/file/d/"+id+"/view"+(blob.cut?"#sinfondo":"");}
 $("prods").addEventListener("change",async e=>{const inp=e.target.closest("[data-up-foto]");if(!inp||!inp.files[0])return;const i=+inp.dataset.upFoto,st=document.querySelector(`[data-fst="${i}"]`);
   st.innerHTML='<span class="spin" aria-hidden="true"></span> Subiendo foto…';
   try{const url=await subirFoto(inp.files[0],S.prods[i].nombre);S.prods[i].foto=url;renderProds();setDirty(true);
-    const st2=document.querySelector(`[data-fst="${i}"]`);document.querySelector(`[data-i="${i}"] details`).open=true;st2.textContent="Foto lista. Toca «Guardar» para que aparezca en tu página.";}
+    const st2=document.querySelector(`[data-fst="${i}"]`);document.querySelector(`[data-i="${i}"] details`).open=true;st2.textContent=url.includes("#sinfondo")?"Foto sin fondo lista: en tu página se verá flotando, en 3D. Toca «Guardar».":"Foto lista. Toca «Guardar» para que aparezca en tu página. Para el efecto 3D, usa una foto sin fondo.";}
   catch(err){st.textContent=err.message;}});
 $("prods").addEventListener("click",e=>{const b=e.target.closest("[data-rm-foto]");if(!b)return;const i=+b.dataset.rmFoto;S.prods[i].foto="";renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;});
 /* ---------- estilo ---------- */
