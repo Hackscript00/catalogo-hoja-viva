@@ -75,6 +75,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 .switch input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .15s}
 .switch input:checked{background:var(--ok)}.switch input:checked::after{transform:translateX(22px)}
 .prod.out{opacity:.78}
+.chk{display:flex;gap:12px;align-items:flex-start;min-height:44px;cursor:pointer;line-height:1.45}.chk input{width:24px;height:24px;margin:1px 0 0;flex:none;accent-color:var(--ink);cursor:pointer}
 .empty{text-align:center;padding:28px 16px;border:1.5px dashed var(--line);border-radius:18px;color:var(--soft)}
 /* estilo */
 .themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
@@ -138,9 +139,25 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
       <li>Tus datos quedan en <b>tu propia cuenta de Google</b>, en una planilla que crea la página. Este sitio no guarda nada.</li>
       <li>La página solo puede ver esa planilla. No puede leer tu correo, tus fotos ni otros archivos.</li>
       <li>Lo que escribas en tu tienda queda público en internet: no pongas tu RUT ni tu correo.</li>
-      <li><a href="../privacidad/">Política de privacidad</a></li>
+      <li><a href="../terminos/">Términos y condiciones</a> · <a href="../privacidad/">Política de privacidad</a></li>
     </ul>
   </div>
+</main>
+
+<!-- ===== CONSENTIMIENTO ===== -->
+<main id="vConsent" class="wrap" hidden>
+  <div class="hero">
+    <h1>Antes de empezar</h1>
+    <p>Lee y acepta estos dos documentos. Son cortos y están escritos en palabras simples.</p>
+  </div>
+  <form class="card stack" id="consentForm" novalidate>
+    <label class="chk"><input type="checkbox" id="cT" aria-describedby="consErr"><span>Acepto los <a href="../terminos/" target="_blank" rel="noopener">Términos y condiciones</a>.</span></label>
+    <label class="chk"><input type="checkbox" id="cP" aria-describedby="consErr"><span>Acepto la <a href="../privacidad/" target="_blank" rel="noopener">Política de privacidad</a> y que mis datos se guarden en una planilla en mi Google Drive.</span></label>
+    <p class="err" id="consErr" role="alert" hidden></p>
+    <button class="btn" type="submit" id="consOk">Aceptar y continuar</button>
+    <button class="btn quiet" type="button" id="consNo">No acepto, salir</button>
+    <p class="small muted" style="margin:0">Guardamos la fecha, la hora y la versión de lo que aceptaste, como respaldo para ti y para el proyecto.</p>
+  </form>
 </main>
 
 <!-- ===== EDITOR ===== -->
@@ -171,6 +188,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
           <label class="f">Despacho <small>Vacío si no despachas.</small><input type="text" data-b="envio" maxlength="60" placeholder="Ej: Despachos a todo Chile"></label>
           <label class="f">Retiro<input type="text" data-b="retiro" maxlength="60" placeholder="Ej: Retiro en feria"></label>
         </div>
+        <label class="f">Cambios y devoluciones <small>Si lo dejas vacío, tu página muestra un texto según la Ley del Consumidor: 10 días de retracto en compras a distancia (salvo alimentos frescos, productos hechos a pedido o de higiene abiertos) y 6 meses de garantía legal por fallas.</small><textarea data-b="devoluciones" maxlength="700" placeholder="Déjalo vacío para usar el texto según la ley, o escribe tus condiciones (sin quitar derechos de la ley)."></textarea></label>
         <label class="f">Sobre ti <small>Opcional, 2 o 3 frases.</small><textarea data-b="historia" maxlength="400" placeholder="Ej: Cocino con recetas de mi familia."></textarea></label>
       </div>
     </section>
@@ -2541,7 +2559,8 @@ var qrcode = function() {
 }));
 </script>
 <script>
-const CONF={client_id:"738171083651-v0t20ojk1o33f5ptuf6oc2mqpfb1d8h9.apps.googleusercontent.com"};
+const CONF={client_id:"738171083651-v0t20ojk1o33f5ptuf6oc2mqpfb1d8h9.apps.googleusercontent.com",form:null};
+const VERS={terminos:"2026-11-08",privacidad:"2026-11-08"};
 const TEMAS={
  marino:{n:"Marino",paper:"#F5F6F2",ink:"#13313B",soft:"#4C6168",sea:"#2F6F73",accent:"#F2B33D",line:"#DDE2DC",dot:"#C9D2CC",art:"#FBFCFA",wash:"#F2F5F3",onink:"#BFD0D2",font:"Young Serif",dw:400},
  terracota:{n:"Terracota",paper:"#FAF3EC",ink:"#3A1F18",soft:"#6E5149",sea:"#B4492B",accent:"#E9A13B",line:"#E8D9CB",dot:"#DCC8B6",art:"#FFFAF4",wash:"#F6EADF",onink:"#E3CDBF",font:"DM Serif Display",dw:400},
@@ -2554,7 +2573,7 @@ const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Ope
 const $=id=>document.getElementById(id);
 const SCOPE="https://www.googleapis.com/auth/drive.file";
 const API={drive:"https://www.googleapis.com/drive/v3",sheets:"https://sheets.googleapis.com/v4/spreadsheets"};
-const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia"];
+const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","devoluciones"];
 const EKEYS=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
 const COLS=[["fondo","Fondo de la página","paper"],["tarjetas","Fondo de las tarjetas","sheet"],["texto","Letras y botones","ink"],["destacado","Precios y detalles","accent"],["acento","Categorías e íconos","sea"]];
 const PCOLS=["rojo","coral","amarillo","verde","salvia","azul","azul oscuro","rosa"];
@@ -2575,17 +2594,30 @@ async function api(url,opt={},retry=true){
   if(!r.ok){let m="";try{m=(await r.json()).error.message}catch(e){}throw new Error("Google respondió con un error ("+r.status+"). "+m);}
   return r.status===204?{}:r.json();}
 
-async function findOrCreate(){
+async function findFile(){
   const q=encodeURIComponent("appProperties has { key='creatupagina' and value='1' } and trashed=false");
   const l=await api(`${API.drive}/files?q=${q}&fields=files(id,name)&orderBy=createdTime&spaces=drive`);
-  if(l.files&&l.files.length){fileId=l.files[0].id;return false;}
-  const nb=(S.biz.nombre||"Mi negocio");
-  const c=await api(API.sheets,{method:"POST",body:JSON.stringify({properties:{title:"Mi página web (no borrar)"},sheets:[{properties:{sheetId:0,title:"Productos",gridProperties:{frozenRowCount:1}}},{properties:{sheetId:1,title:"Tienda"}}]})});
+  if(l.files&&l.files.length){fileId=l.files[0].id;return true;}return false;}
+async function createFile(){
+  const c=await api(API.sheets,{method:"POST",body:JSON.stringify({properties:{title:"Mi página web (no borrar)"},sheets:[{properties:{sheetId:0,title:"Productos",gridProperties:{frozenRowCount:1}}},{properties:{sheetId:1,title:"Tienda"}},{properties:{sheetId:2,title:"Registro",gridProperties:{frozenRowCount:1}}}]})});
   fileId=c.spreadsheetId;
   await api(`${API.drive}/files/${fileId}`,{method:"PATCH",body:JSON.stringify({appProperties:{creatupagina:"1"},description:"Planilla de tu página web. La edita la página «Mi página». No cambies los títulos de la fila 1."})});
   S.biz={nombre:"",tema:"marino",numero_visible:"parcial",retiro:"Retiro en feria"};S.est={};
   S.prods=[{nombre:"Producto de ejemplo",precio:"3500",categoria:"General",descripcion:"Cámbialo por uno tuyo.",disponible:"Sí",etiqueta:"",color:"verde",foto:""}];
-  await writeAll();return true;}
+  await writeAll();}
+const REG_HEAD=["Fecha y hora (UTC)","Zona horaria","Versión términos","Versión privacidad","Acepta términos","Acepta privacidad","Cómo aceptó","Navegador"];
+async function consentOk(){
+  try{const r=await api(`${API.sheets}/${fileId}/values/${encodeURIComponent("Registro!A2:H1000")}`);
+    return (r.values||[]).some(x=>x[2]===VERS.terminos&&x[3]===VERS.privacidad&&x[4]==="Sí"&&x[5]==="Sí");}catch(e){return false;}}
+async function logConsent(){
+  try{await api(`${API.sheets}/${fileId}:batchUpdate`,{method:"POST",body:JSON.stringify({requests:[{addSheet:{properties:{sheetId:2,title:"Registro",gridProperties:{frozenRowCount:1}}}}]})},true);}catch(e){/* ya existe */}
+  const h=await api(`${API.sheets}/${fileId}/values/${encodeURIComponent("Registro!A1:H1")}`);
+  if(!h.values||!h.values.length)await api(`${API.sheets}/${fileId}/values/${encodeURIComponent("Registro!A1")}?valueInputOption=RAW`,{method:"PUT",body:JSON.stringify({values:[REG_HEAD]})});
+  const row=[new Date().toISOString(),Intl.DateTimeFormat().resolvedOptions().timeZone||"",VERS.terminos,VERS.privacidad,"Sí","Sí","Marcó dos casillas separadas y tocó «Aceptar y continuar» en "+location.origin+location.pathname+", después de entrar con su cuenta de Google",navigator.userAgent.slice(0,180)];
+  await api(`${API.sheets}/${fileId}/values/${encodeURIComponent("Registro!A1")}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{method:"POST",body:JSON.stringify({values:[row]})});
+  if(CONF.form&&CONF.form.url){try{const f=new FormData(),e=CONF.form.entries;
+    f.append(e.planilla,fileId);f.append(e.terminos,VERS.terminos);f.append(e.privacidad,VERS.privacidad);f.append(e.fecha,row[0]);f.append(e.metodo,row[6]);f.append(e.navegador,row[7]);
+    await fetch(CONF.form.url,{method:"POST",mode:"no-cors",body:f});}catch(e){}}}
 async function readAll(){
   const r=await api(`${API.sheets}/${fileId}/values:batchGet?ranges=Productos!A1:H500&ranges=Tienda!A1:B80&valueRenderOption=UNFORMATTED_VALUE`);
   const [p,t]=r.valueRanges.map(v=>v.values||[]);
@@ -2608,20 +2640,33 @@ async function publish(){
   pubId=m[1];return pubId;}
 
 /* ---------- vistas ---------- */
-const show=v=>{$("vInicio").hidden=v!=="inicio";$("vEditor").hidden=v!=="editor";$("bar").hidden=v!=="editor";};
+const show=v=>{$("vInicio").hidden=v!=="inicio";$("vConsent").hidden=v!=="consent";$("vEditor").hidden=v!=="editor";$("bar").hidden=v!=="editor";};
 function setDirty(d){dirty=d;const s=$("st");s.className="st"+(d?" dirty":"");s.textContent=d?"Cambios sin guardar":"Todo guardado";}
 window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue="";}});
+let existe=false;
 async function start(){
   $("loginErr").hidden=true;
   try{await getToken("");show("editor");$("loading").hidden=false;$("ed").hidden=true;
-    const nuevo=await findOrCreate();if(!nuevo)await readAll();
-    renderAll();$("loading").hidden=true;$("ed").hidden=false;setDirty(false);
-    $("sheetLink").innerHTML=`Tu planilla está en tu Google Drive: <a href="https://docs.google.com/spreadsheets/d/${fileId}/edit" target="_blank" rel="noopener">Mi página web (no borrar)</a>.`;
+    existe=await findFile();
+    if(existe&&await consentOk())return openEditor(false);
+    show("consent");$("cT").checked=false;$("cP").checked=false;$("cT").focus();
+  }catch(e){show("inicio");$("loginErr").textContent=e.message;$("loginErr").hidden=false;}}
+$("consentForm").onsubmit=async ev=>{ev.preventDefault();const er=$("consErr");er.hidden=true;
+  if(!$("cT").checked||!$("cP").checked){er.textContent=!$("cT").checked&&!$("cP").checked?"Para continuar, marca las dos casillas.":(!$("cT").checked?"Falta aceptar los Términos y condiciones.":"Falta aceptar la Política de privacidad.");er.hidden=false;(!$("cT").checked?$("cT"):$("cP")).focus();return;}
+  const b=$("consOk");b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span> Guardando…';
+  try{show("editor");$("loading").hidden=false;$("ed").hidden=true;
+    if(!existe)await createFile();await logConsent();await openEditor(!existe);}
+  catch(e){show("consent");er.textContent=e.message;er.hidden=false;}
+  finally{b.disabled=false;b.textContent="Aceptar y continuar";}};
+$("consNo").onclick=()=>{tok=null;show("inicio");$("loginErr").textContent="No creamos nada. Si cambias de opinión, vuelve a tocar «Entrar con Google».";$("loginErr").hidden=false;};
+async function openEditor(nuevo){
+    if(!nuevo)await readAll();
+    renderAll();show("editor");$("loading").hidden=true;$("ed").hidden=false;setDirty(false);
+    $("sheetLink").innerHTML=`Tu planilla está en tu Google Drive: <a href="https://docs.google.com/spreadsheets/d/${fileId}/edit" target="_blank" rel="noopener">Mi página web (no borrar)</a>. Ahí también queda el registro de lo que aceptaste (pestaña «Registro»).`;
     let saved=(()=>{try{return localStorage.getItem("mp:pub:"+fileId)}catch(e){return ""}})();
     if(!saved){try{const l=await api(`${API.drive}/files/${fileId}/revisions?fields=revisions(published,publishedLink)&pageSize=1000`);const r=(l.revisions||[]).filter(x=>x.published&&x.publishedLink).pop();const m=r&&String(r.publishedLink).match(/\/d\/e\/(2PACX-[\w-]+)/);if(m)saved=m[1];}catch(e){}}
     if(saved){pubId=saved;showResult();}
-    selectTab(nuevo?"negocio":"productos");
-  }catch(e){show("inicio");$("loginErr").textContent=e.message;$("loginErr").hidden=false;}}
+    selectTab(nuevo?"negocio":"productos");}
 $("login").onclick=start;
 
 /* ---------- tabs ---------- */
@@ -2722,6 +2767,7 @@ $("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("link").te
 
 /* ---------- asistente guiado ---------- */
 const HELP={
+ consent:{t:"Aceptar los documentos",s:["Toca los links para leer los Términos y la Política de privacidad.","Marca las dos casillas.","Toca «Aceptar y continuar»."],q:[["¿Por qué dos casillas?","Son dos documentos distintos: uno explica las reglas de uso y el otro qué pasa con tus datos. Así sabes bien qué aceptas."],["¿Qué pasa si no acepto?","No se crea nada en tu cuenta y no se guarda ningún dato."]]},
  inicio:{t:"Para empezar",s:["Toca «Entrar con Google».","Elige tu cuenta de Gmail.","Google te pregunta si das permiso: toca «Continuar» o «Permitir». La página solo puede ver la planilla que ella misma crea."],
    q:[["No tengo Gmail","Necesitas una cuenta de Google. Créala gratis en accounts.google.com, o pídenos ayuda en el taller."],["Dice «Google no verificó esta app»","Toca «Configuración avanzada» y luego «Ir a Crea tu página». Es normal en apps nuevas y gratuitas."],["No pasa nada al tocar el botón","Revisa que tengas internet. Si usas el navegador dentro de otra app (Instagram, Facebook), ábrelo en Chrome."]]},
  negocio:{t:"Mi negocio",s:["Escribe el nombre de tu negocio.","Pon tu número de WhatsApp: ahí te llegan los pedidos.","Escribe dónde te encuentran y, cada día, dónde estás hoy.","Toca «Guardar» abajo a la derecha."],
@@ -2733,10 +2779,10 @@ const HELP={
  publicar:{t:"Publicar",s:["Revisa la lista: si falta algo, toca «Ir a arreglarlo».","Toca «Publicar mi página».","Copia tu link o compártelo por WhatsApp.","Descarga tu QR e imprímelo."],
    q:[["Cambié algo y no se ve en mi página","Toca «Guardar» y espera unos 5 minutos. Google demora un poco en actualizar."],["¿Tengo que publicar cada vez?","No. Publicas una sola vez. Después basta con «Guardar»."],["Perdí mi link","Vuelve a entrar aquí con tu Gmail y ve a «Publicar»: ahí está tu link."]]}
 };
-function openHelp(){helpFrom=document.activeElement;const k=$("vEditor").hidden?"inicio":cur,h=HELP[k];
+function openHelp(){helpFrom=document.activeElement;const k=!$("vConsent").hidden?"consent":($("vEditor").hidden?"inicio":cur),h=HELP[k];
   $("hBody").innerHTML=`<p class="muted" style="margin:0">Estás en: <b>${h.t}</b></p><ol>${h.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
    ${h.q.map(([a,b])=>`<details><summary>${esc(a)}</summary><p>${esc(b)}</p></details>`).join("")}
-   ${k!=="inicio"?`<p style="margin:14px 0 4px;font-weight:700">Ir a otra parte</p><div class="chips">${TABS.map(t=>`<button type="button" data-h="${t}">${HELP[t].t}</button>`).join("")}</div>`:""}`;
+   ${!["inicio","consent"].includes(k)?`<p style="margin:14px 0 4px;font-weight:700">Ir a otra parte</p><div class="chips">${TABS.map(t=>`<button type="button" data-h="${t}">${HELP[t].t}</button>`).join("")}</div>`:""}`;
   $("help").hidden=false;$("scrim").hidden=false;$("hClose").focus();}
 let helpFrom=null;function closeHelp(){$("help").hidden=true;$("scrim").hidden=true;(helpFrom||$("helpBtn")).focus();}
 $("helpBtn").onclick=openHelp;$("helpBtn2").onclick=openHelp;$("hClose").onclick=closeHelp;$("scrim").onclick=closeHelp;

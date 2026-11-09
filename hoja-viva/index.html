@@ -198,6 +198,7 @@ footer p{margin:0;color:var(--ink-soft);font-size:15px}
 </style>
 <script type="application/json" id="data">{"biz": {"slug": "hoja-viva", "name": "Hoja Viva", "rubro": "Papelería hecha a mano", "titulo": "Papelería hecha a mano en Puerto Montt", "tag": "Agendas, planners, libretas y regalos de papel. Elige lo que te gusta, arma tu pedido y envíalo por WhatsApp.", "place": "Ferias del Proyecto Muelle, Puerto Montt", "envio": "Despachos a todo Chile", "hoy": "Feria del Muelle, hasta las 18:00", "wa": "56927776873", "tema": "marino", "demo": true, "historia": "Hacemos agendas y libretas a mano, una por una, con papel de buena calidad y diseños inspirados en el sur. Si buscas algo especial o una cantidad mayor, escríbenos y lo conversamos.", "planilla": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQBTS6ApkEs32ndoL0T0U16bbfgTpa8_5-iCtwMvGBFwVldjx3Yc8Y8XWrpiamKQzT-ACFuFSVDlmgk/pub?gid=268686341&single=true&output=csv", "tienda_hoja": "", "numero_visible": "parcial"}, "products": [{"id": "p1", "n": "Agenda 2027 anillada", "d": "Vista semanal, tapa dura forrada en tela, 160 hojas.", "p": 14990, "cat": "Agendas y planners", "c": "#28756E", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p2", "n": "Planner mensual sin fecha", "d": "Para partir cualquier mes. Incluye hoja de metas y presupuesto.", "p": 9990, "cat": "Agendas y planners", "c": "#E06A4E", "badge": "", "ok": true, "img": ""}, {"id": "p3", "n": "Planner de emprendedora", "d": "Ventas del día, costos, pedidos y clientes en un solo lugar.", "p": 12990, "cat": "Agendas y planners", "c": "#17363D", "badge": "Más vendido", "ok": true, "img": ""}, {"id": "p4", "n": "Libreta A5 punteada", "d": "Papel de 100 g, 120 hojas, ideal para lettering.", "p": 6990, "cat": "Libretas", "c": "#E8B35C", "badge": "", "ok": false, "img": ""}, {"id": "p5", "n": "Pack 3 libretas A6", "d": "Tamaño bolsillo, tapas de colores surtidos.", "p": 7990, "cat": "Libretas", "c": "#7A9E7E", "badge": "", "ok": true, "img": ""}, {"id": "p6", "n": "Set de stickers del sur", "d": "24 stickers ilustrados: Chiloé, el Muelle y la lluvia.", "p": 3990, "cat": "Regalos y accesorios", "c": "#5B7DB1", "badge": "", "ok": true, "img": ""}, {"id": "p7", "n": "Calendario de escritorio", "d": "12 láminas ilustradas con base de cartón reciclado.", "p": 8490, "cat": "Regalos y accesorios", "c": "#B05A7A", "badge": "Temporada", "ok": true, "img": ""}, {"id": "p8", "n": "Tarjetas de regalo (pack 6)", "d": "Con sobre kraft. Para cumpleaños y fechas especiales.", "p": 4990, "cat": "Regalos y accesorios", "c": "#C0492F", "badge": "", "ok": true, "img": ""}]}</script>
 <script>
+const DEV_DEFAULT="Si compraste a distancia (por esta página o WhatsApp), puedes arrepentirte dentro de 10 días desde que recibes el producto, devolviéndolo sin uso y en su estado original (derecho de retracto, Ley 19.496 del Consumidor).\nNo aplica a alimentos frescos o que vencen en menos de 10 días, productos hechos a pedido o personalizados, ni artículos de higiene personal con el sello abierto.\nSi un producto nuevo viene con fallas, tienes garantía legal de 6 meses desde que lo recibes: puedes elegir cambio, reparación o devolución del dinero.\nPara cualquier cambio o devolución, escríbenos por WhatsApp.";
 /* ===== TEMAS: cada tienda elige uno en su configuración ("tema"). Para probar: agrega ?tema=oliva al link. ===== */
 const TEMAS={
  marino:{n:"Marino",paper:"#F5F6F2",ink:"#13313B",soft:"#4C6168",sea:"#2F6F73",accent:"#F2B33D",line:"#DDE2DC",dot:"#C9D2CC",art:"#FBFCFA",wash:"#F2F5F3",onink:"#BFD0D2",font:"Young Serif",dw:400},
@@ -306,6 +307,8 @@ function aplicarTema(nombre,o){o=o||{};
       </ol>
     </div>
   </section>
+
+  <section class="about" id="dev" aria-labelledby="devH"><div class="wrap"><h2 id="devH">Cambios y devoluciones</h2><p id="devTxt" style="white-space:pre-line"></p></div></section>
 </main>
 
 <footer>
@@ -313,7 +316,7 @@ function aplicarTema(nombre,o){o=o||{};
     <div><h4 id="fBrand"></h4><p id="fTag"></p></div>
     <div><h4>Dónde encontrarnos</h4><p id="fPlace">Ferias del Proyecto Muelle, Puerto Montt.</p></div>
     <div><h4>Contacto</h4><p>WhatsApp: <span class="num" id="fWa"></span></p></div>
-    <p class="fine"><span id="demoNote" hidden>Catálogo de ejemplo. La marca, los productos y los precios son ilustrativos. </span>Página creada con el apoyo de estudiantes de Santo Tomás Puerto Montt · proyecto «Del aula a la venta». <a href="../editor/" style="color:inherit">¿Es tu página? Edítala aquí</a>.</p>
+    <p class="fine"><span id="demoNote" hidden>Catálogo de ejemplo. La marca, los productos y los precios son ilustrativos. </span>Página creada con el apoyo de estudiantes de Santo Tomás Puerto Montt · proyecto «Del aula a la venta». <a href="../editor/" style="color:inherit">¿Es tu página? Edítala aquí</a> · <a href="../terminos/" style="color:inherit">Términos</a> · <a href="../privacidad/" style="color:inherit">Privacidad</a>.</p>
   </div>
 </footer>
 
@@ -342,7 +345,7 @@ function aplicarTema(nombre,o){o=o||{};
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
       Enviar pedido por WhatsApp</a>
     <button class="copy" id="copy" type="button">Copiar pedido</button>
-    <p class="hint">Se abre WhatsApp con el mensaje listo. Solo tienes que enviarlo.</p>
+    <p class="hint">Se abre WhatsApp con el mensaje listo. Solo tienes que enviarlo. Tu nombre y tu pedido se envían solo a este negocio; esta página no los guarda. <a href="../privacidad/" style="color:inherit">Privacidad</a></p>
   </div>
 </div>
 
@@ -437,7 +440,7 @@ async function cargarTienda(){if(!TIENDA_CSV)return;
   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),8000);
   try{const r=await fetch(TIENDA_CSV+(TIENDA_CSV.includes("?")?"&":"?")+"t="+Date.now(),{signal:ctrl.signal,cache:"no-store"});
     if(!r.ok)throw new Error("http");const rows=parseCSV(await r.text()),b=state.biz;
-    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",envio:"envio",retiro:"retiro",numero_visible:"numero_visible"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
+    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",devoluciones:"devoluciones",envio:"envio",retiro:"retiro",numero_visible:"numero_visible"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
     b.estilo=b.estilo||{};
     rows.forEach(x=>{const k0=norm(x[0]).replace(/ /g,"_"),k=map[k0];if(x[1]===undefined)return;const v=String(x[1]).trim();if(k)b[k]=v;else if(est.includes(k0))b.estilo[k0]=v;});
     if(!new URLSearchParams(location.search).get("tema"))aplicarTema(b.tema,b.estilo);}
@@ -450,7 +453,7 @@ function renderBiz(){const b=state.biz;document.title=b.rubro?`${b.name} · ${b.
   $("place").textContent=b.place||"";$("place").parentElement.hidden=!b.place;$("fPlace").textContent=b.place?b.place+".":"";
   $("envio").textContent=b.envio||"";$("envioMeta").hidden=!b.envio;
   $("hoy").hidden=!b.hoy;$("hoyTxt").textContent=b.hoy?"Hoy estoy en: "+b.hoy:"";
-  $("about").hidden=!b.historia;$("aboutTxt").textContent=b.historia||"";
+  $("devTxt").textContent=(b.devoluciones&&b.devoluciones.trim())||DEV_DEFAULT;$("about").hidden=!b.historia;$("aboutTxt").textContent=b.historia||"";
   $("demoNote").hidden=!b.demo;
   {const nv=norm(b.numero_visible||"si");$("fWa").textContent=nv==="no"?"usa el botón Escríbenos de arriba":fmtWa(nv==="parcial");}$("topWa").href=`https://wa.me/${waNum()}`;}
 function renderCats(){const cats=["Todas",...new Set(state.products.map(p=>p.cat).filter(Boolean))];if(!cats.includes(filtro))filtro="Todas";
