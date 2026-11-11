@@ -55,6 +55,7 @@ h1{font-size:clamp(32px,7vw,44px);line-height:1.06}h2{font-size:26px;line-height
 /* campos */
 label.f{display:grid;gap:6px;font-weight:600;font-size:15px}
 label.f small{font-weight:400;color:var(--soft)}
+div.f{display:grid;gap:6px}div.f>span{font-weight:600;font-size:15px;display:grid;gap:6px}div.f>span small{font-weight:400;color:var(--soft)}
 input[type=text],input[type=tel],input[type=url],input[type=number],textarea,select{width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--sheet);font-size:16px}
 textarea{min-height:84px;resize:vertical}
 input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-offset:1px;border-color:var(--ink)}
@@ -111,6 +112,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 .reco .mo{position:relative;width:34px;height:42px;border-radius:10px 10px 8px 8px;box-shadow:0 10px 12px -6px rgba(0,0,0,.45),inset -5px -7px 10px rgba(0,0,0,.2),inset 4px 4px 8px rgba(255,255,255,.4)}
 .reco .mv.nat{background-image:radial-gradient(70% 80% at 30% 20%,rgba(255,255,255,.35),transparent 70%),linear-gradient(transparent 68%,rgba(0,0,0,.12) 69%,rgba(0,0,0,.05))!important}.reco .mv.nat .mw{text-transform:none;font-size:44px}
 .advice{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--sheet);margin:0 0 16px}.advice b{display:block;margin-bottom:4px}.advice ul{margin:0;padding-left:20px}.advice li{margin:6px 0;color:var(--soft);font-size:15px}.advice .btn{margin-left:4px}
+.comofoto summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600;font-size:15px;color:var(--sea)}.comofoto ol{margin:0 0 6px;padding-left:22px;color:var(--soft);font-size:15px}.comofoto li{margin:5px 0}
 .tips{background:var(--wash);border-radius:14px;padding:12px 14px;font-size:15px}.tips ul{margin:6px 0 0;padding-left:20px}.tips li{margin:4px 0;color:var(--soft)}
 /* barra guardar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--sheet);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
@@ -216,6 +218,10 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
         </div>
         <label class="f">Cambios y devoluciones <small>Si lo dejas vacío, tu página muestra un texto según la Ley del Consumidor: 10 días de retracto en compras a distancia (salvo alimentos frescos, productos hechos a pedido o de higiene abiertos) y 6 meses de garantía legal por fallas.</small><textarea data-b="devoluciones" maxlength="700" placeholder="Déjalo vacío para usar el texto según la ley, o escribe tus condiciones (sin quitar derechos de la ley)."></textarea></label>
         <label class="f">Sobre ti <small>Opcional, 2 o 3 frases.</small><textarea data-b="historia" maxlength="400" placeholder="Ej: Cocino con recetas de mi familia."></textarea></label>
+        <div class="f"><span>Tu foto o la de tu puesto <small>Opcional. Sale junto a «Sobre ti». Sube solo fotos tuyas o de personas que te dieron permiso.</small></span>
+          <div class="fotorow" data-bizfoto="retrato"></div><p class="small muted" data-bst="retrato" role="status" style="margin:0"></p></div>
+        <div class="f"><span>Logo de tu negocio <small>Opcional. Si no tienes, tu página muestra las iniciales de tu negocio.</small></span>
+          <div class="fotorow" data-bizfoto="logo"></div><p class="small muted" data-bst="logo" role="status" style="margin:0"></p></div>
       </div>
     </section>
 
@@ -241,7 +247,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
         <fieldset class="card stack" style="margin:0"><legend class="sr">Portada</legend>
           <h3>Portada de tu página</h3>
           <div class="seg" role="radiogroup" aria-label="Tipo de portada"><label><input type="radio" name="portada" value="clasica">Clásica</label><label><input type="radio" name="portada" value="vitrina">Vitrina natural</label><label><input type="radio" name="portada" value="vitrina viva">Vitrina viva</label></div>
-          <p class="muted small" style="margin:0">Las dos «Vitrina» muestran tus productos en grande, uno por uno. La <b>natural</b> usa tonos suaves, como una foto de estudio: va bien con casi todo. La <b>viva</b> usa colores fuertes y más movimiento. Las dos se ven mejor con fotos sin fondo (PNG).</p>
+          <p class="muted small" style="margin:0">Las dos «Vitrina» muestran tus productos en grande, uno por uno. La <b>natural</b> usa tonos suaves, como una foto de estudio: va bien con casi todo. La <b>viva</b> usa colores fuertes y más movimiento. Las dos se ven mejor con fotos sin fondo: abre cada producto y toca «Quitar el fondo».</p>
         </fieldset>
         <h3 style="margin-top:6px">Todos los estilos</h3>
         <div class="themes" id="themes"></div>
@@ -2635,7 +2641,7 @@ const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Ope
 const $=id=>document.getElementById(id);
 const SCOPE="https://www.googleapis.com/auth/drive.file";
 const API={drive:"https://www.googleapis.com/drive/v3",sheets:"https://sheets.googleapis.com/v4/spreadsheets"};
-const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","devoluciones","portada"];
+const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","logo","retrato","devoluciones","portada"];
 const EKEYS=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
 const COLS=[["fondo","Fondo de la página","paper"],["tarjetas","Fondo de las tarjetas","sheet"],["texto","Letras y botones","ink"],["destacado","Precios y detalles","accent"],["acento","Categorías e íconos","sea"]];
 const PCOLS=["rojo","coral","amarillo","verde","salvia","azul","azul oscuro","rosa"];
@@ -2740,7 +2746,17 @@ TABS.forEach((t,i)=>{const b=$("t-"+t);b.onclick=()=>selectTab(t);b.onkeydown=e=
 /* ---------- negocio ---------- */
 document.querySelectorAll("[data-b]").forEach(el=>el.addEventListener("input",()=>{S.biz[el.dataset.b]=el.value;setDirty(true);if(el.dataset.b==="nombre")preview();}));
 document.querySelectorAll('input[name=nv]').forEach(r=>r.addEventListener("change",()=>{S.biz.numero_visible=r.value;setDirty(true);}));
-function renderBiz(){document.querySelectorAll("[data-b]").forEach(el=>el.value=S.biz[el.dataset.b]||"");
+const BIZFOTO={logo:["logo","Logo de tu negocio"],retrato:["mi foto","Tu foto"]};
+function renderBizFotos(){document.querySelectorAll("[data-bizfoto]").forEach(row=>{const k=row.dataset.bizfoto,u=S.biz[k]||"";
+  row.innerHTML=`${u?`<img class="fthumb" src="${esc(prev(u))}" alt="${BIZFOTO[k][1]}">`:`<span class="fthumb empty" aria-hidden="true">Sin foto</span>`}
+    <label class="btn sec sm upl">${u?"Cambiar":"Subir"} ${k==="logo"?"logo":"foto"}<input type="file" accept="image/*" data-up-biz="${k}" class="sr"></label>
+    ${u?`<button class="btn quiet sm" type="button" data-rm-biz="${k}">Quitar</button>`:""}`;});}
+$("p-negocio").addEventListener("change",async e=>{const inp=e.target.closest("[data-up-biz]");if(!inp||!inp.files[0])return;const k=inp.dataset.upBiz,st=document.querySelector(`[data-bst="${k}"]`);
+  st.innerHTML='<span class="spin" aria-hidden="true"></span> Subiendo…';
+  try{S.biz[k]=(await subirFoto(inp.files[0],BIZFOTO[k][0])).split("#")[0];renderBizFotos();setDirty(true);st.textContent="Listo. Toca «Guardar» para que aparezca en tu página.";}
+  catch(err){st.textContent=err.message;}});
+$("p-negocio").addEventListener("click",e=>{const b=e.target.closest("[data-rm-biz]");if(!b)return;S.biz[b.dataset.rmBiz]="";renderBizFotos();setDirty(true);});
+function renderBiz(){renderBizFotos();document.querySelectorAll("[data-b]").forEach(el=>el.value=S.biz[el.dataset.b]||"");
   const nv=(S.biz.numero_visible||"sí").toLowerCase().replace("si","sí");document.querySelectorAll('input[name=nv]').forEach(r=>r.checked=r.value===nv);}
 
 /* ---------- productos ---------- */
@@ -2761,11 +2777,14 @@ function renderProds(){
       <label class="f">Descripción<textarea data-k="descripcion" maxlength="160">${esc(p.descripcion)}</textarea></label>
       <div class="row2"><label class="f">Etiqueta <small>Ej: Nuevo, Más vendido</small><input type="text" data-k="etiqueta" value="${esc(p.etiqueta)}" maxlength="20"></label>
       <label class="f">Color de la portada<select data-k="color">${PCOLS.map(c=>`<option ${c===(p.color||"verde")?"selected":""}>${c}</option>`).join("")}</select></label></div>
-      <div class="f"><span>Foto del producto <small>Opcional. Si no hay, se ve un dibujo de color. Para el efecto 3D usa una foto sin fondo (PNG).</small></span>
-        <div class="fotorow">${p.foto?`<img class="fthumb" src="${esc(thumb(p.foto))}" alt="Foto de ${esc(p.nombre)}">`:`<span class="fthumb empty" aria-hidden="true">Sin foto</span>`}
+      <div class="f"><span>Foto del producto <small>Opcional. Si no hay, se ve un dibujo de color. Después de subirla puedes quitarle el fondo aquí mismo.</small></span>
+        <div class="fotorow">${p.foto?`<img class="fthumb" src="${esc(prev(p.foto))}" alt="Foto de ${esc(p.nombre)}">`:`<span class="fthumb empty" aria-hidden="true">Sin foto</span>`}
           <label class="btn sec sm upl">${p.foto?"Cambiar foto":"Subir foto"}<input type="file" accept="image/*" data-up-foto="${i}" class="sr"></label>
+          ${p.foto&&!/#sinfondo/.test(p.foto)?`<button class="btn sec sm" type="button" data-cut="${i}">Quitar el fondo</button>`:""}
+          ${p._orig?`<button class="btn quiet sm" type="button" data-uncut="${i}">Volver a la foto original</button>`:""}
           ${p.foto?`<button class="btn quiet sm" type="button" data-rm-foto="${i}">Quitar foto</button>`:""}</div>
-        <p class="small muted" data-fst="${i}" role="status" style="margin:0"></p></div>
+        <p class="small muted" data-fst="${i}" role="status" style="margin:0"></p>
+        <details class="comofoto"><summary>Cómo sacar una buena foto</summary><ol><li>Ponte cerca de una ventana, de día. Sin flash.</li><li>Deja el producto solo sobre una mesa, con una pared lisa atrás.</li><li>Limpia el lente y pon el celular a la altura del producto.</li><li>Que el producto se vea entero y ocupe casi toda la foto.</li><li>Sube la foto y toca «Quitar el fondo».</li></ol></details></div>
       <label class="f">O pega el link de una foto<input type="url" data-k="foto" value="${esc(p.foto)}" placeholder="https://…"></label>
     </div></details></article>`).join("");}
 $("prods").addEventListener("input",e=>{const k=e.target.dataset.k,c=e.target.closest("[data-i]");if(!k||!c)return;const p=S.prods[+c.dataset.i];
@@ -2795,7 +2814,10 @@ async function achicar(file){const bmp=await createImageBitmap(file);const k=Mat
   const b=await new Promise(r=>c.toBlob(r,"image/webp",.86))||await new Promise(r=>c.toBlob(r,"image/png"));b.cut=cut;return b;}
 async function subirFoto(file,nombre){
   if(!/^image\//.test(file.type))throw new Error("Ese archivo no es una imagen. Elige una foto.");
-  const blob=await achicar(file),folder=await carpetaFotos();
+  return subirBlob(await achicar(file),nombre);}
+const FOTOS=new Map(),PREV=new Map();
+function prev(u){const k=FOTOS.has(u)?u:[...FOTOS.keys()].find(x=>x.split("#")[0]===u);if(!k)return thumb(u);if(!PREV.has(k))PREV.set(k,URL.createObjectURL(FOTOS.get(k)));return PREV.get(k);}
+async function subirBlob(blob,nombre){const folder=await carpetaFotos();
   const meta={name:(nombre||"producto").slice(0,60)+(blob.type==="image/webp"?".webp":".png"),parents:[folder],mimeType:blob.type};
   const fd=new FormData();fd.append("metadata",new Blob([JSON.stringify(meta)],{type:"application/json"}));fd.append("file",blob);
   let r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{Authorization:"Bearer "+tok},body:fd});
@@ -2803,13 +2825,36 @@ async function subirFoto(file,nombre){
   if(!r.ok)throw new Error("Google no aceptó la foto ("+r.status+"). Prueba otra vez.");
   const {id}=await r.json();
   await api(`${API.drive}/files/${id}/permissions`,{method:"POST",body:JSON.stringify({role:"reader",type:"anyone"})});
-  return "https://drive.google.com/file/d/"+id+"/view"+(blob.cut?"#sinfondo":"");}
+  const url="https://drive.google.com/file/d/"+id+"/view"+(blob.cut?"#sinfondo":"");FOTOS.set(url,blob);return url;}
+async function fotoLienzo(url){let blob=FOTOS.get(url);
+  if(!blob){const m=url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+    try{let r;if(m){const u=`${API.drive}/files/${m[1]}?alt=media`;r=await fetch(u,{headers:{Authorization:"Bearer "+tok}});if(r.status===401){await getToken("");r=await fetch(u,{headers:{Authorization:"Bearer "+tok}});}}
+      else r=await fetch(url.split("#")[0],{mode:"cors"});
+      if(!r.ok)throw 0;blob=await r.blob();}catch(e){throw new Error("abrir");}}
+  let bmp;try{bmp=await createImageBitmap(blob);}catch(e){throw new Error("abrir");}
+  const k=Math.min(1,1400/Math.max(bmp.width,bmp.height)),c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);return c;}
+let cortando=false;
+const CUT_ERR={fondo:"No pude separar el producto del fondo en esta foto. Prueba con otra: fondo liso y el producto entero.",red:"No se pudo cargar la herramienta. Revisa tu internet y prueba otra vez.",abrir:"No pude abrir esa foto. Súbela de nuevo desde tu galería y después toca «Quitar el fondo»."};
+$("prods").addEventListener("click",async e=>{const b=e.target.closest("[data-cut]");if(!b||cortando)return;const p=S.prods[+b.dataset.cut];if(!p||!p.foto)return;cortando=true;b.disabled=true;
+  const say=(h,html)=>{const el=document.querySelector(`[data-fst="${S.prods.indexOf(p)}"]`);if(el){if(html)el.innerHTML=h;else el.textContent=h;}};let paso=-1;
+  try{say('<span class="spin" aria-hidden="true"></span> Preparando…',1);
+    if(!window.QuitarFondo)await new Promise((ok,no)=>{const s=document.createElement("script");s.src="../ia/quitarfondo.js";s.onload=ok;s.onerror=()=>no(new Error("red"));document.head.appendChild(s);});
+    const src=await fotoLienzo(p.foto);
+    const out=await QuitarFondo.quitarFondo(src,(fase,x)=>{const n=fase==="modelo"?Math.floor(x*5):9;if(n===paso)return;paso=n;say(fase==="modelo"?`<span class="spin" aria-hidden="true"></span> Preparando la herramienta (solo la primera vez): ${n*20} %`:'<span class="spin" aria-hidden="true"></span> Quitando el fondo…',1);});
+    const blob=await new Promise(r=>out.toBlob(r,"image/webp",.92))||await new Promise(r=>out.toBlob(r,"image/png"));blob.cut=true;
+    say('<span class="spin" aria-hidden="true"></span> Guardando la foto nueva…',1);const url=await subirBlob(blob,p.nombre);const i=S.prods.indexOf(p);if(i<0)return;
+    p._orig=p._orig||p.foto;p.foto=url;renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;
+    say("Listo: tu foto quedó sin fondo. Toca «Guardar». Si no te gusta cómo quedó, toca «Volver a la foto original».");}
+  catch(err){say(CUT_ERR[err.message]||(/Google/.test(err.message)?err.message:"No se pudo quitar el fondo en este celular. Tu foto original sigue ahí."));if(b.isConnected)b.disabled=false;}
+  finally{cortando=false;}});
+$("prods").addEventListener("click",e=>{const b=e.target.closest("[data-uncut]");if(!b)return;const i=+b.dataset.uncut,p=S.prods[i];if(!p||!p._orig)return;p.foto=p._orig;delete p._orig;renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;
+  document.querySelector(`[data-fst="${i}"]`).textContent="Volviste a la foto original. Toca «Guardar».";});
 $("prods").addEventListener("change",async e=>{const inp=e.target.closest("[data-up-foto]");if(!inp||!inp.files[0])return;const i=+inp.dataset.upFoto,st=document.querySelector(`[data-fst="${i}"]`);
   st.innerHTML='<span class="spin" aria-hidden="true"></span> Subiendo foto…';
   try{const url=await subirFoto(inp.files[0],S.prods[i].nombre);S.prods[i].foto=url;renderProds();setDirty(true);
-    const st2=document.querySelector(`[data-fst="${i}"]`);document.querySelector(`[data-i="${i}"] details`).open=true;st2.textContent=url.includes("#sinfondo")?"Foto sin fondo lista: en tu página se verá flotando, en 3D. Toca «Guardar».":"Foto lista. Toca «Guardar» para que aparezca en tu página. Para el efecto 3D, usa una foto sin fondo.";}
+    const st2=document.querySelector(`[data-fst="${i}"]`);document.querySelector(`[data-i="${i}"] details`).open=true;st2.textContent=url.includes("#sinfondo")?"Foto sin fondo lista. Toca «Guardar» para que aparezca en tu página.":"Foto lista. Toca «Guardar» para que aparezca en tu página. Para que se vea como foto de estudio, toca «Quitar el fondo».";}
   catch(err){st.textContent=err.message;}});
-$("prods").addEventListener("click",e=>{const b=e.target.closest("[data-rm-foto]");if(!b)return;const i=+b.dataset.rmFoto;S.prods[i].foto="";renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;});
+$("prods").addEventListener("click",e=>{const b=e.target.closest("[data-rm-foto]");if(!b)return;const i=+b.dataset.rmFoto;S.prods[i].foto="";delete S.prods[i]._orig;renderProds();setDirty(true);document.querySelector(`[data-i="${i}"] details`).open=true;});
 /* ---------- estilo ---------- */
 function themeVals(){const t=TEMAS[S.biz.tema]||TEMAS.marino;return{paper:t.paper,sheet:t.sheet||"#FFFFFF",ink:t.ink,accent:t.accent,sea:t.sea,font:t.font,fx:t.fx||"Instrument Sans"};}
 const RUBROS=[
@@ -2884,6 +2929,7 @@ function advice(){const a=[],b=S.biz,P=S.prods.filter(x=>String(x.nombre).trim()
   if(!t(b.descripcion))a.push(["negocio","Cuenta en una línea qué vendes y de dónde eres."]);
   if(!t(b.hoy))a.push(["negocio","Completa «Dónde estás hoy»: así te encuentran en la feria."]);
   if(!t(b.historia))a.push(["negocio","Cuenta tu historia en «Sobre ti»: se compra más cuando se conoce a quien hace el producto."]);
+  if(t(b.historia)&&!t(b.retrato))a.push(["negocio","Agrega tu foto o la de tu puesto junto a «Sobre ti»: da confianza a quien compra por primera vez."]);
   if(P.some(x=>/producto de ejemplo/i.test(x.nombre)))a.push(["productos","Cambia o borra el «Producto de ejemplo»."]);
   if(P.length&&P.length<3)a.push(["productos","Con 3 productos o más tu página se ve completa."]);
   const sf=P.filter(x=>!t(x.foto)).length;if(sf)a.push(["productos",n(sf,"1 producto no tiene foto.","# productos no tienen foto.")+" Con fotos reales la página se ve mucho más profesional."]);
@@ -2894,7 +2940,7 @@ function advice(){const a=[],b=S.biz,P=S.prods.filter(x=>String(x.nombre).trim()
   if(P.some(x=>t(x.nombre).length>42))a.push(["productos","Acorta los nombres largos y deja los detalles para la descripción."]);
   if(portSel()!=="clasica"){const cf=P.filter(x=>t(x.foto)&&!/#sinfondo/.test(x.foto)).length;
     if(P.length&&sf===P.length)a.push(["estilo","Elegiste la portada Vitrina y todavía no tienes fotos. Sube fotos o usa la portada Clásica por ahora."]);
-    else if(cf)a.push(["estilo",n(cf,"1 foto tiene fondo.","# fotos tienen fondo.")+" En la portada Vitrina se ven mejor las fotos sin fondo (PNG)."]);
+    else if(cf)a.push(["estilo",n(cf,"1 foto tiene fondo.","# fotos tienen fondo.")+" En la portada Vitrina se ven mejor sin fondo: abre el producto y toca «Quitar el fondo»."]);
     if(P.length>=3&&new Set(P.map(x=>t(x.color)||"verde")).size<2)a.push(["estilo","Dale un «Color de la portada» distinto a cada producto: el fondo cambia al pasar de uno a otro."]);}
   if(Object.keys(S.est||{}).filter(k=>["fondo","tarjetas","texto","destacado","acento"].includes(k)&&S.est[k]).length>=3)a.push(["estilo","Cambiaste varios colores a mano. Si algo no combina, toca «Volver a los colores del estilo»."]);
   return a;}
@@ -2933,7 +2979,7 @@ const HELP={
  negocio:{t:"Mi negocio",s:["Escribe el nombre de tu negocio.","Pon tu número de WhatsApp: ahí te llegan los pedidos.","Escribe dónde te encuentran y, cada día, dónde estás hoy.","Toca «Guardar» abajo a la derecha."],
    q:[["¿Mi número se ve?","Tú eliges: completo, tapado o que no se vea. El botón de WhatsApp funciona igual."],["¿Qué pongo en «Dónde estás hoy»?","Por ejemplo «Feria Angelmó, hasta las 18:00». Si hoy no vendes, déjalo vacío."]]},
  productos:{t:"Productos",s:["Toca «+ Agregar producto».","Escribe el nombre y el precio (solo números, sin puntos ni $).","Si se te acaba, apaga «Disponible». Cuando vuelva, lo enciendes.","Toca «Guardar»."],
-   q:[["¿Cómo pongo una foto?","Abre «Más datos» y pega el link de una foto pública. Si no tienes, la página pone un dibujo de color."],["¿Cómo ordeno los productos?","Usa la flecha ↑ para subir un producto. El primero de la lista sale primero."],["Borré un producto sin querer","Si todavía no tocaste «Guardar», recarga la página y vuelve a entrar: se recupera lo último guardado."]]},
+   q:[["¿Cómo pongo una foto?","Abre «Más datos» y toca «Subir foto» para elegirla desde tu galería. Si no tienes, la página pone un dibujo de color."],["¿Cómo le quito el fondo a una foto?","Después de subirla, toca «Quitar el fondo». La primera vez demora un poco. Si no te gusta cómo quedó, toca «Volver a la foto original»."],["¿Cómo saco una buena foto?","Cerca de una ventana, de día y sin flash. El producto solo, entero, con una pared lisa atrás."],["¿Cómo ordeno los productos?","Usa la flecha ↑ para subir un producto. El primero de la lista sale primero."],["Borré un producto sin querer","Si todavía no tocaste «Guardar», recarga la página y vuelve a entrar: se recupera lo último guardado."]]},
  estilo:{t:"Colores y letras",s:["Toca un estilo para partir.","Si quieres, cambia cada color tocando el cuadrito.","Elige la letra de los títulos y del texto.","Mira «Así se ve». Si aparece el aviso rojo, cambia el color hasta que desaparezca.","Toca «Guardar»."],
    q:[["Quiero volver a como estaba","Toca «Volver a los colores del estilo»."]]},
  publicar:{t:"Publicar",s:["Revisa la lista: si falta algo, toca «Ir a arreglarlo».","Toca «Publicar mi página».","Copia tu link o compártelo por WhatsApp.","Descarga tu QR e imprímelo."],
