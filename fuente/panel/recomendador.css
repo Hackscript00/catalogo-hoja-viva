@@ -56,3 +56,14 @@ html.lite .pl-glass .m-card{backdrop-filter:none;-webkit-backdrop-filter:none;ba
 html.lite .pl-vitrina25d .m-art img,html.lite .pl-vitrina25d .m-art .m-color{transform:none!important}
 html.lite .pl-vitrina25d .m-hint{display:none}
 @media (prefers-reduced-motion:reduce){.pl-vitrina25d .m-art img{transition:none}}
+/* v2: las mini tiendas copian los rasgos de cada estilo */
+.pl-clasico .m-card{border-color:#E7E7E3;border-radius:6px}
+.pl-clasico .m-art{background:#F6F6F4}
+.pl-artesanal .m-card{padding:4px;border:0;border-radius:4px;box-shadow:0 10px 16px -10px rgba(60,35,15,.7)}
+.pl-artesanal .m-art{border-radius:2px;background:repeating-linear-gradient(93deg,rgba(40,20,5,.08) 0 2px,transparent 2px 10px),linear-gradient(#B88C5A,#9C6F41)}
+.pl-glass .m-grid{gap:10px}
+.pl-glass .m-card{padding:4px;border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 14px 22px -12px rgba(0,0,0,.35)}
+.pl-glass .m-art{border-radius:12px}
+.pl-vitrina25d .m-grid{grid-template-columns:2fr 1fr}
+.pl-vitrina25d .m-card:first-child .m-art{height:104px;background:radial-gradient(60% 55% at 50% 36%,#fff,var(--m-sheet) 30%,#E4E6E1 100%)}
+.pl-vitrina25d .m-card:first-child{box-shadow:var(--sx,0px) var(--sy,14px) 24px -10px rgba(0,0,0,.5)}

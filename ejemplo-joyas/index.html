@@ -268,115 +268,175 @@ html.lite .still svg,html.lite .hoy i,html.lite .vprod{animation:none!important}
 html.lite .card,html.lite .still{transform:none!important;transition:none!important}
 
 /* =====================================================================
-   1 · CLÁSICO / ULTRA RÁPIDO — blanco, letras del sistema, cero efectos
+   1 · CLÁSICO / ULTRA RÁPIDO — blanco, letras del sistema, cero efectos.
+   Se reconoce por: página blanca, líneas finas, precio en texto negro,
+   botones rectos. Nada se mueve, nada se descarga de más.
    ===================================================================== */
 html[data-plantilla="clasico"]{
   --display:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
   --body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
-  --dw:700!important;--r-lg:12px}
-html[data-plantilla="clasico"] .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet)}
-html[data-plantilla="clasico"] .hero h1{text-shadow:none!important;letter-spacing:-.02em}
-html[data-plantilla="clasico"] .still{box-shadow:none;transform:none!important}
+  --dw:700!important;--r-lg:10px}
+html[data-plantilla="clasico"] body{background:#FFFFFF}
+html[data-plantilla="clasico"] .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:#FFFFFF}
+html[data-plantilla="clasico"] .hero h1{text-shadow:none!important;letter-spacing:-.025em}
+html[data-plantilla="clasico"] .still{box-shadow:none;transform:none!important;border-radius:10px}
 html[data-plantilla="clasico"] .still svg,html[data-plantilla="clasico"] .hoy i{animation:none}
-html[data-plantilla="clasico"] .art{background-image:none}
+html[data-plantilla="clasico"] .grid{gap:16px}
+html[data-plantilla="clasico"] .art{background:#F6F6F4;background-image:none;border-bottom:0}
 html[data-plantilla="clasico"] .art img.cut{filter:none}
-html[data-plantilla="clasico"] .card{box-shadow:none;transition:none;transform:none!important}
-html[data-plantilla="clasico"] .card:hover{box-shadow:none}
+html[data-plantilla="clasico"] .card{border:1px solid #E7E7E3;box-shadow:none;transition:none;transform:none!important}
+html[data-plantilla="clasico"] .card:hover{box-shadow:none;border-color:#CFCFC9}
 html[data-plantilla="clasico"] .card:hover .art svg{transform:none}
-html[data-plantilla="clasico"] .tag{transform:none;box-shadow:none;border-radius:6px;font-family:var(--body);font-weight:700}
-html[data-plantilla="clasico"] .add,html[data-plantilla="clasico"] .stepper{border-radius:10px}
+html[data-plantilla="clasico"] .tag{left:auto;right:10px;top:10px;bottom:auto;transform:none;box-shadow:none;border-radius:6px;background:#FFFFFF;color:#111;font:700 15px/1 var(--body);padding:7px 9px}
+html[data-plantilla="clasico"] .add,html[data-plantilla="clasico"] .stepper{border-radius:8px}
+html[data-plantilla="clasico"] .add{background:var(--ink);color:var(--paper)}
 
 /* =====================================================================
-   2 · REALISTA / ARTESANAL — crema, tierra y madera suave
+   2 · REALISTA / ARTESANAL — cremas y tierra profundos, madera, papel kraft.
+   Se reconoce por: fondo crema tostado con grano, foto "enmarcada" sobre
+   tabla de madera oscura, títulos con serifa, sello de precio, botones
+   terracota llenos.
    ===================================================================== */
 html[data-plantilla="artesanal"] body{
   background-color:var(--paper);
-  /* grano de papel muy suave (imagen chiquita que se repite, no pesa) */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .2 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .38 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 60% at 50% 0%,rgba(255,240,215,.55),transparent 70%)}
 html.lite[data-plantilla="artesanal"] body{background-image:none}
-html[data-plantilla="artesanal"] .top{background:rgba(var(--paper-rgb),.96)}
-html[data-plantilla="artesanal"] .card{border-radius:14px;border:1px solid rgba(var(--ink-rgb),.12);
-  box-shadow:0 1px 0 rgba(var(--ink-rgb),.05),0 16px 30px -22px rgba(var(--ink-rgb),.5)}
-html[data-plantilla="artesanal"] .art{aspect-ratio:1/1;border-bottom:0;
-  /* tabla de madera clara: vetas finas sobre un tono crema tostado */
-  background:repeating-linear-gradient(92deg,rgba(120,80,40,.045) 0 2px,transparent 2px 11px),
-             linear-gradient(180deg,#EFE2CC,#E4D2B4)}
-html[data-plantilla="artesanal"] .art img.cut{filter:drop-shadow(0 16px 12px rgba(70,45,20,.32))}
-html[data-plantilla="artesanal"] .tag{background:var(--sheet);color:var(--marigold);border:1.5px dashed var(--marigold);box-shadow:none;transform:rotate(-2deg)}
-html[data-plantilla="artesanal"] .flag{background:#C9A877;color:#2E2117}
-html[data-plantilla="artesanal"] .kind{letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
-html[data-plantilla="artesanal"] .add,html[data-plantilla="artesanal"] .stepper{border-radius:10px}
-html[data-plantilla="artesanal"] .still{border-radius:18px}
-@media (max-width:560px){html[data-plantilla="artesanal"] .grid{gap:10px}}
+html[data-plantilla="artesanal"] .top{background:rgba(var(--paper-rgb),.97);border-bottom:1px solid rgba(var(--ink-rgb),.14)}
+html[data-plantilla="artesanal"] .hero h1{letter-spacing:-.015em}
+html[data-plantilla="artesanal"] .still{border-radius:6px;box-shadow:0 0 0 10px #F9EFDD,0 0 0 11px rgba(var(--ink-rgb),.14),0 30px 50px -24px rgba(60,35,15,.55)}
+html[data-plantilla="artesanal"] .grid{gap:26px}
+html[data-plantilla="artesanal"] .card{border-radius:6px;border:0;background:var(--sheet);padding:10px;
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 2px 0 rgba(60,35,15,.08),0 22px 36px -22px rgba(60,35,15,.6)}
+html[data-plantilla="artesanal"] .art{aspect-ratio:1/1;border:0;border-radius:3px;
+  background:repeating-linear-gradient(93deg,rgba(40,20,5,.07) 0 2px,transparent 2px 13px),
+             repeating-linear-gradient(87deg,rgba(255,235,200,.05) 0 1px,transparent 1px 7px),
+             linear-gradient(180deg,#B88C5A,#9C6F41);
+  box-shadow:inset 0 0 0 1px rgba(40,20,5,.18),inset 0 18px 30px -18px rgba(0,0,0,.35)}
+html[data-plantilla="artesanal"] .art img{border-radius:3px}
+html[data-plantilla="artesanal"] .art img.cut{filter:drop-shadow(0 18px 12px rgba(30,15,0,.45))}
+html[data-plantilla="artesanal"] .tag{right:12px;bottom:12px;background:#F6E7CC;color:var(--marigold);border:1.5px dashed var(--marigold);
+  box-shadow:0 0 0 4px #F6E7CC,0 8px 16px -6px rgba(30,15,0,.5);transform:rotate(-4deg);font-size:17px}
+html[data-plantilla="artesanal"] .flag{background:#E9D3AA;color:#2E1F14;border-radius:3px;letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+html[data-plantilla="artesanal"] .body{padding:18px 8px 6px}
+html[data-plantilla="artesanal"] .body h3{font-size:22px}
+html[data-plantilla="artesanal"] .kind{letter-spacing:.12em;text-transform:uppercase;font-size:11px;color:var(--sea)}
+html[data-plantilla="artesanal"] .add{border-radius:4px;border:0;background:var(--marigold);color:#FFF8EC;letter-spacing:.02em}
+html[data-plantilla="artesanal"] .add:hover{background:var(--ink)}
+html[data-plantilla="artesanal"] .stepper{border-radius:4px}
+html[data-plantilla="artesanal"] .card.out .add{background:transparent}
+@media (max-width:560px){html[data-plantilla="artesanal"] .grid{gap:12px}html[data-plantilla="artesanal"] .card{padding:6px}
+  html[data-plantilla="artesanal"] .body{padding:14px 6px 6px}html[data-plantilla="artesanal"] .body h3{font-size:17px}
+  html[data-plantilla="artesanal"] .tag{font-size:14px;right:8px;bottom:8px;box-shadow:0 0 0 3px #F6E7CC,0 6px 12px -6px rgba(30,15,0,.5)}}
 
 /* =====================================================================
-   3 · MINIMAL MODERNO / GLASSMORPHISM — tarjetas de vidrio
+   3 · MINIMAL MODERNO / GLASSMORPHISM — tarjetas de vidrio flotando.
+   Se reconoce por: fondo con luces de color, tarjetas separadas que
+   "flotan" (sombra en capas), foto dentro de la tarjeta con su propio
+   borde redondo, borde de luz de 1 px.
    ===================================================================== */
-/* fondo con manchas de color de la marca (fijo, no se repinta al bajar) */
 html[data-plantilla="glass"] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(55vmax 55vmax at 8% -5%,rgba(var(--ink-rgb),.10),transparent 60%),var(--paper)}
 @supports (background:color-mix(in srgb,red 50%,blue)){
   html[data-plantilla="glass"] body::before{background:
-    radial-gradient(55vmax 55vmax at 6% -6%,color-mix(in srgb,var(--marigold) 34%,transparent),transparent 62%),
-    radial-gradient(48vmax 48vmax at 100% 28%,color-mix(in srgb,var(--sea) 28%,transparent),transparent 60%),
-    radial-gradient(40vmax 40vmax at 30% 100%,color-mix(in srgb,var(--marigold) 18%,transparent),transparent 60%),
-    var(--paper)}}
+    radial-gradient(50vmax 50vmax at 4% 2%,color-mix(in srgb,var(--marigold) 42%,transparent),transparent 62%),
+    radial-gradient(46vmax 46vmax at 100% 34%,color-mix(in srgb,var(--sea) 36%,transparent),transparent 62%),
+    radial-gradient(44vmax 44vmax at 22% 96%,color-mix(in srgb,var(--marigold) 26%,transparent),transparent 62%),
+    radial-gradient(40vmax 40vmax at 80% 100%,color-mix(in srgb,var(--ink) 14%,transparent),transparent 62%),
+    color-mix(in srgb,var(--paper) 88%,#fff)}}
 html[data-plantilla="glass"] body{background:transparent}
-html[data-plantilla="glass"] .card{border-radius:22px;background:rgba(255,255,255,.58);
-  border:1px solid rgba(255,255,255,.7);box-shadow:0 10px 34px -12px rgba(var(--shadow),.22),inset 0 1px 0 rgba(255,255,255,.65);
-  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%)}
-html[data-plantilla="glass"] .art{background:rgba(255,255,255,.28);background-image:none;border-bottom:1px solid rgba(255,255,255,.55)}
-html[data-plantilla="glass"] .tag{transform:none;border-radius:999px;box-shadow:0 6px 16px -8px rgba(var(--shadow),.5)}
-html[data-plantilla="glass"] .flag{background:rgba(255,255,255,.75);color:var(--ink);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-html[data-plantilla="glass"] .add{border-color:rgba(var(--ink-rgb),.35)}
-html[data-plantilla="glass"] .still{border-radius:28px}
-/* temas oscuros: vidrio ahumado en vez de blanco */
-html[data-plantilla="glass"][style*="color-scheme: dark"] .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);box-shadow:0 10px 34px -12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12)}
-html[data-plantilla="glass"][style*="color-scheme: dark"] .art{background:rgba(255,255,255,.05);border-bottom-color:rgba(255,255,255,.12)}
-html[data-plantilla="glass"][style*="color-scheme: dark"] .flag{background:rgba(0,0,0,.45);color:#fff}
-/* liviano o navegador sin desenfoque: tarjeta sólida y limpia */
-html.lite[data-plantilla="glass"] .card,html.lite[data-plantilla="glass"] .flag{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet);border-color:var(--line)}
+html[data-plantilla="glass"] .top{background:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.6)}
+html[data-plantilla="glass"] .grid{gap:30px}
+html[data-plantilla="glass"] .card{position:relative;border-radius:30px;padding:12px;background:rgba(255,255,255,.52);
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 4px rgba(var(--shadow),.04),0 12px 24px -10px rgba(var(--shadow),.14),0 40px 70px -36px rgba(var(--shadow),.32);
+  backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);
+  transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+@media (hover:hover){html[data-plantilla="glass"] .card:hover{transform:translateY(-6px)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 4px 8px rgba(var(--shadow),.05),0 24px 40px -14px rgba(var(--shadow),.2),0 60px 90px -40px rgba(var(--shadow),.4)}}
+html[data-plantilla="glass"] .art{border-radius:22px;border:0;background:rgba(255,255,255,.65);background-image:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8)}
+html[data-plantilla="glass"] .art img{border-radius:22px}
+html[data-plantilla="glass"] .art img.cut{filter:drop-shadow(0 22px 20px rgba(var(--shadow),.22))}
+html[data-plantilla="glass"] .tag{right:12px;bottom:12px;transform:none;border-radius:999px;background:rgba(255,255,255,.82);color:var(--ink);
+  font:700 15px/1 var(--body);padding:9px 13px;box-shadow:0 8px 20px -10px rgba(var(--shadow),.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+html[data-plantilla="glass"] .flag{top:12px;left:12px;background:rgba(255,255,255,.82);color:var(--ink);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+html[data-plantilla="glass"] .body{padding:18px 10px 8px}
+html[data-plantilla="glass"] .kind{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+html[data-plantilla="glass"] .add{border:0;background:var(--ink);color:var(--paper);box-shadow:0 10px 20px -12px rgba(var(--ink-rgb),.8)}
+html[data-plantilla="glass"] .still{border-radius:32px;box-shadow:0 40px 80px -40px rgba(var(--shadow),.45)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 60px -30px rgba(0,0,0,.8)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .art{background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .tag,html[data-plantilla="glass"][style*="color-scheme: dark"] .flag{background:rgba(0,0,0,.5);color:#fff}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .top{background:rgba(0,0,0,.35);border-bottom-color:rgba(255,255,255,.08)}
+@media (max-width:560px){html[data-plantilla="glass"] .grid{gap:14px}html[data-plantilla="glass"] .card{padding:7px;border-radius:22px}
+  html[data-plantilla="glass"] .art,html[data-plantilla="glass"] .art img{border-radius:16px}html[data-plantilla="glass"] .body{padding:14px 7px 6px}
+  html[data-plantilla="glass"] .tag{font-size:13px;padding:7px 10px;right:8px;bottom:8px}}
+html.lite[data-plantilla="glass"] .card,html.lite[data-plantilla="glass"] .flag,html.lite[data-plantilla="glass"] .tag,html.lite[data-plantilla="glass"] .top{backdrop-filter:none;-webkit-backdrop-filter:none}
+html.lite[data-plantilla="glass"] .card{background:var(--sheet);border-color:var(--line);box-shadow:0 10px 24px -14px rgba(var(--shadow),.3);transition:none}
 html.lite[data-plantilla="glass"] .art{background:var(--art)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   html[data-plantilla="glass"] .card{background:var(--sheet);border-color:var(--line)}}
 
 /* =====================================================================
-   4 · VITRINA INTERACTIVA 2.5D — la foto se inclina con el dedo/mouse
-   Solo CSS perspective + rotateX/rotateY sobre la imagen 2D.
+   4 · VITRINA INTERACTIVA 2.5D — escaparate con foco de luz.
+   Se reconoce por: producto estrella enorme sobre un "pedestal" con
+   sombra profunda, foco de luz, relieve en la tarjeta; la foto se inclina
+   con el dedo o el mouse (CSS perspective + rotateX/rotateY).
    Variables que mueve estilos_tienda/plantillas.js en cada tarjeta:
    --rx --ry (grados), --sx --sy (sombra, px), --gx --gy (brillo, %)
    ===================================================================== */
-html[data-plantilla="vitrina25d"] .card{--rx:0deg;--ry:0deg;--sx:0px;--sy:14px;--gx:50%;--gy:30%;
-  border-radius:20px;transform:none!important;
-  box-shadow:var(--sx) var(--sy) 34px -18px rgba(var(--shadow),.45);transition:box-shadow .35s ease-out}
-html[data-plantilla="vitrina25d"] .art{perspective:700px;touch-action:pan-y;overflow:hidden;cursor:grab;
-  background:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art));background-image:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art))}
-html[data-plantilla="vitrina25d"] .art img,html[data-plantilla="vitrina25d"] .art svg{
+html[data-plantilla="vitrina25d"] .grid{gap:24px;grid-auto-flow:dense}
+html[data-plantilla="vitrina25d"] .card{--rx:0deg;--ry:0deg;--sx:0px;--sy:18px;--gx:50%;--gy:30%;
+  border-radius:26px;border:0;transform:none!important;background:var(--sheet);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 1px 0 rgba(var(--shadow),.06),0 3px 0 rgba(var(--shadow),.04),
+    var(--sx) var(--sy) 40px -18px rgba(var(--shadow),.5);transition:box-shadow .4s ease-out}
+html[data-plantilla="vitrina25d"] .art{perspective:760px;touch-action:pan-y;overflow:hidden;cursor:grab;border-bottom:0;
+  background:radial-gradient(70% 60% at 50% 38%,var(--sheet) 0,var(--art) 55%,rgba(var(--ink-rgb),.14) 100%);background-color:var(--art)}
+/* pedestal: sombra ovalada bajo el producto (solo fotos sin fondo o dibujos), se corre con la inclinación */
+html[data-plantilla="vitrina25d"] .art:has(img.cut)::before,html[data-plantilla="vitrina25d"] .art:has(svg)::before{display:block}
+html[data-plantilla="vitrina25d"] .art::before{display:none;content:"";position:absolute;left:18%;right:18%;bottom:7%;height:12%;border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(var(--shadow),.38),transparent);transform:translateX(calc(var(--sx)*-.6)) scaleX(1.05);transition:transform .45s}
+html[data-plantilla="vitrina25d"] .art img,html[data-plantilla="vitrina25d"] .art svg{z-index:1;
   transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(1.06);
-  transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s;will-change:transform}
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .5s;will-change:transform}
 html[data-plantilla="vitrina25d"] .card.tilting .art img,html[data-plantilla="vitrina25d"] .card.tilting .art svg{transition:transform .08s linear,filter .08s linear}
-html[data-plantilla="vitrina25d"] .art img.cut{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(.98);
-  filter:drop-shadow(calc(var(--sx)*.8) calc(var(--sy)*.9) 14px rgba(var(--shadow),.34))}
-/* brillo que sigue al dedo */
-html[data-plantilla="vitrina25d"] .art::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
-  background:radial-gradient(60% 50% at var(--gx) var(--gy),rgba(255,255,255,.38),transparent 70%);mix-blend-mode:soft-light}
+html[data-plantilla="vitrina25d"] .card.tilting .art::before{transition:transform .08s linear}
+html[data-plantilla="vitrina25d"] .art img.cut{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(.94);
+  filter:drop-shadow(calc(var(--sx)*.9) calc(var(--sy)*1.1) 18px rgba(var(--shadow),.42)) drop-shadow(0 2px 2px rgba(var(--shadow),.2))}
+html[data-plantilla="vitrina25d"] .art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(55% 45% at var(--gx) var(--gy),rgba(255,255,255,.45),transparent 70%);mix-blend-mode:soft-light}
 html[data-plantilla="vitrina25d"] .card.tilting .art::after{opacity:1}
-/* producto estrella: el primero ocupa el doble */
-html[data-plantilla="vitrina25d"] .grid{grid-auto-flow:dense}
-html[data-plantilla="vitrina25d"] .card.estrella{grid-column:span 2;grid-row:span 2}
-html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:auto;flex:1 1 auto;min-height:260px}
+html[data-plantilla="vitrina25d"] .tag{z-index:3;bottom:14px;right:14px;transform:none;border-radius:999px}
+html[data-plantilla="vitrina25d"] .flag{z-index:3}
+/* ---- producto estrella: mucho más grande, foco y relieve profundo ---- */
+html[data-plantilla="vitrina25d"] .card.estrella{grid-column:span 2;grid-row:span 2;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 2px 0 rgba(var(--shadow),.06),0 6px 0 rgba(var(--shadow),.03),
+    calc(var(--sx)*1.4) calc(var(--sy)*1.6) 70px -24px rgba(var(--shadow),.6),0 60px 100px -50px rgba(var(--shadow),.55)}
+html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:auto;flex:1 1 auto;min-height:440px;perspective:1000px;
+  background:radial-gradient(60% 55% at 50% 36%,#FFFFFF 0,var(--sheet) 25%,var(--art) 60%,rgba(var(--ink-rgb),.22) 100%)}
+html[data-plantilla="vitrina25d"] .card.estrella .art::before{left:20%;right:20%;bottom:6%;height:10%;background:radial-gradient(closest-side,rgba(var(--shadow),.55),transparent)}
+html[data-plantilla="vitrina25d"] .card.estrella .art img:not(.cut){object-fit:cover;transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(1.08)}
+html[data-plantilla="vitrina25d"] .card.estrella .art img.cut{padding:6% 12% 10%;filter:drop-shadow(calc(var(--sx)*1.3) calc(var(--sy)*1.8) 26px rgba(var(--shadow),.5)) drop-shadow(0 4px 4px rgba(var(--shadow),.25))}
 html[data-plantilla="vitrina25d"] .card.estrella .body,html[data-plantilla="vitrina25d"] .card.estrella .body p{flex:none}
-@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella{grid-row:auto}html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:16/10;flex:none;min-height:0}}
-/* la foto se recorta dentro del recuadro, así que el precio va adentro */
-html[data-plantilla="vitrina25d"] .tag{bottom:12px;transform:none;border-radius:999px}
-html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:26px}
-@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:20px}}
+html[data-plantilla="vitrina25d"] .card.estrella .body{padding:24px 26px 24px}
+html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:32px;letter-spacing:-.02em}
+html[data-plantilla="vitrina25d"] .card.estrella .tag{font-size:22px;padding:12px 16px;bottom:22px;right:22px;box-shadow:0 14px 24px -12px rgba(var(--shadow),.6)}
+html[data-plantilla="vitrina25d"] .card.estrella::before{content:"★ Destacado";position:absolute;z-index:4;margin:18px;padding:7px 12px;border-radius:999px;
+  font:700 12px/1 var(--body);letter-spacing:.04em;background:var(--ink);color:var(--paper)}
+html[data-plantilla="vitrina25d"] .card.estrella{position:relative}
+html[data-plantilla="vitrina25d"] .card.estrella .flag{top:56px;left:18px}
+@media (max-width:560px){html[data-plantilla="vitrina25d"] .grid{gap:14px}
+  html[data-plantilla="vitrina25d"] .card.estrella{grid-row:auto}
+  html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:1/1;flex:none;min-height:0}
+  html[data-plantilla="vitrina25d"] .card.estrella .body{padding:18px 16px}
+  html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:24px}
+  html[data-plantilla="vitrina25d"] .card.estrella .tag{font-size:18px;padding:10px 13px;bottom:14px;right:14px}}
 /* pista de que se puede mover: un saludo corto una sola vez */
-@keyframes hv-asoma{0%,100%{transform:rotateX(0) rotateY(0) scale(1.06)}35%{transform:rotateX(4deg) rotateY(-9deg) scale(1.06)}70%{transform:rotateX(-2deg) rotateY(7deg) scale(1.06)}}
-html[data-plantilla="vitrina25d"] .card.estrella.saluda .art img:not(.cut),html[data-plantilla="vitrina25d"] .card.estrella.saluda .art svg{animation:hv-asoma 1.6s ease-in-out 1}
-/* liviano / menos movimiento: foto quieta, sombra fija */
+@keyframes hv-asoma{0%,100%{transform:rotateX(0) rotateY(0) scale(1.08)}35%{transform:rotateX(5deg) rotateY(-10deg) scale(1.08)}70%{transform:rotateX(-3deg) rotateY(8deg) scale(1.08)}}
+html[data-plantilla="vitrina25d"] .card.estrella.saluda .art img,html[data-plantilla="vitrina25d"] .card.estrella.saluda .art svg{animation:hv-asoma 1.6s ease-in-out 1}
+/* liviano / menos movimiento: foto quieta, sombra fija (el tamaño y el foco se mantienen) */
 html.lite[data-plantilla="vitrina25d"] .art img,html.lite[data-plantilla="vitrina25d"] .art svg{transform:none!important;transition:none;animation:none!important;will-change:auto}
-html.lite[data-plantilla="vitrina25d"] .art img.cut{filter:drop-shadow(0 14px 12px rgba(var(--shadow),.28))}
 html.lite[data-plantilla="vitrina25d"] .art::after{display:none}
 html.lite[data-plantilla="vitrina25d"] .art{cursor:auto}
 </style>
@@ -460,14 +520,14 @@ html.lite[data-plantilla="vitrina25d"] .art{cursor:auto}
       texto: "Fondo blanco, letras del teléfono (no se descargan) y cero efectos. Carga al tiro aunque la señal esté mala en la feria.",
       /* Paleta neutra. destacado/acento: se respetan los de la emprendedora
          si se leen bien sobre blanco; si no, se usan estos. */
-      paleta: { fondo: "#F7F7F5", tarjetas: "#FFFFFF", texto: "#1E2329", destacado: "#A6402A", acento: "#2F6F62" },
+      paleta: { fondo: "#FFFFFF", tarjetas: "#FFFFFF", texto: "#16191D", destacado: "#A6402A", acento: "#2F6F62" },
       mantieneAcentos: true
     },
     artesanal: {
       id: "artesanal", nombre: "Realista artesanal", apodo: "Cálido y cercano",
       ideal: "Comida, tejidos y manualidades",
       texto: "Tonos tierra, crema y madera suave. Fotos grandes y directas, como mirar el producto en tu mesa.",
-      paleta: { fondo: "#F3EADB", tarjetas: "#FFF9EF", texto: "#3A2A1F", destacado: "#A4532B", acento: "#6C7A3B", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
+      paleta: { fondo: "#E8D6B8", tarjetas: "#F8EEDC", texto: "#2B1B10", destacado: "#9A4321", acento: "#5B6A2A", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
     },
     glass: {
       id: "glass", nombre: "Minimal moderno", apodo: "Vidrio (glassmorphism)",

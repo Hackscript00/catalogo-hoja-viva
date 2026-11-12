@@ -14,14 +14,14 @@
       texto: "Fondo blanco, letras del teléfono (no se descargan) y cero efectos. Carga al tiro aunque la señal esté mala en la feria.",
       /* Paleta neutra. destacado/acento: se respetan los de la emprendedora
          si se leen bien sobre blanco; si no, se usan estos. */
-      paleta: { fondo: "#F7F7F5", tarjetas: "#FFFFFF", texto: "#1E2329", destacado: "#A6402A", acento: "#2F6F62" },
+      paleta: { fondo: "#FFFFFF", tarjetas: "#FFFFFF", texto: "#16191D", destacado: "#A6402A", acento: "#2F6F62" },
       mantieneAcentos: true
     },
     artesanal: {
       id: "artesanal", nombre: "Realista artesanal", apodo: "Cálido y cercano",
       ideal: "Comida, tejidos y manualidades",
       texto: "Tonos tierra, crema y madera suave. Fotos grandes y directas, como mirar el producto en tu mesa.",
-      paleta: { fondo: "#F3EADB", tarjetas: "#FFF9EF", texto: "#3A2A1F", destacado: "#A4532B", acento: "#6C7A3B", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
+      paleta: { fondo: "#E8D6B8", tarjetas: "#F8EEDC", texto: "#2B1B10", destacado: "#9A4321", acento: "#5B6A2A", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
     },
     glass: {
       id: "glass", nombre: "Minimal moderno", apodo: "Vidrio (glassmorphism)",

@@ -75,7 +75,7 @@
   function esqueleto() {
     raiz.innerHTML =
       '<div class="dash" id="dash">' +
-      '<div class="d-head"><div><p>Tu panel de hoy</p><h2 id="dNom"></h2></div>' +
+      '<div class="d-head"><div><p class="d-saludo" id="dSaludo">Tu panel de hoy</p><h2 id="dNom"></h2></div>' +
       '<div class="d-temas" role="radiogroup" aria-label="Aspecto del panel">' +
       TEMAS.map(function (t) { return '<button type="button" role="radio" data-tema="' + t[0] + '" aria-checked="false"><i style="background:' + t[2] + '"></i>' + t[1] + '</button>'; }).join("") +
       '</div></div>' +
@@ -93,9 +93,9 @@
       [["hoy", "Hoy"], ["7", "7 días"], ["30", "30 días"], ["todo", "Todo"]].map(function (p) { return '<button type="button" data-per="' + p[0] + '" aria-pressed="false">' + p[1] + '</button>'; }).join("") +
       '</div></div>' +
       '<div class="d-kpis" id="dKpis"></div>' +
-      '<button type="button" class="d-btn" id="dNuevo">' + ICON.mas + 'Llegó un pedido por WhatsApp</button>' +
+      '<button type="button" class="d-btn" id="dNuevo">' + ICON.mas + 'Anotar un pedido</button>' +
       '<p class="d-sync" id="dSyncV" role="status" aria-live="polite"></p><div id="dPendW"></div>' +
-      '<div><h4 style="margin:4px 0 10px">Lo más pedido</h4><ol class="d-top" id="dTop"></ol></div>' +
+      '<div class="d-bloque"><h4 class="d-h4">Lo más pedido</h4><ol class="d-top" id="dTop"></ol></div>' +
       '<details class="d-hist" id="dHist"><summary>Ver todos los pedidos</summary><ul id="dHistL"></ul></details>' +
       '<p class="d-mut">Las ventas se guardan solo en este teléfono. Tus clientas no las ven.</p></section>' +
       '</div>' + dialogo();
@@ -119,6 +119,8 @@
   function pintarEstado() {
     var S = api.datos(), b = S.biz, e = estadoActual();
     $("dNom").textContent = b.nombre || "Tu negocio";
+    var h = new Date().getHours(), dia = new Date().toLocaleDateString("es-CL", { weekday: "long", day: "numeric", month: "long" });
+    $("dSaludo").textContent = (h < 12 ? "Buenos días" : h < 20 ? "Buenas tardes" : "Buenas noches") + " · " + dia;
     raiz.querySelectorAll(".d-estado button").forEach(function (x) { x.setAttribute("aria-checked", String(x.dataset.v === e)); });
     $("dLugarW").hidden = e === "cerrado" || !e;
     $("dLugarW").firstChild.textContent = e === "casa" ? "Comuna o sector (opcional) " : "Lugar exacto ";
@@ -133,7 +135,7 @@
     $("dStock").textContent = P.length ? (P.length - agot) + " disponibles · " + agot + " agotado" + (agot === 1 ? "" : "s") : "";
     $("dProds").innerHTML = P.length ? P.map(function (p) {
       var i = S.prods.indexOf(p), on = api.disponible(p.disponible), f = api.foto(p);
-      return '<li class="' + (on ? "" : "agotado") + '"><span class="d-th"' + (f ? ' style="background-image:url(\'' + esc(f) + '\')"' : "") + '></span>' +
+      return '<li class="' + (on ? "" : "agotado") + '"><span class="d-th' + (f ? " foto" : "") + '" data-l="' + esc(String(p.nombre).trim().charAt(0).toUpperCase()) + '"' + (f ? ' style="background-image:url(\'' + esc(f) + '\')"' : "") + '></span>' +
         '<span class="d-pn"><b>' + esc(p.nombre) + '</b><span>' + (precio(p) ? clp(precio(p)) : "Sin precio") + '</span></span>' +
         '<button type="button" class="d-sw" role="switch" aria-checked="' + on + '" data-i="' + i + '" aria-label="' + esc(p.nombre) + ' disponible"><span>' + (on ? "Disponible" : "Agotado") + '</span><i></i></button></li>';
     }).join("") : '<li style="display:block"><div class="d-vacio">Aún no tienes productos. <button type="button" class="d-go" data-go="productos">Agregar productos</button></div></li>';
@@ -146,7 +148,7 @@
       kpi("", "Pedidos por WhatsApp", r.pedidos, r.pendientes ? r.pendientes + " por confirmar" : "mensajes que te llegaron") +
       kpi("", "Ventas concretadas", r.concretadas, r.pedidos ? r.conversion + "% de los pedidos" : "—");
     var pend = libro.datos.pedidos.filter(function (x) { return x.estado === "pendiente"; });
-    $("dPendW").innerHTML = pend.length ? '<h4 style="margin:4px 0 10px">Por confirmar</h4><ul class="d-pend">' + pend.slice(0, 8).map(function (x) {
+    $("dPendW").innerHTML = pend.length ? '<h4 class="d-h4">Por confirmar <span class="d-num">' + pend.length + '</span></h4><ul class="d-pend">' + pend.slice(0, 8).map(function (x) {
       return '<li><div class="d-pt"><span>#' + esc(x.id) + (x.cliente ? " · " + esc(x.cliente) : "") + '</span><span>' + clp(x.total) + '</span></div>' +
         '<p class="d-pi">' + esc(resumenItems(x)) + ' · ' + hace(x.fecha) + '</p>' +
         '<div class="d-pa"><button type="button" class="ok" data-ok="' + esc(x.id) + '">✓ Venta concretada</button><button type="button" data-no="' + esc(x.id) + '">No se concretó</button></div></li>';
@@ -162,7 +164,7 @@
       return '<li><span>#' + esc(x.id) + ' · ' + fecha(x.fecha) + (x.cliente ? " · " + esc(x.cliente) : "") + '</span><span>' + t + ' <button type="button" data-del="' + esc(x.id) + '" aria-label="Borrar pedido ' + esc(x.id) + '">borrar</button></span></li>';
     }).join("");
   }
-  function kpi(c, t, v, s) { return '<div class="d-kpi ' + c + '"><small>' + t + '</small><b>' + v + '</b><em>' + s + '</em></div>'; }
+  function kpi(c, t, v, s) { return '<div class="d-kpi ' + c + '"><small>' + t + '</small><b>' + v + '</b><em>' + s + '</em>' + (c === "big" ? '<span class="d-chipcard" aria-hidden="true"></span>' : "") + '</div>'; }
   function resumenItems(x) { return (x.items || []).map(function (i) { return i.q + "× " + i.n; }).join(", ") || "Sin detalle"; }
   function fecha(iso) { var d = new Date(iso); return d.toLocaleDateString("es-CL", { day: "numeric", month: "short" }); }
   function hace(iso) {
