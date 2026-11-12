@@ -1,0 +1,129 @@
+/* =====================================================================
+   estilos_tienda/plantillas.css — Los 4 estilos de la tienda pública
+   Se activan con <html data-plantilla="clasico|artesanal|glass|vitrina25d">.
+   Sin data-plantilla, la tienda queda con su diseño de siempre.
+   html.lite (comun/rendimiento.js) apaga desenfoques e inclinaciones.
+   ===================================================================== */
+
+/* ---------- estado del día (muelle / casa / cerrado) ---------- */
+.hoy.casa i{background:#F5B83D;box-shadow:none;animation:none}
+.hoy.cerrado{background:var(--line);color:var(--ink)}
+.hoy.cerrado i{background:#8C9A9C;box-shadow:none;animation:none}
+
+/* ---------- modo liviano: vale para cualquier estilo ---------- */
+html.lite .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--paper)}
+html.lite .still svg,html.lite .hoy i,html.lite .vprod{animation:none!important}
+html.lite .card,html.lite .still{transform:none!important;transition:none!important}
+
+/* =====================================================================
+   1 · CLÁSICO / ULTRA RÁPIDO — blanco, letras del sistema, cero efectos
+   ===================================================================== */
+html[data-plantilla="clasico"]{
+  --display:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  --dw:700!important;--r-lg:12px}
+html[data-plantilla="clasico"] .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet)}
+html[data-plantilla="clasico"] .hero h1{text-shadow:none!important;letter-spacing:-.02em}
+html[data-plantilla="clasico"] .still{box-shadow:none;transform:none!important}
+html[data-plantilla="clasico"] .still svg,html[data-plantilla="clasico"] .hoy i{animation:none}
+html[data-plantilla="clasico"] .art{background-image:none}
+html[data-plantilla="clasico"] .art img.cut{filter:none}
+html[data-plantilla="clasico"] .card{box-shadow:none;transition:none;transform:none!important}
+html[data-plantilla="clasico"] .card:hover{box-shadow:none}
+html[data-plantilla="clasico"] .card:hover .art svg{transform:none}
+html[data-plantilla="clasico"] .tag{transform:none;box-shadow:none;border-radius:6px;font-family:var(--body);font-weight:700}
+html[data-plantilla="clasico"] .add,html[data-plantilla="clasico"] .stepper{border-radius:10px}
+
+/* =====================================================================
+   2 · REALISTA / ARTESANAL — crema, tierra y madera suave
+   ===================================================================== */
+html[data-plantilla="artesanal"] body{
+  background-color:var(--paper);
+  /* grano de papel muy suave (imagen chiquita que se repite, no pesa) */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .2 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+html.lite[data-plantilla="artesanal"] body{background-image:none}
+html[data-plantilla="artesanal"] .top{background:rgba(var(--paper-rgb),.96)}
+html[data-plantilla="artesanal"] .card{border-radius:14px;border:1px solid rgba(var(--ink-rgb),.12);
+  box-shadow:0 1px 0 rgba(var(--ink-rgb),.05),0 16px 30px -22px rgba(var(--ink-rgb),.5)}
+html[data-plantilla="artesanal"] .art{aspect-ratio:1/1;border-bottom:0;
+  /* tabla de madera clara: vetas finas sobre un tono crema tostado */
+  background:repeating-linear-gradient(92deg,rgba(120,80,40,.045) 0 2px,transparent 2px 11px),
+             linear-gradient(180deg,#EFE2CC,#E4D2B4)}
+html[data-plantilla="artesanal"] .art img.cut{filter:drop-shadow(0 16px 12px rgba(70,45,20,.32))}
+html[data-plantilla="artesanal"] .tag{background:var(--sheet);color:var(--marigold);border:1.5px dashed var(--marigold);box-shadow:none;transform:rotate(-2deg)}
+html[data-plantilla="artesanal"] .flag{background:#C9A877;color:#2E2117}
+html[data-plantilla="artesanal"] .kind{letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
+html[data-plantilla="artesanal"] .add,html[data-plantilla="artesanal"] .stepper{border-radius:10px}
+html[data-plantilla="artesanal"] .still{border-radius:18px}
+@media (max-width:560px){html[data-plantilla="artesanal"] .grid{gap:10px}}
+
+/* =====================================================================
+   3 · MINIMAL MODERNO / GLASSMORPHISM — tarjetas de vidrio
+   ===================================================================== */
+/* fondo con manchas de color de la marca (fijo, no se repinta al bajar) */
+html[data-plantilla="glass"] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(55vmax 55vmax at 8% -5%,rgba(var(--ink-rgb),.10),transparent 60%),var(--paper)}
+@supports (background:color-mix(in srgb,red 50%,blue)){
+  html[data-plantilla="glass"] body::before{background:
+    radial-gradient(55vmax 55vmax at 6% -6%,color-mix(in srgb,var(--marigold) 34%,transparent),transparent 62%),
+    radial-gradient(48vmax 48vmax at 100% 28%,color-mix(in srgb,var(--sea) 28%,transparent),transparent 60%),
+    radial-gradient(40vmax 40vmax at 30% 100%,color-mix(in srgb,var(--marigold) 18%,transparent),transparent 60%),
+    var(--paper)}}
+html[data-plantilla="glass"] body{background:transparent}
+html[data-plantilla="glass"] .card{border-radius:22px;background:rgba(255,255,255,.58);
+  border:1px solid rgba(255,255,255,.7);box-shadow:0 10px 34px -12px rgba(var(--shadow),.22),inset 0 1px 0 rgba(255,255,255,.65);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%)}
+html[data-plantilla="glass"] .art{background:rgba(255,255,255,.28);background-image:none;border-bottom:1px solid rgba(255,255,255,.55)}
+html[data-plantilla="glass"] .tag{transform:none;border-radius:999px;box-shadow:0 6px 16px -8px rgba(var(--shadow),.5)}
+html[data-plantilla="glass"] .flag{background:rgba(255,255,255,.75);color:var(--ink);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+html[data-plantilla="glass"] .add{border-color:rgba(var(--ink-rgb),.35)}
+html[data-plantilla="glass"] .still{border-radius:28px}
+/* temas oscuros: vidrio ahumado en vez de blanco */
+html[data-plantilla="glass"][style*="color-scheme: dark"] .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);box-shadow:0 10px 34px -12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .art{background:rgba(255,255,255,.05);border-bottom-color:rgba(255,255,255,.12)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .flag{background:rgba(0,0,0,.45);color:#fff}
+/* liviano o navegador sin desenfoque: tarjeta sólida y limpia */
+html.lite[data-plantilla="glass"] .card,html.lite[data-plantilla="glass"] .flag{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet);border-color:var(--line)}
+html.lite[data-plantilla="glass"] .art{background:var(--art)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html[data-plantilla="glass"] .card{background:var(--sheet);border-color:var(--line)}}
+
+/* =====================================================================
+   4 · VITRINA INTERACTIVA 2.5D — la foto se inclina con el dedo/mouse
+   Solo CSS perspective + rotateX/rotateY sobre la imagen 2D.
+   Variables que mueve estilos_tienda/plantillas.js en cada tarjeta:
+   --rx --ry (grados), --sx --sy (sombra, px), --gx --gy (brillo, %)
+   ===================================================================== */
+html[data-plantilla="vitrina25d"] .card{--rx:0deg;--ry:0deg;--sx:0px;--sy:14px;--gx:50%;--gy:30%;
+  border-radius:20px;transform:none!important;
+  box-shadow:var(--sx) var(--sy) 34px -18px rgba(var(--shadow),.45);transition:box-shadow .35s ease-out}
+html[data-plantilla="vitrina25d"] .art{perspective:700px;touch-action:pan-y;overflow:hidden;cursor:grab;
+  background:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art));background-image:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art))}
+html[data-plantilla="vitrina25d"] .art img,html[data-plantilla="vitrina25d"] .art svg{
+  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(1.06);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s;will-change:transform}
+html[data-plantilla="vitrina25d"] .card.tilting .art img,html[data-plantilla="vitrina25d"] .card.tilting .art svg{transition:transform .08s linear,filter .08s linear}
+html[data-plantilla="vitrina25d"] .art img.cut{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(.98);
+  filter:drop-shadow(calc(var(--sx)*.8) calc(var(--sy)*.9) 14px rgba(var(--shadow),.34))}
+/* brillo que sigue al dedo */
+html[data-plantilla="vitrina25d"] .art::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(60% 50% at var(--gx) var(--gy),rgba(255,255,255,.38),transparent 70%);mix-blend-mode:soft-light}
+html[data-plantilla="vitrina25d"] .card.tilting .art::after{opacity:1}
+/* producto estrella: el primero ocupa el doble */
+html[data-plantilla="vitrina25d"] .grid{grid-auto-flow:dense}
+html[data-plantilla="vitrina25d"] .card.estrella{grid-column:span 2;grid-row:span 2}
+html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:auto;flex:1 1 auto;min-height:260px}
+html[data-plantilla="vitrina25d"] .card.estrella .body,html[data-plantilla="vitrina25d"] .card.estrella .body p{flex:none}
+@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella{grid-row:auto}html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:16/10;flex:none;min-height:0}}
+/* la foto se recorta dentro del recuadro, así que el precio va adentro */
+html[data-plantilla="vitrina25d"] .tag{bottom:12px;transform:none;border-radius:999px}
+html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:26px}
+@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:20px}}
+/* pista de que se puede mover: un saludo corto una sola vez */
+@keyframes hv-asoma{0%,100%{transform:rotateX(0) rotateY(0) scale(1.06)}35%{transform:rotateX(4deg) rotateY(-9deg) scale(1.06)}70%{transform:rotateX(-2deg) rotateY(7deg) scale(1.06)}}
+html[data-plantilla="vitrina25d"] .card.estrella.saluda .art img:not(.cut),html[data-plantilla="vitrina25d"] .card.estrella.saluda .art svg{animation:hv-asoma 1.6s ease-in-out 1}
+/* liviano / menos movimiento: foto quieta, sombra fija */
+html.lite[data-plantilla="vitrina25d"] .art img,html.lite[data-plantilla="vitrina25d"] .art svg{transform:none!important;transition:none;animation:none!important;will-change:auto}
+html.lite[data-plantilla="vitrina25d"] .art img.cut{filter:drop-shadow(0 14px 12px rgba(var(--shadow),.28))}
+html.lite[data-plantilla="vitrina25d"] .art::after{display:none}
+html.lite[data-plantilla="vitrina25d"] .art{cursor:auto}

@@ -143,6 +143,257 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation:none}.switch input,.switch input::after{transition:none}}
 </style>
+<style>/* panel/panel.css */
+/* =====================================================================
+   panel/panel.css — Panel de la emprendedora (pestaña «Hoy»)
+   Pensado primero para celular. Tres aspectos: claro · oscuro · vidrio.
+   Todo vive dentro de .dash, así no cambia el resto del editor.
+   ===================================================================== */
+.dash{--d-bg:#F4F5F1;--d-card:#FFFFFF;--d-ink:#15242A;--d-soft:#5A6A70;--d-line:#E1E5DF;
+  --d-acc:#1C6B3A;--d-onacc:#FFFFFF;--d-chip:#EEF2EC;--d-warn:#9A5B00;--d-off:#B3261E;--d-bar:#1C6B3A;
+  --d-sh:0 1px 0 rgba(20,35,42,.04),0 10px 26px -18px rgba(20,35,42,.35);
+  position:relative;isolation:isolate;background:var(--d-bg);color:var(--d-ink);border-radius:26px;
+  padding:16px;display:grid;gap:14px;font-family:var(--body);overflow:hidden}
+.dash[data-tema="oscuro"]{--d-bg:#0E1317;--d-card:#172027;--d-ink:#EEF3F4;--d-soft:#9BAAB1;--d-line:#25313A;
+  --d-acc:#41D69A;--d-onacc:#06251A;--d-chip:#1F2A32;--d-warn:#F3B24C;--d-off:#FF8A80;--d-bar:#41D69A;
+  --d-sh:0 1px 0 rgba(0,0,0,.4),0 14px 30px -18px rgba(0,0,0,.8);color-scheme:dark}
+.dash[data-tema="vidrio"]{--d-bg:#E9EEF3;--d-card:rgba(255,255,255,.56);--d-ink:#13222B;--d-soft:#4B5D66;--d-line:rgba(255,255,255,.75);
+  --d-acc:#165E52;--d-onacc:#FFFFFF;--d-chip:rgba(255,255,255,.55);--d-warn:#8A5200;--d-off:#A3261E;--d-bar:#165E52;
+  --d-sh:0 12px 34px -16px rgba(31,52,76,.35),inset 0 1px 0 rgba(255,255,255,.7);
+  background:radial-gradient(70% 45% at 0% 0%,#B9E4DA 0,transparent 70%),radial-gradient(60% 40% at 100% 18%,#D8C9F2 0,transparent 70%),
+    radial-gradient(70% 45% at 50% 100%,#FAD9C1 0,transparent 70%),#E9EEF3}
+.dash[data-tema="vidrio"] .d-card{backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%)}
+/* Vidrio en modo liviano (o sin soporte): tarjetas sólidas, sin desenfoque */
+html.lite .dash[data-tema="vidrio"] .d-card{backdrop-filter:none;-webkit-backdrop-filter:none;background:#FFFFFF;border-color:#E1E5DF}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.dash[data-tema="vidrio"] .d-card{background:#FFFFFF}}
+
+.dash h2,.dash h3,.dash h4{color:var(--d-ink)}
+.d-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.d-head p{margin:0;color:var(--d-soft);font-size:14px}
+.d-head h2{font-size:26px;line-height:1.15;overflow-wrap:anywhere}
+.d-temas{display:flex;gap:6px;background:var(--d-chip);border:1px solid var(--d-line);padding:4px;border-radius:999px}
+.d-temas button{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--d-ink);font:600 13px/1 var(--body);padding:8px 10px;border-radius:999px;cursor:pointer;min-height:36px}
+.d-temas button i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.18)}
+.d-temas button[aria-checked="true"]{background:var(--d-card);box-shadow:var(--d-sh)}
+.d-card{background:var(--d-card);border:1px solid var(--d-line);border-radius:20px;padding:16px;box-shadow:var(--d-sh);display:grid;gap:12px;min-width:0}
+.d-card h3{font-size:20px}
+.d-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.d-mut{color:var(--d-soft);font-size:14px;margin:0}
+
+/* ----- estado del día ----- */
+.d-estado{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.d-estado button{display:grid;justify-items:center;gap:6px;padding:12px 6px;min-height:86px;border-radius:16px;border:1.5px solid var(--d-line);
+  background:var(--d-chip);color:var(--d-ink);font:700 14px/1.2 var(--body);cursor:pointer;text-align:center}
+.d-estado button svg{width:26px;height:26px}
+.d-estado button[aria-checked="true"]{border-color:var(--d-acc);background:var(--d-acc);color:var(--d-onacc)}
+.d-estado button[data-v="cerrado"][aria-checked="true"]{background:var(--d-soft);border-color:var(--d-soft);color:var(--d-card)}
+.d-lugar{display:grid;gap:6px;font-weight:600;font-size:15px}
+.d-lugar input{min-height:48px;border-radius:12px;border:1.5px solid var(--d-line);background:var(--d-card);color:var(--d-ink);padding:0 14px;font:inherit;font-weight:400}
+.d-chips{display:flex;gap:6px;flex-wrap:wrap}
+.d-chips button{border:1px solid var(--d-line);background:var(--d-chip);color:var(--d-ink);border-radius:999px;padding:8px 12px;font:600 13px/1 var(--body);cursor:pointer;min-height:36px}
+.d-sync{font-size:14px;margin:0;color:var(--d-soft);display:flex;align-items:center;gap:8px}
+.d-sync.ok{color:var(--d-acc)}.d-sync.err{color:var(--d-off)}
+.d-sync .d-go{border:0;background:none;color:var(--d-acc);font:700 14px var(--body);text-decoration:underline;cursor:pointer;padding:0}
+
+/* ----- productos con interruptor ----- */
+.d-prods{list-style:none;margin:0;padding:0;display:grid}
+.d-prods li{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--d-line)}
+.d-prods li:first-child{border-top:0}
+.d-th{width:48px;height:48px;border-radius:12px;background:var(--d-chip) center/cover no-repeat;border:1px solid var(--d-line)}
+.d-pn{min-width:0}.d-pn b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-pn span{font-size:13px;color:var(--d-soft)}
+.d-prods li.agotado .d-th{filter:grayscale(1);opacity:.55}
+.d-prods li.agotado b{color:var(--d-soft)}
+.d-sw{display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--d-ink);font:700 13px var(--body);cursor:pointer;min-height:44px;padding:0}
+.d-sw i{position:relative;width:48px;height:28px;border-radius:999px;background:var(--d-off);opacity:.9;transition:background .2s}
+.d-sw i::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.d-sw[aria-checked="true"] i{background:var(--d-acc);opacity:1}
+.d-sw[aria-checked="true"] i::after{transform:translateX(20px)}
+.d-sw span{min-width:62px;text-align:right}
+
+/* ----- métricas ----- */
+.d-per{display:flex;gap:4px;background:var(--d-chip);border:1px solid var(--d-line);border-radius:999px;padding:3px}
+.d-per button{border:0;background:transparent;color:var(--d-ink);font:600 13px/1 var(--body);padding:8px 10px;border-radius:999px;cursor:pointer;min-height:34px}
+.d-per button[aria-pressed="true"]{background:var(--d-card);box-shadow:var(--d-sh)}
+.d-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d-kpi{border-radius:16px;padding:14px;background:var(--d-chip);border:1px solid var(--d-line);display:grid;gap:2px;min-width:0}
+.d-kpi small{font-size:13px;color:var(--d-soft);font-weight:600}
+.d-kpi b{font:700 28px/1.1 var(--body);font-variant-numeric:tabular-nums;letter-spacing:-.02em;overflow-wrap:anywhere}
+.d-kpi em{font-style:normal;font-size:12.5px;color:var(--d-soft)}
+.d-kpi.big{grid-column:1/-1;background:var(--d-acc);border-color:var(--d-acc);color:var(--d-onacc)}
+.d-kpi.big small,.d-kpi.big em{color:inherit;opacity:.85}
+.d-kpi.big b{font-size:34px}
+.d-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:999px;border:0;background:var(--d-ink);color:var(--d-card);font:700 16px var(--body);cursor:pointer;width:100%}
+.d-btn.sec{background:transparent;border:1.5px solid var(--d-line);color:var(--d-ink)}
+.d-pend{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.d-pend li{border:1px solid var(--d-line);border-radius:16px;padding:12px;display:grid;gap:8px;background:var(--d-card)}
+.d-pend .d-pt{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.d-pend .d-pi{font-size:13.5px;color:var(--d-soft);margin:0}
+.d-pend .d-pa{display:flex;gap:8px;flex-wrap:wrap}
+.d-pend .d-pa button{flex:1;min-height:44px;border-radius:999px;font:700 14px var(--body);cursor:pointer;border:1.5px solid var(--d-line);background:transparent;color:var(--d-ink)}
+.d-pend .d-pa button.ok{background:var(--d-acc);border-color:var(--d-acc);color:var(--d-onacc)}
+.d-top{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.d-top li{display:grid;gap:4px;font-size:14px}
+.d-top .d-tl{display:flex;justify-content:space-between;gap:8px}.d-top .d-tl b{font-variant-numeric:tabular-nums}
+.d-top .d-bar{height:10px;border-radius:999px;background:var(--d-chip);overflow:hidden}
+.d-top .d-bar i{display:block;height:100%;border-radius:999px;background:var(--d-bar)}
+.d-vacio{border:1.5px dashed var(--d-line);border-radius:16px;padding:16px;text-align:center;color:var(--d-soft);font-size:14px}
+.d-hist summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center}
+.d-hist ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:14px}
+.d-hist li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--d-line);padding-top:6px}
+.d-hist li s{color:var(--d-soft)}
+.d-hist button{border:0;background:none;color:var(--d-soft);text-decoration:underline;cursor:pointer;font:13px var(--body)}
+
+/* ----- ventana «Llegó un pedido» ----- */
+.d-dlg{border:0;border-radius:24px;padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--sheet);color:var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.d-dlg::backdrop{background:rgba(10,20,24,.55)}
+.d-dlg form{padding:18px;display:grid;gap:12px}
+.d-dlg h3{font-size:22px}
+.d-modo{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--wash);padding:4px;border-radius:999px}
+.d-modo button{border:0;background:transparent;font:700 14px var(--body);color:var(--ink);border-radius:999px;min-height:40px;cursor:pointer}
+.d-modo button[aria-selected="true"]{background:var(--sheet);box-shadow:0 2px 8px -2px rgba(0,0,0,.2)}
+.d-dlg textarea{width:100%;min-height:130px;border-radius:12px;border:1.5px solid var(--line);padding:12px;font:inherit;background:var(--paper);color:var(--ink)}
+.d-dlg label{display:grid;gap:6px;font-weight:600}
+.d-dlg input[type=text]{min-height:46px;border-radius:12px;border:1.5px solid var(--line);padding:0 12px;font:inherit;background:var(--paper);color:var(--ink)}
+.d-leido{font-size:14px;border-radius:12px;background:var(--wash);padding:10px 12px}
+.d-leido:empty{display:none}
+.d-mano{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:40vh;overflow:auto}
+.d-mano li{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:6px 0}
+.d-mano li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-step{display:flex;align-items:center;gap:4px}
+.d-step button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+.d-step output{min-width:22px;text-align:center;font-weight:700}
+.d-check{display:flex!important;grid-template-columns:none;align-items:center;gap:10px;font-weight:600}
+.d-check input{width:22px;height:22px}
+.d-tot{margin:0;font-size:18px}
+.d-acc{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+
+@media (min-width:760px){.dash{padding:22px;grid-template-columns:1fr 1fr;align-items:start}.d-head,.d-full{grid-column:1/-1}.d-kpis{grid-template-columns:2fr 1fr 1fr}.d-kpi.big{grid-column:auto}}
+@media (prefers-reduced-motion:reduce){.d-sw i,.d-sw i::after{transition:none}}
+</style>
+<style>/* panel/recomendador.css */
+/* =====================================================================
+   panel/recomendador.css — Tarjetas «¿Cómo verán tu tienda?» (pestaña Estilo)
+   Cada tarjeta trae una mini tienda de muestra con los productos reales.
+   ===================================================================== */
+.pl-grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:620px){.pl-grid{grid-template-columns:1fr 1fr}}
+.pl-card{position:relative;display:grid;gap:10px;border:1.5px solid var(--line);border-radius:18px;padding:10px;background:var(--sheet)}
+.pl-card.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.pl-txt{display:grid;gap:3px;padding:0 4px}
+.pl-txt b{font:400 19px/1.2 var(--display)}
+.pl-txt small{color:var(--soft);font-weight:600}
+.pl-txt p{margin:0;font-size:14px;color:var(--soft)}
+.pl-txt p.pl-ideal{color:var(--ink);font-weight:600}
+.pl-badge{justify-self:start;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--ok);color:#fff}
+.pl-sel{justify-self:start;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--ink);color:var(--paper)}
+.pl-acc{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 2px 2px}
+.pl-porque{margin:0;font-size:14px;border-radius:12px;background:var(--wash);padding:10px 12px}
+
+/* ---------- mini tienda ---------- */
+.pl-mini{--m-paper:#F5F6F2;--m-sheet:#fff;--m-ink:#13313B;--m-acc:#F2B33D;--m-sea:#2F6F73;
+  position:relative;height:178px;border-radius:12px;overflow:hidden;background:var(--m-paper);color:var(--m-ink);
+  font:500 11px/1.25 "Instrument Sans",system-ui,sans-serif;isolation:isolate;border:1px solid rgba(0,0,0,.06)}
+.m-top{display:flex;align-items:center;gap:6px;padding:8px 10px;font-weight:700;font-size:12px}
+.m-top i{width:16px;height:16px;border-radius:50%;background:var(--m-ink)}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px}
+.m-card{background:var(--m-sheet);border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.07)}
+.m-art{position:relative;height:84px;background:var(--m-sheet);overflow:hidden}
+.m-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m-art .m-color{position:absolute;inset:18% 26%;border-radius:10px;background:var(--c,#7A9E7E)}
+.m-b{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:6px 7px}
+.m-b b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.m-tag{flex:none;background:var(--m-acc);color:var(--m-onacc,#14161A);border-radius:4px;padding:2px 5px;font-weight:700}
+
+/* clásico: blanco y letras del sistema */
+.pl-clasico{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.pl-clasico .m-card{box-shadow:none}
+/* artesanal: crema y madera */
+.pl-artesanal .m-top{font-family:Georgia,serif}
+.pl-artesanal .m-card{border-radius:8px;border-color:rgba(58,42,31,.14);box-shadow:0 8px 14px -10px rgba(58,42,31,.5)}
+.pl-artesanal .m-art{height:96px;background:repeating-linear-gradient(92deg,rgba(120,80,40,.06) 0 2px,transparent 2px 9px),linear-gradient(#EFE2CC,#E4D2B4)}
+.pl-artesanal .m-tag{background:var(--m-sheet);color:var(--m-acc);border:1px dashed var(--m-acc)}
+.pl-artesanal .m-b b{font-family:Georgia,serif}
+/* vidrio */
+.pl-glass{background:radial-gradient(80% 70% at 0% 0%,color-mix(in srgb,var(--m-acc) 45%,transparent),transparent 70%),radial-gradient(70% 70% at 100% 60%,color-mix(in srgb,var(--m-sea) 40%,transparent),transparent 70%),var(--m-paper)}
+.pl-glass .m-card{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.75);border-radius:14px;backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);box-shadow:0 8px 20px -12px rgba(0,0,0,.35)}
+.pl-glass .m-art{background:rgba(255,255,255,.3)}
+.pl-glass .m-tag{border-radius:999px}
+html.lite .pl-glass .m-card{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--m-sheet)}
+/* vitrina 2.5D: el primero grande y se inclina */
+.pl-vitrina25d .m-grid{grid-template-columns:1.6fr 1fr}
+.pl-vitrina25d .m-card{border-radius:12px;box-shadow:var(--sx,0px) var(--sy,10px) 18px -10px rgba(0,0,0,.4)}
+.pl-vitrina25d .m-art{perspective:420px;background:radial-gradient(120% 90% at 50% 20%,var(--m-sheet),#EEF0EC);cursor:grab;touch-action:pan-y}
+.pl-vitrina25d .m-art img,.pl-vitrina25d .m-art .m-color{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.05);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.pl-vitrina25d .m-card.tilting .m-art img,.pl-vitrina25d .m-card.tilting .m-art .m-color{transition:transform .06s linear}
+.pl-vitrina25d .m-hint{position:absolute;right:8px;bottom:8px;font-size:10.5px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;padding:3px 8px;pointer-events:none}
+html.lite .pl-vitrina25d .m-art img,html.lite .pl-vitrina25d .m-art .m-color{transform:none!important}
+html.lite .pl-vitrina25d .m-hint{display:none}
+@media (prefers-reduced-motion:reduce){.pl-vitrina25d .m-art img{transition:none}}
+</style>
+<script>/* comun/rendimiento.js */
+/* =====================================================================
+   comun/rendimiento.js — Modo liviano automático
+   ---------------------------------------------------------------------
+   Pone la clase "lite" en <html> cuando conviene una página simple:
+   - la persona pidió menos movimiento (prefers-reduced-motion)
+   - o pidió menos transparencias (prefers-reduced-transparency)
+   - el teléfono tiene "ahorro de datos" o la señal es 2G
+   - el teléfono es sencillo (poca memoria o pocos núcleos, en pantalla táctil)
+   - la batería está bajo 20 % y sin cargar (si el navegador lo informa)
+   Con "lite" se apagan el desenfoque (backdrop-filter), la inclinación 2.5D
+   y las animaciones; la página se ve igual de ordenada, pero más plana.
+   Para probar: agrega ?lite=1 (forzar) o ?lite=0 (nunca) al link.
+   Se incluye en línea al construir (build.py), así no suma descargas.
+   ===================================================================== */
+(function () {
+  var html = document.documentElement, motivos = [];
+  var mm = function (q) { try { return matchMedia(q).matches; } catch (e) { return false; } };
+  var forzar = null;
+  try { forzar = new URLSearchParams(location.search).get("lite"); } catch (e) {}
+
+  if (mm("(prefers-reduced-motion: reduce)")) motivos.push("menos movimiento");
+  if (mm("(prefers-reduced-transparency: reduce)")) motivos.push("menos transparencias");
+  var c = navigator.connection || {};
+  if (c.saveData) motivos.push("ahorro de datos");
+  if (/(^|-)2g$/.test(String(c.effectiveType || ""))) motivos.push("señal 2G");
+  var tactil = mm("(pointer: coarse)");
+  if (navigator.deviceMemory && navigator.deviceMemory <= 2) motivos.push("poca memoria");
+  if (tactil && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) motivos.push("teléfono sencillo");
+
+  function aplicar() {
+    var on = forzar === "1" ? true : forzar === "0" ? false : motivos.length > 0;
+    html.classList.toggle("lite", on);
+    window.HV_LITE = { activo: on, motivos: motivos.slice() };
+    try { document.dispatchEvent(new CustomEvent("hv:lite", { detail: window.HV_LITE })); } catch (e) {}
+  }
+  aplicar();
+
+  /* Batería: solo algunos navegadores la informan (Chrome en Android). */
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function (b) {
+      function rev() {
+        var i = motivos.indexOf("batería baja");
+        var baja = !b.charging && b.level <= 0.2;
+        if (baja && i < 0) motivos.push("batería baja");
+        if (!baja && i >= 0) motivos.splice(i, 1);
+        aplicar();
+      }
+      rev(); b.addEventListener("levelchange", rev); b.addEventListener("chargingchange", rev);
+    }).catch(function () {});
+  }
+  /* Si la persona cambia la preferencia con la página abierta */
+  ["(prefers-reduced-motion: reduce)", "(prefers-reduced-transparency: reduce)"].forEach(function (q, n) {
+    try {
+      matchMedia(q).addEventListener("change", function (e) {
+        var m = n ? "menos transparencias" : "menos movimiento", i = motivos.indexOf(m);
+        if (e.matches && i < 0) motivos.push(m); if (!e.matches && i >= 0) motivos.splice(i, 1);
+        aplicar();
+      });
+    } catch (e) {}
+  });
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -191,11 +442,17 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
   <p class="muted small" id="loading" role="status"><span class="spin" aria-hidden="true"></span> Cargando tu planilla…</p>
   <div id="ed" hidden>
     <div class="tabs" role="tablist" aria-label="Partes de tu página">
+      <button class="tab" role="tab" id="t-panel" aria-controls="p-panel" aria-selected="false" tabindex="-1"><i aria-hidden="true">★</i>Hoy</button>
       <button class="tab" role="tab" id="t-negocio" aria-controls="p-negocio" aria-selected="true"><i>1</i>Mi negocio</button>
       <button class="tab" role="tab" id="t-productos" aria-controls="p-productos" aria-selected="false" tabindex="-1"><i>2</i>Productos</button>
       <button class="tab" role="tab" id="t-estilo" aria-controls="p-estilo" aria-selected="false" tabindex="-1"><i>3</i>Colores y letras</button>
       <button class="tab" role="tab" id="t-publicar" aria-controls="p-publicar" aria-selected="false" tabindex="-1"><i>4</i>Publicar</button>
     </div>
+
+    <section class="panel" id="p-panel" role="tabpanel" aria-labelledby="t-panel" hidden>
+      <h2 class="sr">Hoy</h2>
+      <div id="panelRaiz"></div>
+    </section>
 
     <section class="panel" id="p-negocio" role="tabpanel" aria-labelledby="t-negocio">
       <h2>Mi negocio</h2><p class="muted">Lo que verán tus clientas arriba de tu página.</p>
@@ -236,6 +493,7 @@ input:focus,textarea:focus,select:focus{outline:3px solid var(--acc);outline-off
     <section class="panel" id="p-estilo" role="tabpanel" aria-labelledby="t-estilo" hidden>
       <h2>Colores y letras</h2><p class="muted">Primero elige un estilo. Después cambia lo que quieras.</p>
       <div class="stack">
+        <div class="card stack" id="plantRaiz"></div>
         <div class="card stack" id="recoBox">
           <h3>Diseños recomendados para tu negocio</h3>
           <p class="muted small" style="margin:0">Elige qué vendes y te mostramos tres diseños pensados para eso. Toca uno para usarlo.</p>
@@ -2606,6 +2864,637 @@ var qrcode = function() {
     return qrcode;
 }));
 </script>
+<script>/* comun/almacen.js */
+/* =====================================================================
+   comun/almacen.js — Guardado local con forma de base de datos
+   ---------------------------------------------------------------------
+   Hoy guarda en localStorage del teléfono. Todas las funciones devuelven
+   promesas (async) para que mañana se pueda cambiar por una base de datos
+   (Firebase, Supabase, una API propia…) sin tocar el resto del código:
+   basta con escribir otro "motor" con los mismos 3 métodos y llamar
+   Almacen.usar(nuevoMotor).
+   Claves que usa el proyecto:
+     hv:dash:tema                 → aspecto del panel (claro | oscuro | vidrio)
+     hv:plantilla:<idPlanilla>    → estilo elegido para la tienda (copia local)
+     hv:metricas:<idPlanilla>     → pedidos y ventas registrados en el panel
+   ===================================================================== */
+(function () {
+  var motorLocal = {
+    leer: function (k) {
+      return new Promise(function (ok) {
+        try { var v = localStorage.getItem(k); ok(v == null ? null : JSON.parse(v)); } catch (e) { ok(null); }
+      });
+    },
+    escribir: function (k, v) {
+      return new Promise(function (ok) {
+        try { localStorage.setItem(k, JSON.stringify(v)); ok(true); } catch (e) { ok(false); }
+      });
+    },
+    borrar: function (k) {
+      return new Promise(function (ok) { try { localStorage.removeItem(k); } catch (e) {} ok(true); });
+    }
+  };
+  /* Ejemplo de motor remoto (no activo). Se deja para conectar una API:
+     var motorApi = {
+       leer:     function (k)    { return fetch(API + "/kv/" + encodeURIComponent(k)).then(r => r.ok ? r.json() : null); },
+       escribir: function (k, v) { return fetch(API + "/kv/" + encodeURIComponent(k), {method:"PUT", body:JSON.stringify(v)}).then(r => r.ok); },
+       borrar:   function (k)    { return fetch(API + "/kv/" + encodeURIComponent(k), {method:"DELETE"}).then(() => true); }
+     };  */
+  var motor = motorLocal;
+  /* Lectura sincrónica solo para cosas de apariencia (evita parpadeos al cargar). */
+  function leerYa(k) { try { var v = localStorage.getItem(k); return v == null ? null : JSON.parse(v); } catch (e) { return null; } }
+  window.Almacen = {
+    leer: function (k) { return motor.leer(k); },
+    escribir: function (k, v) { return motor.escribir(k, v); },
+    borrar: function (k) { return motor.borrar(k); },
+    leerYa: leerYa,
+    usar: function (m) { motor = m || motorLocal; }
+  };
+})();
+</script>
+<script>/* comun/plantillas.js */
+/* =====================================================================
+   comun/plantillas.js — Los 4 estilos de la tienda pública
+   ---------------------------------------------------------------------
+   Lo usan el editor (tarjetas de recomendación y vista previa) y la
+   tienda (paleta de cada estilo). Se incluye en línea al construir.
+   En la planilla se guarda en la fila "plantilla" de la pestaña Tienda:
+   clasico | artesanal | glass | vitrina25d   (vacío = diseño de siempre)
+   ===================================================================== */
+(function () {
+  var PLANTILLAS = {
+    clasico: {
+      id: "clasico", nombre: "Clásico", apodo: "Ultra rápido",
+      ideal: "Catálogos simples y máxima velocidad",
+      texto: "Fondo blanco, letras del teléfono (no se descargan) y cero efectos. Carga al tiro aunque la señal esté mala en la feria.",
+      /* Paleta neutra. destacado/acento: se respetan los de la emprendedora
+         si se leen bien sobre blanco; si no, se usan estos. */
+      paleta: { fondo: "#F7F7F5", tarjetas: "#FFFFFF", texto: "#1E2329", destacado: "#A6402A", acento: "#2F6F62" },
+      mantieneAcentos: true
+    },
+    artesanal: {
+      id: "artesanal", nombre: "Realista artesanal", apodo: "Cálido y cercano",
+      ideal: "Comida, tejidos y manualidades",
+      texto: "Tonos tierra, crema y madera suave. Fotos grandes y directas, como mirar el producto en tu mesa.",
+      paleta: { fondo: "#F3EADB", tarjetas: "#FFF9EF", texto: "#3A2A1F", destacado: "#A4532B", acento: "#6C7A3B", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
+    },
+    glass: {
+      id: "glass", nombre: "Minimal moderno", apodo: "Vidrio (glassmorphism)",
+      ideal: "Cosmética, accesorios y marcas modernas",
+      texto: "Tarjetas de vidrio con transparencias suaves y bordes limpios, sobre los colores de tu marca.",
+      paleta: null /* usa los colores que ya elegiste */
+    },
+    vitrina25d: {
+      id: "vitrina25d", nombre: "Vitrina interactiva 2.5D", apodo: "Para tus productos estrella",
+      ideal: "Destacar productos estrella",
+      texto: "La foto del producto se inclina suave al pasar el dedo o el mouse, con sombra que se mueve. Tu primer producto sale más grande.",
+      paleta: null
+    }
+  };
+  var ORDEN = ["clasico", "artesanal", "glass", "vitrina25d"];
+
+  /* Rubros del editor → estilo recomendado */
+  var POR_RUBRO = {
+    comida: "artesanal", pan: "artesanal", dulces: "artesanal", cafe: "artesanal", bebidas: "artesanal",
+    ropa: "artesanal", artesania: "artesanal", plantas: "artesanal",
+    cosmetica: "glass", joyas: "glass",
+    papeleria: "clasico"
+  };
+
+  /* info = { rubro, productos, conFoto, sinFondo }  → { id, porque } */
+  function recomendar(info) {
+    info = info || {};
+    var n = info.productos || 0;
+    if (n >= 15) return { id: "clasico", porque: "Tienes " + n + " productos: con el Clásico tu página carga más rápido y se recorre fácil." };
+    if ((info.sinFondo || 0) >= 1 && n > 0 && n <= 8) return { id: "vitrina25d", porque: "Tienes fotos sin fondo y pocos productos: la vitrina 2.5D los hace lucir como en un mostrador." };
+    var id = POR_RUBRO[info.rubro] || "clasico";
+    var por = {
+      artesanal: "Para lo que vendes, los tonos cálidos y naturales dan confianza y abren el apetito.",
+      glass: "Para cosmética y accesorios, el vidrio suave se ve moderno y deja brillar tus colores.",
+      clasico: "Para un catálogo simple, lo más claro y rápido es lo que mejor vende.",
+      vitrina25d: ""
+    }[id];
+    if (id !== "clasico" && (info.conFoto || 0) === 0 && n > 0) por += " Ojo: se luce mucho más con fotos reales de tus productos.";
+    return { id: id, porque: por };
+  }
+
+  /* Paleta final de un estilo, mezclando con la de la emprendedora.
+     propio = colores elegidos a mano (fondo, texto, …) — siempre ganan.
+     tema   = colores del tema actual (paper, ink, accent, sea). */
+  function paleta(id, propio, tema) {
+    var P = PLANTILLAS[id];
+    propio = propio || {};
+    if (!P || !P.paleta) return propio;
+    var out = {}, k;
+    for (k in P.paleta) out[k] = P.paleta[k];
+    if (P.mantieneAcentos && tema) {
+      if (tema.accent && contraste(tema.accent, "#FFFFFF") >= 3) out.destacado = tema.accent;
+      if (tema.sea && contraste(tema.sea, "#FFFFFF") >= 3) out.acento = tema.sea;
+    }
+    for (k in propio) if (propio[k]) out[k] = propio[k];
+    return out;
+  }
+  function lum(h) {
+    h = String(h || "").replace("#", ""); if (h.length !== 6) return 1;
+    var c = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+  }
+  function contraste(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  function normalizar(v) {
+    v = String(v || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+    if (/clasic|rapid/.test(v)) return "clasico";
+    if (/artesan|realis/.test(v)) return "artesanal";
+    if (/glass|vidrio|minimal/.test(v)) return "glass";
+    if (/vitrina|25d|interact/.test(v)) return "vitrina25d";
+    return "";
+  }
+  window.HV_PLANTILLAS = { lista: PLANTILLAS, orden: ORDEN, recomendar: recomendar, paleta: paleta, normalizar: normalizar, contraste: contraste };
+})();
+</script>
+<script>/* comun/metricas.js */
+/* =====================================================================
+   comun/metricas.js — Pedidos por WhatsApp y ventas concretadas
+   ---------------------------------------------------------------------
+   ¿Cómo se cuentan los pedidos sin un servidor?
+   1. La tienda pone un código corto en cada mensaje («Pedido #K7Q2»).
+   2. Cuando a la emprendedora le llega el WhatsApp, lo copia y lo pega
+      en su panel (o lo anota a mano). El panel lee productos y total.
+   3. Cuando la venta se cierra, toca «Venta concretada».
+   Así se cuentan los pedidos que de verdad llegaron, en su teléfono.
+   Los clics que NO terminan en mensaje solo se pueden contar con un
+   servidor: para eso está registrarClic() y "metricas_url" en
+   config.json (vacío = apagado; no se envía nada a ningún lado).
+   Datos guardados (Almacen, clave hv:metricas:<idPlanilla>):
+   { v:1, pedidos:[{ id, fecha, cliente, items:[{n,q,p}], total,
+                     estado:"pendiente"|"concretada"|"perdida", cerrado }] }
+   ===================================================================== */
+(function () {
+  var LETRAS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  function codigo() { var s = ""; for (var i = 0; i < 4; i++) s += LETRAS[Math.floor(Math.random() * LETRAS.length)]; return s; }
+  var pesos = function (t) { var d = String(t || "").replace(/[^\d]/g, ""); return d ? parseInt(d, 10) : 0; };
+
+  /* Lee el mensaje que arma la tienda:
+     «Pedido #K7Q2» · «• 2 x Mermelada — $7.000» · «Total: $7.000» · «Nombre: Ana» */
+  function leerMensaje(texto, productos) {
+    var t = String(texto || ""), out = { id: "", cliente: "", items: [], total: 0 };
+    var m = t.match(/pedido\s*#\s*([A-Z0-9]{3,8})/i); if (m) out.id = m[1].toUpperCase();
+    m = t.match(/^\s*nombre\s*:\s*(.+)$/im); if (m) out.cliente = m[1].trim().slice(0, 60);
+    t.split(/\r?\n|(?=•)/).forEach(function (l) {
+      var x = l.match(/^\s*[•\-*·]?\s*(\d+)\s*[x×]\s*(.+?)\s*[—–-]\s*\$?\s*([\d.,]+)\s*$/i);
+      if (x) { var q = parseInt(x[1], 10), sub = pesos(x[3]); out.items.push({ n: x[2].trim(), q: q, p: q ? Math.round(sub / q) : sub }); }
+    });
+    m = t.match(/total\s*:\s*\$?\s*([\d.,]+)/i);
+    out.total = m ? pesos(m[1]) : out.items.reduce(function (a, x) { return a + x.q * x.p; }, 0);
+    /* nombres parecidos a los productos de la planilla → nombre oficial */
+    if (productos && productos.length) out.items.forEach(function (it) {
+      var k = norm(it.n), hit = productos.find(function (p) { return norm(p.nombre) === k; }) ||
+        productos.find(function (p) { var a = norm(p.nombre); return a && (a.indexOf(k) >= 0 || k.indexOf(a) >= 0); });
+      if (hit) it.n = hit.nombre;
+    });
+    return out;
+  }
+  function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim(); }
+
+  function Libro(idPlanilla) { this.clave = "hv:metricas:" + (idPlanilla || "local"); this.datos = { v: 1, pedidos: [] }; }
+  Libro.prototype.cargar = function () {
+    var self = this;
+    return window.Almacen.leer(this.clave).then(function (d) { if (d && d.pedidos) self.datos = d; return self; });
+  };
+  Libro.prototype.guardar = function () { return window.Almacen.escribir(this.clave, this.datos); };
+  Libro.prototype.agregar = function (p) {
+    p = p || {};
+    var id = (p.id || codigo()).toUpperCase();
+    var ya = this.datos.pedidos.find(function (x) { return x.id === id; });
+    if (ya) return { pedido: ya, repetido: true };
+    var nuevo = { id: id, fecha: new Date().toISOString(), cliente: p.cliente || "", items: p.items || [], total: p.total || 0, estado: "pendiente", cerrado: "" };
+    this.datos.pedidos.unshift(nuevo); this.guardar();
+    return { pedido: nuevo, repetido: false };
+  };
+  Libro.prototype.existe = function (id) { id = String(id || "").toUpperCase(); return !!id && this.datos.pedidos.some(function (x) { return x.id === id; }); };
+  Libro.prototype.marcar = function (id, estado) {
+    var p = this.datos.pedidos.find(function (x) { return x.id === id; });
+    if (!p) return null;
+    p.estado = estado; p.cerrado = estado === "pendiente" ? "" : new Date().toISOString();
+    this.guardar(); return p;
+  };
+  Libro.prototype.borrar = function (id) {
+    this.datos.pedidos = this.datos.pedidos.filter(function (x) { return x.id !== id; }); this.guardar();
+  };
+  /* periodo: "hoy" | "7" | "30" | "todo" */
+  Libro.prototype.resumen = function (periodo) {
+    var desde = 0, ahora = new Date();
+    if (periodo === "hoy") desde = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()).getTime();
+    else if (periodo === "7" || periodo === "30") desde = ahora.getTime() - parseInt(periodo, 10) * 864e5;
+    var P = this.datos.pedidos.filter(function (x) { return new Date(x.fecha).getTime() >= desde; });
+    var ok = P.filter(function (x) { return x.estado === "concretada"; });
+    var ingresos = ok.reduce(function (a, x) { return a + (x.total || 0); }, 0);
+    var cuenta = {};
+    P.forEach(function (x) { (x.items || []).forEach(function (it) { cuenta[it.n] = (cuenta[it.n] || 0) + (it.q || 1); }); });
+    var top = Object.keys(cuenta).map(function (n) { return { n: n, q: cuenta[n] }; }).sort(function (a, b) { return b.q - a.q; }).slice(0, 5);
+    return {
+      pedidos: P.length, concretadas: ok.length,
+      pendientes: P.filter(function (x) { return x.estado === "pendiente"; }).length,
+      conversion: P.length ? Math.round(ok.length / P.length * 100) : 0,
+      ingresos: ingresos, ticket: ok.length ? Math.round(ingresos / ok.length) : 0, top: top
+    };
+  };
+
+  /* Desde la tienda: avisa de un clic en «Enviar pedido por WhatsApp».
+     Solo envía si hay un servidor configurado (metricas_url). */
+  function registrarClic(url, datos) {
+    if (!url) return false;
+    try {
+      var cuerpo = JSON.stringify({ tipo: "clic_whatsapp", fecha: new Date().toISOString(), tienda: datos.tienda || "", pedido: datos.pedido || "", total: datos.total || 0, items: datos.items || 0 });
+      if (navigator.sendBeacon) return navigator.sendBeacon(url, new Blob([cuerpo], { type: "text/plain" }));
+      fetch(url, { method: "POST", body: cuerpo, mode: "no-cors", keepalive: true }); return true;
+    } catch (e) { return false; }
+  }
+  window.HV_METRICAS = { Libro: Libro, leerMensaje: leerMensaje, codigo: codigo, registrarClic: registrarClic };
+})();
+</script>
+<script>/* panel/panel.js */
+/* =====================================================================
+   panel/panel.js — Panel de la emprendedora (pestaña «Hoy» del editor)
+   ---------------------------------------------------------------------
+   Tres bloques, pensados para usar en la feria con una mano:
+   1. ¿Dónde estás hoy?  → En el muelle/feria · Desde casa · Cerrado
+   2. Productos          → interruptor Disponible / Agotado en un toque
+   3. Ventas             → pedidos por WhatsApp, ventas concretadas,
+                           ingresos y lo más pedido (comun/metricas.js)
+   Los cambios de 1 y 2 se guardan solos en la planilla (la tienda los
+   muestra en unos minutos). Las ventas quedan en este teléfono.
+   El editor le pasa sus funciones con HVPanel.iniciar(api):
+     api.datos()      → objeto S del editor ({biz, prods, est})
+     api.guardar()    → guarda la planilla (promesa true/false)
+     api.marcar()     → avisa que hay cambios sin guardar
+     api.refrescar()  → vuelve a dibujar las otras pestañas
+     api.idPlanilla() → id de la planilla (para separar los datos)
+     api.publicada()  → true si la página ya tiene link
+     api.irA(tab)     → cambia de pestaña
+     api.foto(p)      → miniatura de un producto ("" si no tiene)
+     api.disponible(v)→ true si el valor de "disponible" significa sí
+   ===================================================================== */
+(function () {
+  var api = null, libro = null, raiz = null, periodo = "7", timer = 0, modo = "pegar", mano = {};
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var clp = function (n) { return "$" + Number(n || 0).toLocaleString("es-CL"); };
+  var precio = function (p) { var d = String(p.precio || "").replace(/[^\d]/g, ""); return d ? parseInt(d, 10) : 0; };
+  var $ = function (id) { return document.getElementById(id); };
+
+  var TEMAS = [["claro", "Claro", "#FFFFFF"], ["oscuro", "Oscuro", "#172027"], ["vidrio", "Vidrio", "linear-gradient(135deg,#B9E4DA,#D8C9F2)"]];
+  var ICON = {
+    feria: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18M4 10l1.5-5h13L20 10"/><path d="M5 10v9h14v-9"/><path d="M9 19v-5h6v5"/><path d="M4 10a2 2 0 0 0 4 0a2 2 0 0 0 4 0a2 2 0 0 0 4 0a2 2 0 0 0 4 0"/></svg>',
+    casa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
+    cerrado: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>',
+    mas: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+  };
+  var ESTADOS = [["feria", "En el muelle / feria"], ["casa", "Atendiendo desde casa"], ["cerrado", "Cerrado"]];
+
+  /* ---------- estado del día ---------- */
+  function estadoActual() {
+    var b = api.datos().biz, e = String(b.estado || "").toLowerCase();
+    if (/^cerr/.test(e)) return "cerrado"; if (/^casa/.test(e)) return "casa";
+    if (/^feria|^muelle/.test(e) || String(b.hoy || "").trim()) return "feria";
+    return "";
+  }
+  function ponerEstado(v) {
+    var b = api.datos().biz;
+    b.estado = v;
+    if (v === "feria" && !String(b.hoy || "").trim()) b.hoy = b.lugar || "";
+    if (v === "cerrado") b.hoy = "";
+    cambio("Avisando en tu página…");
+    pintarEstado();
+  }
+
+  /* ---------- guardado automático (con pausa para juntar varios toques) ---------- */
+  function cambio(txt) {
+    api.marcar(); estadoSync("", txt || "Guardando…");
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      estadoSync("", '<span class="spin" aria-hidden="true"></span> Guardando…', true);
+      api.guardar().then(function (ok) {
+        if (!ok) return estadoSync("err", "No se pudo guardar. Revisa tu internet; lo intentamos de nuevo al próximo cambio.");
+        if (api.publicada()) estadoSync("ok", "Listo. Tus clientas lo verán en tu página en unos minutos.");
+        else estadoSync("", 'Guardado. Tu página aún no está publicada. <button type="button" class="d-go" data-go="publicar">Publicarla</button>', true);
+        api.refrescar();
+      });
+    }, 1200);
+  }
+  function estadoSync(cls, html, esHtml, id) {
+    var el = $(id || "dSync"); if (!el) return;
+    el.className = "d-sync" + (cls ? " " + cls : "");
+    if (esHtml) el.innerHTML = html; else el.textContent = html;
+  }
+
+  /* ---------- dibujo ---------- */
+  function esqueleto() {
+    raiz.innerHTML =
+      '<div class="dash" id="dash">' +
+      '<div class="d-head"><div><p>Tu panel de hoy</p><h2 id="dNom"></h2></div>' +
+      '<div class="d-temas" role="radiogroup" aria-label="Aspecto del panel">' +
+      TEMAS.map(function (t) { return '<button type="button" role="radio" data-tema="' + t[0] + '" aria-checked="false"><i style="background:' + t[2] + '"></i>' + t[1] + '</button>'; }).join("") +
+      '</div></div>' +
+      '<section class="d-card" aria-labelledby="dEstT"><h3 id="dEstT">¿Dónde estás hoy?</h3>' +
+      '<div class="d-estado" role="radiogroup" aria-labelledby="dEstT">' +
+      ESTADOS.map(function (e) { return '<button type="button" role="radio" data-v="' + e[0] + '" aria-checked="false">' + ICON[e[0]] + '<span>' + e[1] + '</span></button>'; }).join("") +
+      '</div>' +
+      '<label class="d-lugar" id="dLugarW">Lugar exacto <input type="text" id="dLugar" maxlength="80" placeholder="Ej: Muelle de Angelmó, hasta las 18:00"></label>' +
+      '<div class="d-chips" id="dChips"></div>' +
+      '<p class="d-sync" id="dSync" role="status" aria-live="polite"></p></section>' +
+      '<section class="d-card" aria-labelledby="dProT"><div class="d-row"><h3 id="dProT">Productos</h3><p class="d-mut" id="dStock"></p></div>' +
+      '<ul class="d-prods" id="dProds"></ul></section>' +
+      '<section class="d-card d-full" aria-labelledby="dVenT"><div class="d-row"><h3 id="dVenT">Ventas por WhatsApp</h3>' +
+      '<div class="d-per" role="group" aria-label="Periodo">' +
+      [["hoy", "Hoy"], ["7", "7 días"], ["30", "30 días"], ["todo", "Todo"]].map(function (p) { return '<button type="button" data-per="' + p[0] + '" aria-pressed="false">' + p[1] + '</button>'; }).join("") +
+      '</div></div>' +
+      '<div class="d-kpis" id="dKpis"></div>' +
+      '<button type="button" class="d-btn" id="dNuevo">' + ICON.mas + 'Llegó un pedido por WhatsApp</button>' +
+      '<p class="d-sync" id="dSyncV" role="status" aria-live="polite"></p><div id="dPendW"></div>' +
+      '<div><h4 style="margin:4px 0 10px">Lo más pedido</h4><ol class="d-top" id="dTop"></ol></div>' +
+      '<details class="d-hist" id="dHist"><summary>Ver todos los pedidos</summary><ul id="dHistL"></ul></details>' +
+      '<p class="d-mut">Las ventas se guardan solo en este teléfono. Tus clientas no las ven.</p></section>' +
+      '</div>' + dialogo();
+    eventos();
+  }
+  function dialogo() {
+    return '<dialog class="d-dlg" id="dDlg" aria-labelledby="dDlgT"><form method="dialog" id="dForm">' +
+      '<h3 id="dDlgT">Llegó un pedido</h3>' +
+      '<div class="d-modo" role="tablist" aria-label="Cómo anotarlo"><button type="button" role="tab" data-modo="pegar" aria-selected="true">Pegar el mensaje</button><button type="button" role="tab" data-modo="mano" aria-selected="false">Anotar a mano</button></div>' +
+      '<div id="dModoPegar"><label>Copia el mensaje de WhatsApp y pégalo aquí<textarea id="dTexto" placeholder="Hola! Quiero hacer este pedido (Pedido #K7Q2): • 2 x Mermelada — $7.000 …"></textarea></label><div class="d-leido" id="dLeido" role="status"></div></div>' +
+      '<div id="dModoMano" hidden><ul class="d-mano" id="dMano"></ul><label>Nombre de la clienta (opcional)<input type="text" id="dCliente" maxlength="60"></label></div>' +
+      '<label class="d-check"><input type="checkbox" id="dYa"> Ya está pagado: contarlo como venta concretada</label>' +
+      '<p class="d-tot">Total: <b id="dTot">$0</b></p><p class="err" id="dErr" role="alert" hidden></p>' +
+      '<div class="d-acc"><button type="button" class="btn sec" id="dCan">Cancelar</button><button type="button" class="btn" id="dOk">Guardar pedido</button></div>' +
+      '</form></dialog>';
+  }
+  function pintarTema(t) {
+    $("dash").setAttribute("data-tema", t);
+    raiz.querySelectorAll("[data-tema]").forEach(function (b) { if (b.tagName === "BUTTON") b.setAttribute("aria-checked", String(b.dataset.tema === t)); });
+  }
+  function pintarEstado() {
+    var S = api.datos(), b = S.biz, e = estadoActual();
+    $("dNom").textContent = b.nombre || "Tu negocio";
+    raiz.querySelectorAll(".d-estado button").forEach(function (x) { x.setAttribute("aria-checked", String(x.dataset.v === e)); });
+    $("dLugarW").hidden = e === "cerrado" || !e;
+    $("dLugarW").firstChild.textContent = e === "casa" ? "Comuna o sector (opcional) " : "Lugar exacto ";
+    if (document.activeElement !== $("dLugar")) $("dLugar").value = b.hoy || "";
+    var ops = [b.lugar].concat(String(b.lugar || "").split(/[,;·]/)).map(function (x) { return String(x || "").trim(); })
+      .filter(function (x, i, a) { return x && a.indexOf(x) === i && x !== b.hoy; }).slice(0, 3);
+    $("dChips").innerHTML = e === "feria" ? ops.map(function (o) { return '<button type="button" data-lugar="' + esc(o) + '">' + esc(o) + '</button>'; }).join("") : "";
+  }
+  function pintarProductos() {
+    var S = api.datos(), P = S.prods.filter(function (p) { return String(p.nombre || "").trim(); });
+    var agot = P.filter(function (p) { return !api.disponible(p.disponible); }).length;
+    $("dStock").textContent = P.length ? (P.length - agot) + " disponibles · " + agot + " agotado" + (agot === 1 ? "" : "s") : "";
+    $("dProds").innerHTML = P.length ? P.map(function (p) {
+      var i = S.prods.indexOf(p), on = api.disponible(p.disponible), f = api.foto(p);
+      return '<li class="' + (on ? "" : "agotado") + '"><span class="d-th"' + (f ? ' style="background-image:url(\'' + esc(f) + '\')"' : "") + '></span>' +
+        '<span class="d-pn"><b>' + esc(p.nombre) + '</b><span>' + (precio(p) ? clp(precio(p)) : "Sin precio") + '</span></span>' +
+        '<button type="button" class="d-sw" role="switch" aria-checked="' + on + '" data-i="' + i + '" aria-label="' + esc(p.nombre) + ' disponible"><span>' + (on ? "Disponible" : "Agotado") + '</span><i></i></button></li>';
+    }).join("") : '<li style="display:block"><div class="d-vacio">Aún no tienes productos. <button type="button" class="d-go" data-go="productos">Agregar productos</button></div></li>';
+  }
+  function pintarVentas() {
+    var r = libro.resumen(periodo);
+    raiz.querySelectorAll("[data-per]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.per === periodo)); });
+    $("dKpis").innerHTML =
+      kpi("big", "Ingresos (ventas concretadas)", clp(r.ingresos), r.concretadas ? "Promedio por venta: " + clp(r.ticket) : "Aún sin ventas cerradas") +
+      kpi("", "Pedidos por WhatsApp", r.pedidos, r.pendientes ? r.pendientes + " por confirmar" : "mensajes que te llegaron") +
+      kpi("", "Ventas concretadas", r.concretadas, r.pedidos ? r.conversion + "% de los pedidos" : "—");
+    var pend = libro.datos.pedidos.filter(function (x) { return x.estado === "pendiente"; });
+    $("dPendW").innerHTML = pend.length ? '<h4 style="margin:4px 0 10px">Por confirmar</h4><ul class="d-pend">' + pend.slice(0, 8).map(function (x) {
+      return '<li><div class="d-pt"><span>#' + esc(x.id) + (x.cliente ? " · " + esc(x.cliente) : "") + '</span><span>' + clp(x.total) + '</span></div>' +
+        '<p class="d-pi">' + esc(resumenItems(x)) + ' · ' + hace(x.fecha) + '</p>' +
+        '<div class="d-pa"><button type="button" class="ok" data-ok="' + esc(x.id) + '">✓ Venta concretada</button><button type="button" data-no="' + esc(x.id) + '">No se concretó</button></div></li>';
+    }).join("") + '</ul>' : "";
+    var max = r.top.length ? r.top[0].q : 1;
+    $("dTop").innerHTML = r.top.length ? r.top.map(function (t) {
+      return '<li><div class="d-tl"><span>' + esc(t.n) + '</span><b>' + t.q + ' u.</b></div><div class="d-bar" aria-hidden="true"><i style="width:' + Math.max(6, Math.round(t.q / max * 100)) + '%"></i></div></li>';
+    }).join("") : '<li class="d-vacio">Cuando anotes pedidos, aquí verás qué es lo que más te piden.</li>';
+    var todos = libro.datos.pedidos;
+    $("dHist").hidden = !todos.length;
+    $("dHistL").innerHTML = todos.slice(0, 60).map(function (x) {
+      var t = x.estado === "concretada" ? "✓ " + clp(x.total) : x.estado === "perdida" ? "<s>" + clp(x.total) + "</s>" : "… " + clp(x.total);
+      return '<li><span>#' + esc(x.id) + ' · ' + fecha(x.fecha) + (x.cliente ? " · " + esc(x.cliente) : "") + '</span><span>' + t + ' <button type="button" data-del="' + esc(x.id) + '" aria-label="Borrar pedido ' + esc(x.id) + '">borrar</button></span></li>';
+    }).join("");
+  }
+  function kpi(c, t, v, s) { return '<div class="d-kpi ' + c + '"><small>' + t + '</small><b>' + v + '</b><em>' + s + '</em></div>'; }
+  function resumenItems(x) { return (x.items || []).map(function (i) { return i.q + "× " + i.n; }).join(", ") || "Sin detalle"; }
+  function fecha(iso) { var d = new Date(iso); return d.toLocaleDateString("es-CL", { day: "numeric", month: "short" }); }
+  function hace(iso) {
+    var m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+    return m < 1 ? "recién" : m < 60 ? "hace " + m + " min" : m < 1440 ? "hace " + Math.round(m / 60) + " h" : fecha(iso);
+  }
+
+  /* ---------- ventana de pedido ---------- */
+  function abrirPedido() {
+    mano = {}; $("dTexto").value = ""; $("dLeido").textContent = ""; $("dCliente").value = ""; $("dYa").checked = false; $("dErr").hidden = true;
+    var P = api.datos().prods.filter(function (p) { return String(p.nombre || "").trim(); });
+    $("dMano").innerHTML = P.map(function (p, k) {
+      return '<li><span>' + esc(p.nombre) + ' · ' + clp(precio(p)) + '</span><span class="d-step"><button type="button" data-m="-" data-k="' + k + '" aria-label="Quitar ' + esc(p.nombre) + '">−</button><output id="dQ' + k + '">0</output><button type="button" data-m="+" data-k="' + k + '" aria-label="Sumar ' + esc(p.nombre) + '">+</button></span></li>';
+    }).join("") || '<li>Primero agrega productos.</li>';
+    elegirModo("pegar"); totalDlg();
+    var d = $("dDlg"); if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+    setTimeout(function () { $("dTexto").focus(); }, 30);
+  }
+  function elegirModo(m) {
+    modo = m;
+    raiz.querySelectorAll("[data-modo]").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.modo === m)); });
+    $("dModoPegar").hidden = m !== "pegar"; $("dModoMano").hidden = m !== "mano"; totalDlg();
+  }
+  function pedidoDlg() {
+    var P = api.datos().prods.filter(function (p) { return String(p.nombre || "").trim(); });
+    if (modo === "pegar") return window.HV_METRICAS.leerMensaje($("dTexto").value, P);
+    var items = Object.keys(mano).filter(function (k) { return mano[k] > 0; }).map(function (k) { return { n: P[k].nombre, q: mano[k], p: precio(P[k]) }; });
+    return { id: "", cliente: $("dCliente").value.trim(), items: items, total: items.reduce(function (a, i) { return a + i.q * i.p; }, 0) };
+  }
+  function totalDlg() {
+    var p = pedidoDlg(); $("dTot").textContent = clp(p.total);
+    if (modo === "pegar") $("dLeido").innerHTML = $("dTexto").value.trim() ? (p.items.length
+      ? "Leí " + p.items.length + " producto" + (p.items.length > 1 ? "s" : "") + (p.id ? " · pedido #" + esc(p.id) : "") + (p.cliente ? " · " + esc(p.cliente) : "") + ":<br>" + esc(resumenItems(p))
+      : "No encontré productos en el mensaje. Revisa que sea el mensaje de tu página, o usa «Anotar a mano».") : "";
+  }
+  function guardarPedido() {
+    var p = pedidoDlg();
+    if (p.id && libro.existe(p.id)) {
+      $("dDlg").close ? $("dDlg").close() : $("dDlg").removeAttribute("open");
+      return estadoSync("", "Ese pedido (#" + p.id + ") ya estaba anotado.", false, "dSyncV");
+    }
+    if (!p.items.length && !p.total) { $("dErr").textContent = modo === "pegar" ? "Pega el mensaje del pedido, o anótalo a mano." : "Suma al menos un producto."; $("dErr").hidden = false; return; }
+    var r = libro.agregar(p);
+    if ($("dYa").checked) libro.marcar(r.pedido.id, "concretada");
+    $("dDlg").close ? $("dDlg").close() : $("dDlg").removeAttribute("open");
+    estadoSync(r.repetido ? "" : "ok", r.repetido ? "Ese pedido (#" + r.pedido.id + ") ya estaba anotado." : "Pedido #" + r.pedido.id + " anotado.", false, "dSyncV");
+    pintarVentas();
+  }
+
+  /* ---------- eventos (delegados, así sirven después de redibujar) ---------- */
+  function eventos() {
+    raiz.addEventListener("click", function (e) {
+      var t = e.target.closest("button"); if (!t || !raiz.contains(t)) return;
+      if (t.dataset.tema && t.getAttribute("role") === "radio") { pintarTema(t.dataset.tema); window.Almacen.escribir("hv:dash:tema", t.dataset.tema); return; }
+      if (t.closest(".d-estado")) return ponerEstado(t.dataset.v);
+      if (t.dataset.lugar) { api.datos().biz.hoy = t.dataset.lugar; pintarEstado(); return cambio(); }
+      if (t.classList.contains("d-sw")) {
+        var p = api.datos().prods[+t.dataset.i], on = !api.disponible(p.disponible);
+        p.disponible = on ? "Sí" : "No"; pintarProductos(); pintarVentas();
+        var nb = raiz.querySelector('.d-sw[data-i="' + t.dataset.i + '"]'); if (nb) nb.focus();
+        return cambio(on ? p.nombre + " vuelve a estar disponible…" : p.nombre + " queda agotado…");
+      }
+      if (t.dataset.go) return api.irA(t.dataset.go);
+      if (t.dataset.per) { periodo = t.dataset.per; window.Almacen.escribir("hv:dash:periodo", periodo); return pintarVentas(); }
+      if (t.id === "dNuevo") return abrirPedido();
+      if (t.dataset.ok) { libro.marcar(t.dataset.ok, "concretada"); return pintarVentas(); }
+      if (t.dataset.no) { libro.marcar(t.dataset.no, "perdida"); return pintarVentas(); }
+      if (t.dataset.del) { if (confirm("¿Borrar el pedido #" + t.dataset.del + "? No se puede deshacer.")) { libro.borrar(t.dataset.del); pintarVentas(); } return; }
+      if (t.dataset.modo) return elegirModo(t.dataset.modo);
+      if (t.dataset.m) { var k = t.dataset.k; mano[k] = Math.max(0, (mano[k] || 0) + (t.dataset.m === "+" ? 1 : -1)); $("dQ" + k).textContent = mano[k]; return totalDlg(); }
+      if (t.id === "dCan") return $("dDlg").close ? $("dDlg").close() : $("dDlg").removeAttribute("open");
+      if (t.id === "dOk") return guardarPedido();
+    });
+    raiz.addEventListener("input", function (e) {
+      if (e.target.id === "dLugar") { api.datos().biz.hoy = e.target.value; if (!estadoActual()) api.datos().biz.estado = "feria"; cambio(); }
+      if (e.target.id === "dTexto" || e.target.id === "dCliente") totalDlg();
+    });
+  }
+
+  window.HVPanel = {
+    iniciar: function (a) {
+      api = a; raiz = $("panelRaiz"); if (!raiz) return;
+      esqueleto();
+      var t = window.Almacen.leerYa("hv:dash:tema");
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "oscuro" : "claro";
+      pintarTema(t);
+      periodo = window.Almacen.leerYa("hv:dash:periodo") || "7";
+    },
+    /* se llama cada vez que se abre la pestaña o cambia la planilla */
+    mostrar: function () {
+      if (!api) return;
+      var id = api.idPlanilla();
+      var listo = function () { pintarEstado(); pintarProductos(); pintarVentas(); };
+      if (!libro || libro.id !== id) { libro = new window.HV_METRICAS.Libro(id); libro.id = id; libro.cargar().then(listo); listo(); }
+      else listo();
+    }
+  };
+})();
+</script>
+<script>/* panel/recomendador.js */
+/* =====================================================================
+   panel/recomendador.js — «¿Cómo verán tu tienda tus clientas?»
+   ---------------------------------------------------------------------
+   Muestra los 4 estilos (comun/plantillas.js) con una mini tienda hecha
+   con los productos y colores reales de la emprendedora, marca el
+   recomendado según lo que vende y guarda la elección:
+   - en la planilla (fila "plantilla"): es lo que ven las clientas
+   - en este teléfono (Almacen, hv:plantilla:<idPlanilla>): copia local
+   El editor le pasa sus funciones con HVRecomendador.iniciar(api):
+     api.datos(), api.marcar(), api.idPlanilla(), api.rubro(),
+     api.colores()  → {fondo,tarjetas,texto,destacado,acento} actuales
+     api.foto(p)    → miniatura del producto ("" si no tiene)
+     api.colorProd(p) → color de respaldo del producto
+     api.urlTienda()  → link de la tienda publicada ("" si no hay)
+   ===================================================================== */
+(function () {
+  var api = null, raiz = null;
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var clp = function (n) { return "$" + Number(n || 0).toLocaleString("es-CL"); };
+  var PL = function () { return window.HV_PLANTILLAS; };
+
+  function infoNegocio() {
+    var P = api.datos().prods.filter(function (p) { return String(p.nombre || "").trim(); });
+    return {
+      rubro: api.rubro(), productos: P.length,
+      conFoto: P.filter(function (p) { return String(p.foto || "").trim(); }).length,
+      sinFondo: P.filter(function (p) { return /#sinfondo/i.test(String(p.foto || "")); }).length
+    };
+  }
+  function actual() { return PL().normalizar(api.datos().biz.plantilla); }
+
+  /* colores de la mini tienda para cada estilo */
+  function colores(id) {
+    var c = api.colores(), p = PL().paleta(id, {}, { accent: c.destacado, sea: c.acento });
+    var propio = api.datos().est || {};
+    var f = function (k) { return propio[k] || p[k] || c[k]; };
+    var acc = f("destacado"), on = PL().contraste(acc, "#14161A") >= PL().contraste(acc, "#FFFFFF") ? "#14161A" : "#FFFFFF";
+    return "--m-paper:" + f("fondo") + ";--m-sheet:" + f("tarjetas") + ";--m-ink:" + f("texto") + ";--m-acc:" + acc + ";--m-onacc:" + on + ";--m-sea:" + f("acento");
+  }
+  function mini(id) {
+    var S = api.datos(), b = S.biz;
+    var P = S.prods.filter(function (p) { return String(p.nombre || "").trim(); }).slice(0, 2);
+    while (P.length < 2) P.push({ nombre: P.length ? "Otro producto" : "Tu producto", precio: "3500", color: "verde" });
+    return '<div class="pl-mini pl-' + id + '" style="' + colores(id) + '" aria-hidden="true">' +
+      '<div class="m-top"><i></i><span>' + esc(b.nombre || "Tu negocio") + '</span></div><div class="m-grid">' +
+      P.map(function (p) {
+        var f = api.foto(p), pr = String(p.precio || "").replace(/[^\d]/g, "");
+        return '<div class="m-card"><div class="m-art">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : '<span class="m-color" style="--c:' + esc(api.colorProd(p)) + '"></span>') + '</div>' +
+          '<div class="m-b"><b>' + esc(p.nombre) + '</b><span class="m-tag">' + clp(pr) + '</span></div></div>';
+      }).join("") + '</div>' + (id === "vitrina25d" ? '<span class="m-hint">Pasa el dedo por la foto</span>' : "") + '</div>';
+  }
+
+  function pintar() {
+    if (!api || !raiz) return;
+    var L = PL().lista, rec = PL().recomendar(infoNegocio()), sel = actual(), url = api.urlTienda();
+    var lite = document.documentElement.classList.contains("lite");
+    raiz.innerHTML =
+      '<h3 id="plT">¿Cómo verán tu tienda tus clientas?</h3>' +
+      '<p class="muted small" style="margin:0">Cuatro estilos. Te marcamos el que mejor va con lo que vendes. Toca «Usar este» y después «Guardar».</p>' +
+      '<p class="pl-porque"><b>Recomendado: ' + esc(L[rec.id].nombre) + '.</b> ' + esc(rec.porque) + '</p>' +
+      '<div class="pl-grid" role="radiogroup" aria-labelledby="plT">' +
+      PL().orden.map(function (id) {
+        var p = L[id], on = sel === id;
+        return '<div class="pl-card' + (on ? " sel" : "") + '">' + mini(id) +
+          '<div class="pl-txt">' + (on ? '<span class="pl-sel">Tu estilo actual</span>' : id === rec.id ? '<span class="pl-badge">Recomendado para ti</span>' : "") +
+          '<b>' + esc(p.nombre) + '</b><small>' + esc(p.apodo) + '</small>' +
+          '<p class="pl-ideal">Ideal para: ' + esc(p.ideal.toLowerCase()) + '</p><p>' + esc(p.texto) + '</p>' +
+          (p.paleta ? '<p>Trae sus propios colores. Si cambias colores más abajo, mandan los tuyos.</p>' : "") + '</div>' +
+          '<div class="pl-acc"><button type="button" class="btn sm' + (on ? " sec" : "") + '" role="radio" aria-checked="' + on + '" data-pl="' + id + '">' + (on ? "✓ En uso" : "Usar este") + '</button>' +
+          (url ? '<a class="btn quiet sm" target="_blank" rel="noopener" href="' + esc(url + "&plantilla=" + id) + '">Probar en mi página</a>' : "") + '</div></div>';
+      }).join("") + '</div>' +
+      (sel ? '<button type="button" class="btn quiet sm" data-pl="" style="justify-self:start">Volver al diseño de siempre</button>' : "") +
+      (lite ? '<p class="small muted" style="margin:0">Este teléfono está en modo liviano (ahorro de batería, de datos o menos movimiento): aquí y en tu página los efectos se ven más simples para que todo ande rápido.</p>' : "") +
+      (url ? "" : '<p class="small muted" style="margin:0">Cuando publiques tu página vas a poder probar cada estilo en ella antes de elegir.</p>');
+  }
+
+  function elegir(id) {
+    var b = api.datos().biz;
+    b.plantilla = id;
+    window.Almacen.escribir("hv:plantilla:" + api.idPlanilla(), id);
+    api.marcar(); pintar();
+    var btn = raiz.querySelector('[data-pl="' + id + '"]') || raiz.querySelector("[data-pl]"); if (btn) btn.focus();
+  }
+
+  /* inclinación de la mini vitrina 2.5D */
+  var actualCard = null;
+  function soltar() {
+    if (!actualCard) return;
+    actualCard.classList.remove("tilting");
+    ["--rx", "--ry", "--sx", "--sy"].forEach(function (k) { actualCard.style.removeProperty(k); });
+    actualCard = null;
+  }
+  function inclinar(e) {
+    var art = !document.documentElement.classList.contains("lite") && e.target.closest && e.target.closest(".pl-vitrina25d .m-art");
+    if (!art) return soltar();
+    var card = art.parentNode, r = art.getBoundingClientRect();
+    if (card !== actualCard) { soltar(); actualCard = card; card.classList.add("tilting"); }
+    var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    card.style.setProperty("--ry", (x * 18).toFixed(1) + "deg"); card.style.setProperty("--rx", (-y * 14).toFixed(1) + "deg");
+    card.style.setProperty("--sx", (-x * 14).toFixed(1) + "px"); card.style.setProperty("--sy", (10 - y * 8).toFixed(1) + "px");
+  }
+
+  window.HVRecomendador = {
+    iniciar: function (a) {
+      api = a; raiz = document.getElementById("plantRaiz"); if (!raiz) return;
+      raiz.addEventListener("click", function (e) { var t = e.target.closest("[data-pl]"); if (t) elegir(t.dataset.pl); });
+      raiz.addEventListener("pointermove", inclinar, { passive: true });
+      raiz.addEventListener("pointerdown", inclinar, { passive: true });
+      raiz.addEventListener("pointerleave", soltar, { passive: true });
+      raiz.addEventListener("pointercancel", soltar, { passive: true });
+      raiz.addEventListener("pointerup", function (e) { if (e.pointerType !== "mouse") soltar(); }, { passive: true });
+      document.addEventListener("hv:lite", pintar);
+    },
+    mostrar: pintar
+  };
+})();
+</script>
 <script>
 const CONF={client_id:"738171083651-v0t20ojk1o33f5ptuf6oc2mqpfb1d8h9.apps.googleusercontent.com",form:null};
 const VERS={terminos:"2026-11-08",privacidad:"2026-11-09"};
@@ -2641,7 +3530,7 @@ const FUENTES_X={"Instrument Sans":[400,500,600,700],"Nunito":[400,600,700],"Ope
 const $=id=>document.getElementById(id);
 const SCOPE="https://www.googleapis.com/auth/drive.file";
 const API={drive:"https://www.googleapis.com/drive/v3",sheets:"https://sheets.googleapis.com/v4/spreadsheets"};
-const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","logo","retrato","devoluciones","portada"];
+const KEYS=["nombre","rubro","titulo","descripcion","lugar","hoy","envio","retiro","whatsapp","numero_visible","tema","historia","logo","retrato","devoluciones","portada","plantilla","estado"];
 const EKEYS=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
 const COLS=[["fondo","Fondo de la página","paper"],["tarjetas","Fondo de las tarjetas","sheet"],["texto","Letras y botones","ink"],["destacado","Precios y detalles","accent"],["acento","Categorías e íconos","sea"]];
 const PCOLS=["rojo","coral","amarillo","verde","salvia","azul","azul oscuro","rosa"];
@@ -2734,14 +3623,26 @@ async function openEditor(nuevo){
     let saved=(()=>{try{return localStorage.getItem("mp:pub:"+fileId)}catch(e){return ""}})();
     if(!saved){try{const l=await api(`${API.drive}/files/${fileId}/revisions?fields=revisions(published,publishedLink)&pageSize=1000`);const r=(l.revisions||[]).filter(x=>x.published&&x.publishedLink).pop();const m=r&&String(r.publishedLink).match(/\/d\/e\/(2PACX-[\w-]+)/);if(m)saved=m[1];}catch(e){}}
     if(saved){pubId=saved;showResult();}
-    selectTab(nuevo?"negocio":"productos");}
+    /* si ya tiene productos y página publicada, abre en «Hoy» (lo que usa en la feria) */
+    selectTab(nuevo?"negocio":(pubId&&S.prods.some(p=>String(p.nombre||"").trim())?"panel":"productos"));}
 $("login").onclick=start;
 
+/* ---------- módulos: panel «Hoy» y recomendador de estilos ---------- */
+const COLOR_PROD={"verde":"#28756E","coral":"#E06A4E","azul oscuro":"#17363D","amarillo":"#E8B35C","salvia":"#7A9E7E","azul":"#5B7DB1","rosa":"#B05A7A","rojo":"#C0492F"};
+const fotoMini=p=>{const f=String(p.foto||"").trim();return f?prev(f.split("#")[0]):"";};
+window.HVPanel&&HVPanel.iniciar({datos:()=>S,guardar:save,marcar:()=>setDirty(true),refrescar:()=>{renderBiz();renderProds();},
+  idPlanilla:()=>fileId,publicada:()=>!!pubId,irA:t=>selectTab(t),foto:fotoMini,disponible:v=>isOn(v)});
+/* cada vez que se dibujan los diseños por rubro, también se actualizan los 4 estilos */
+renderRecos=(f=>function(){f.apply(this,arguments);window.HVRecomendador&&HVRecomendador.mostrar();})(renderRecos);
+window.HVRecomendador&&HVRecomendador.iniciar({datos:()=>S,marcar:()=>setDirty(true),idPlanilla:()=>fileId,rubro:()=>rubroSel||guessRubro(),
+  colores:()=>({fondo:val("fondo"),tarjetas:val("tarjetas"),texto:val("texto"),destacado:val("destacado"),acento:val("acento")}),
+  foto:fotoMini,colorProd:p=>COLOR_PROD[String(p.color||"").toLowerCase()]||(/^#[0-9a-f]{6}$/i.test(p.color||"")?p.color:"#7A9E7E"),urlTienda:()=>pubId?storeUrl():""});
+
 /* ---------- tabs ---------- */
-const TABS=["negocio","productos","estilo","publicar"];
-function selectTab(n){TABS.forEach(t=>{const b=$("t-"+t),p=$("p-"+t),on=t===n;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;p.hidden=!on;if(on)b.scrollIntoView({inline:"nearest",block:"nearest"});});cur=n;if(n==="publicar")renderCheck();renderAdvice();if(n==="estilo"){renderRecos();preview();}window.scrollTo({top:0});}
+const TABS=["panel","negocio","productos","estilo","publicar"];
+function selectTab(n){TABS.forEach(t=>{const b=$("t-"+t),p=$("p-"+t),on=t===n;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;p.hidden=!on;if(on)b.scrollIntoView({inline:"nearest",block:"nearest"});});cur=n;if(n==="publicar")renderCheck();renderAdvice();if(n==="estilo"){renderRecos();preview();}if(n==="panel"&&window.HVPanel)HVPanel.mostrar();window.scrollTo({top:0});}
 let cur="negocio";
-TABS.forEach((t,i)=>{const b=$("t-"+t);b.onclick=()=>selectTab(t);b.onkeydown=e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%4;if(e.key==="ArrowLeft")j=(i+3)%4;if(j!=null){e.preventDefault();selectTab(TABS[j]);$("t-"+TABS[j]).focus();}};});
+TABS.forEach((t,i)=>{const b=$("t-"+t);b.onclick=()=>selectTab(t);b.onkeydown=e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%TABS.length;if(e.key==="ArrowLeft")j=(i+TABS.length-1)%TABS.length;if(j!=null){e.preventDefault();selectTab(TABS[j]);$("t-"+TABS[j]).focus();}};});
 
 /* ---------- negocio ---------- */
 document.querySelectorAll("[data-b]").forEach(el=>el.addEventListener("input",()=>{S.biz[el.dataset.b]=el.value;setDirty(true);if(el.dataset.b==="nombre")preview();}));
@@ -2978,6 +3879,8 @@ const HELP={
    q:[["No tengo Gmail","Necesitas una cuenta de Google. Créala gratis en accounts.google.com, o pídenos ayuda en el taller."],["Dice «Google no verificó esta app»","Toca «Configuración avanzada» y luego «Ir a Crea tu página». Es normal en apps nuevas y gratuitas."],["No pasa nada al tocar el botón","Revisa que tengas internet. Si usas el navegador dentro de otra app (Instagram, Facebook), ábrelo en Chrome."]]},
  negocio:{t:"Mi negocio",s:["Escribe el nombre de tu negocio.","Pon tu número de WhatsApp: ahí te llegan los pedidos.","Escribe dónde te encuentran y, cada día, dónde estás hoy.","Toca «Guardar» abajo a la derecha."],
    q:[["¿Mi número se ve?","Tú eliges: completo, tapado o que no se vea. El botón de WhatsApp funciona igual."],["¿Qué pongo en «Dónde estás hoy»?","Por ejemplo «Feria Angelmó, hasta las 18:00». Si hoy no vendes, déjalo vacío."]]},
+ panel:{t:"Hoy: tu panel",s:["Arriba, toca dónde estás: en el muelle o feria, desde casa, o cerrado. Tu página lo muestra sola.","Si estás en la feria, escribe el lugar exacto.","En «Productos», toca el interruptor cuando algo se te acabe.","Cuando te llegue un pedido por WhatsApp, copia el mensaje y toca «Llegó un pedido por WhatsApp».","Cuando te paguen, toca «Venta concretada»."],
+   q:[["¿Tengo que tocar Guardar?","No. En esta pestaña se guarda solo. Tus clientas lo ven en tu página en unos minutos."],["¿Quién ve mis ventas?","Nadie más. Se guardan solo en este teléfono. Tus clientas no las ven."],["¿Por qué tengo que pegar el mensaje?","Porque así se cuentan los pedidos que de verdad te llegaron. Cada pedido de tu página trae un código (por ejemplo #K7Q2), así no se cuenta dos veces."],["Me equivoqué con un pedido","Abre «Ver todos los pedidos» y toca «borrar» en ese pedido."],["¿Puedo cambiar cómo se ve el panel?","Sí: arriba a la derecha elige Claro, Oscuro o Vidrio."]]},
  productos:{t:"Productos",s:["Toca «+ Agregar producto».","Escribe el nombre y el precio (solo números, sin puntos ni $).","Si se te acaba, apaga «Disponible». Cuando vuelva, lo enciendes.","Toca «Guardar»."],
    q:[["¿Cómo pongo una foto?","Abre «Más datos» y toca «Subir foto» para elegirla desde tu galería. Si no tienes, la página pone un dibujo de color."],["¿Cómo le quito el fondo a una foto?","Después de subirla, toca «Quitar el fondo». La primera vez demora un poco. Si no te gusta cómo quedó, toca «Volver a la foto original»."],["¿Cómo saco una buena foto?","Cerca de una ventana, de día y sin flash. El producto solo, entero, con una pared lisa atrás."],["¿Cómo ordeno los productos?","Usa la flecha ↑ para subir un producto. El primero de la lista sale primero."],["Borré un producto sin querer","Si todavía no tocaste «Guardar», recarga la página y vuelve a entrar: se recupera lo último guardado."]]},
  estilo:{t:"Colores y letras",s:["Toca un estilo para partir.","Si quieres, cambia cada color tocando el cuadrito.","Elige la letra de los títulos y del texto.","Mira «Así se ve». Si aparece el aviso rojo, cambia el color hasta que desaparezca.","Toca «Guardar»."],

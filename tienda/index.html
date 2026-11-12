@@ -17,7 +17,7 @@
 <link rel="icon" id="favicon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <style>
 /* Layout: barra superior fija · portada corta con bodegón ilustrado · buscador y categorías · grilla de productos sobre "hojas punteadas" · carrito en panel lateral (abajo en celular) */
 :root{
@@ -249,6 +249,491 @@ footer p{margin:0;color:var(--ink-soft);font-size:15px}
 .art:has(img.cut){background:radial-gradient(120% 85% at 40% 18%,var(--art),color-mix(in srgb,var(--art) 88%,var(--ink)))}
 @media (prefers-reduced-motion:reduce){.vprod{animation:none}.vitrina{transition:none}}
 </style>
+<style>/* estilos_tienda/plantillas.css */
+/* =====================================================================
+   estilos_tienda/plantillas.css — Los 4 estilos de la tienda pública
+   Se activan con <html data-plantilla="clasico|artesanal|glass|vitrina25d">.
+   Sin data-plantilla, la tienda queda con su diseño de siempre.
+   html.lite (comun/rendimiento.js) apaga desenfoques e inclinaciones.
+   ===================================================================== */
+
+/* ---------- estado del día (muelle / casa / cerrado) ---------- */
+.hoy.casa i{background:#F5B83D;box-shadow:none;animation:none}
+.hoy.cerrado{background:var(--line);color:var(--ink)}
+.hoy.cerrado i{background:#8C9A9C;box-shadow:none;animation:none}
+
+/* ---------- modo liviano: vale para cualquier estilo ---------- */
+html.lite .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--paper)}
+html.lite .still svg,html.lite .hoy i,html.lite .vprod{animation:none!important}
+html.lite .card,html.lite .still{transform:none!important;transition:none!important}
+
+/* =====================================================================
+   1 · CLÁSICO / ULTRA RÁPIDO — blanco, letras del sistema, cero efectos
+   ===================================================================== */
+html[data-plantilla="clasico"]{
+  --display:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  --dw:700!important;--r-lg:12px}
+html[data-plantilla="clasico"] .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet)}
+html[data-plantilla="clasico"] .hero h1{text-shadow:none!important;letter-spacing:-.02em}
+html[data-plantilla="clasico"] .still{box-shadow:none;transform:none!important}
+html[data-plantilla="clasico"] .still svg,html[data-plantilla="clasico"] .hoy i{animation:none}
+html[data-plantilla="clasico"] .art{background-image:none}
+html[data-plantilla="clasico"] .art img.cut{filter:none}
+html[data-plantilla="clasico"] .card{box-shadow:none;transition:none;transform:none!important}
+html[data-plantilla="clasico"] .card:hover{box-shadow:none}
+html[data-plantilla="clasico"] .card:hover .art svg{transform:none}
+html[data-plantilla="clasico"] .tag{transform:none;box-shadow:none;border-radius:6px;font-family:var(--body);font-weight:700}
+html[data-plantilla="clasico"] .add,html[data-plantilla="clasico"] .stepper{border-radius:10px}
+
+/* =====================================================================
+   2 · REALISTA / ARTESANAL — crema, tierra y madera suave
+   ===================================================================== */
+html[data-plantilla="artesanal"] body{
+  background-color:var(--paper);
+  /* grano de papel muy suave (imagen chiquita que se repite, no pesa) */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .2 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+html.lite[data-plantilla="artesanal"] body{background-image:none}
+html[data-plantilla="artesanal"] .top{background:rgba(var(--paper-rgb),.96)}
+html[data-plantilla="artesanal"] .card{border-radius:14px;border:1px solid rgba(var(--ink-rgb),.12);
+  box-shadow:0 1px 0 rgba(var(--ink-rgb),.05),0 16px 30px -22px rgba(var(--ink-rgb),.5)}
+html[data-plantilla="artesanal"] .art{aspect-ratio:1/1;border-bottom:0;
+  /* tabla de madera clara: vetas finas sobre un tono crema tostado */
+  background:repeating-linear-gradient(92deg,rgba(120,80,40,.045) 0 2px,transparent 2px 11px),
+             linear-gradient(180deg,#EFE2CC,#E4D2B4)}
+html[data-plantilla="artesanal"] .art img.cut{filter:drop-shadow(0 16px 12px rgba(70,45,20,.32))}
+html[data-plantilla="artesanal"] .tag{background:var(--sheet);color:var(--marigold);border:1.5px dashed var(--marigold);box-shadow:none;transform:rotate(-2deg)}
+html[data-plantilla="artesanal"] .flag{background:#C9A877;color:#2E2117}
+html[data-plantilla="artesanal"] .kind{letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
+html[data-plantilla="artesanal"] .add,html[data-plantilla="artesanal"] .stepper{border-radius:10px}
+html[data-plantilla="artesanal"] .still{border-radius:18px}
+@media (max-width:560px){html[data-plantilla="artesanal"] .grid{gap:10px}}
+
+/* =====================================================================
+   3 · MINIMAL MODERNO / GLASSMORPHISM — tarjetas de vidrio
+   ===================================================================== */
+/* fondo con manchas de color de la marca (fijo, no se repinta al bajar) */
+html[data-plantilla="glass"] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(55vmax 55vmax at 8% -5%,rgba(var(--ink-rgb),.10),transparent 60%),var(--paper)}
+@supports (background:color-mix(in srgb,red 50%,blue)){
+  html[data-plantilla="glass"] body::before{background:
+    radial-gradient(55vmax 55vmax at 6% -6%,color-mix(in srgb,var(--marigold) 34%,transparent),transparent 62%),
+    radial-gradient(48vmax 48vmax at 100% 28%,color-mix(in srgb,var(--sea) 28%,transparent),transparent 60%),
+    radial-gradient(40vmax 40vmax at 30% 100%,color-mix(in srgb,var(--marigold) 18%,transparent),transparent 60%),
+    var(--paper)}}
+html[data-plantilla="glass"] body{background:transparent}
+html[data-plantilla="glass"] .card{border-radius:22px;background:rgba(255,255,255,.58);
+  border:1px solid rgba(255,255,255,.7);box-shadow:0 10px 34px -12px rgba(var(--shadow),.22),inset 0 1px 0 rgba(255,255,255,.65);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%)}
+html[data-plantilla="glass"] .art{background:rgba(255,255,255,.28);background-image:none;border-bottom:1px solid rgba(255,255,255,.55)}
+html[data-plantilla="glass"] .tag{transform:none;border-radius:999px;box-shadow:0 6px 16px -8px rgba(var(--shadow),.5)}
+html[data-plantilla="glass"] .flag{background:rgba(255,255,255,.75);color:var(--ink);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+html[data-plantilla="glass"] .add{border-color:rgba(var(--ink-rgb),.35)}
+html[data-plantilla="glass"] .still{border-radius:28px}
+/* temas oscuros: vidrio ahumado en vez de blanco */
+html[data-plantilla="glass"][style*="color-scheme: dark"] .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);box-shadow:0 10px 34px -12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .art{background:rgba(255,255,255,.05);border-bottom-color:rgba(255,255,255,.12)}
+html[data-plantilla="glass"][style*="color-scheme: dark"] .flag{background:rgba(0,0,0,.45);color:#fff}
+/* liviano o navegador sin desenfoque: tarjeta sólida y limpia */
+html.lite[data-plantilla="glass"] .card,html.lite[data-plantilla="glass"] .flag{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--sheet);border-color:var(--line)}
+html.lite[data-plantilla="glass"] .art{background:var(--art)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html[data-plantilla="glass"] .card{background:var(--sheet);border-color:var(--line)}}
+
+/* =====================================================================
+   4 · VITRINA INTERACTIVA 2.5D — la foto se inclina con el dedo/mouse
+   Solo CSS perspective + rotateX/rotateY sobre la imagen 2D.
+   Variables que mueve estilos_tienda/plantillas.js en cada tarjeta:
+   --rx --ry (grados), --sx --sy (sombra, px), --gx --gy (brillo, %)
+   ===================================================================== */
+html[data-plantilla="vitrina25d"] .card{--rx:0deg;--ry:0deg;--sx:0px;--sy:14px;--gx:50%;--gy:30%;
+  border-radius:20px;transform:none!important;
+  box-shadow:var(--sx) var(--sy) 34px -18px rgba(var(--shadow),.45);transition:box-shadow .35s ease-out}
+html[data-plantilla="vitrina25d"] .art{perspective:700px;touch-action:pan-y;overflow:hidden;cursor:grab;
+  background:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art));background-image:radial-gradient(120% 90% at 50% 20%,var(--sheet),var(--art))}
+html[data-plantilla="vitrina25d"] .art img,html[data-plantilla="vitrina25d"] .art svg{
+  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(1.06);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s;will-change:transform}
+html[data-plantilla="vitrina25d"] .card.tilting .art img,html[data-plantilla="vitrina25d"] .card.tilting .art svg{transition:transform .08s linear,filter .08s linear}
+html[data-plantilla="vitrina25d"] .art img.cut{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0) scale(.98);
+  filter:drop-shadow(calc(var(--sx)*.8) calc(var(--sy)*.9) 14px rgba(var(--shadow),.34))}
+/* brillo que sigue al dedo */
+html[data-plantilla="vitrina25d"] .art::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(60% 50% at var(--gx) var(--gy),rgba(255,255,255,.38),transparent 70%);mix-blend-mode:soft-light}
+html[data-plantilla="vitrina25d"] .card.tilting .art::after{opacity:1}
+/* producto estrella: el primero ocupa el doble */
+html[data-plantilla="vitrina25d"] .grid{grid-auto-flow:dense}
+html[data-plantilla="vitrina25d"] .card.estrella{grid-column:span 2;grid-row:span 2}
+html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:auto;flex:1 1 auto;min-height:260px}
+html[data-plantilla="vitrina25d"] .card.estrella .body,html[data-plantilla="vitrina25d"] .card.estrella .body p{flex:none}
+@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella{grid-row:auto}html[data-plantilla="vitrina25d"] .card.estrella .art{aspect-ratio:16/10;flex:none;min-height:0}}
+/* la foto se recorta dentro del recuadro, así que el precio va adentro */
+html[data-plantilla="vitrina25d"] .tag{bottom:12px;transform:none;border-radius:999px}
+html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:26px}
+@media (max-width:560px){html[data-plantilla="vitrina25d"] .card.estrella .body h3{font-size:20px}}
+/* pista de que se puede mover: un saludo corto una sola vez */
+@keyframes hv-asoma{0%,100%{transform:rotateX(0) rotateY(0) scale(1.06)}35%{transform:rotateX(4deg) rotateY(-9deg) scale(1.06)}70%{transform:rotateX(-2deg) rotateY(7deg) scale(1.06)}}
+html[data-plantilla="vitrina25d"] .card.estrella.saluda .art img:not(.cut),html[data-plantilla="vitrina25d"] .card.estrella.saluda .art svg{animation:hv-asoma 1.6s ease-in-out 1}
+/* liviano / menos movimiento: foto quieta, sombra fija */
+html.lite[data-plantilla="vitrina25d"] .art img,html.lite[data-plantilla="vitrina25d"] .art svg{transform:none!important;transition:none;animation:none!important;will-change:auto}
+html.lite[data-plantilla="vitrina25d"] .art img.cut{filter:drop-shadow(0 14px 12px rgba(var(--shadow),.28))}
+html.lite[data-plantilla="vitrina25d"] .art::after{display:none}
+html.lite[data-plantilla="vitrina25d"] .art{cursor:auto}
+</style>
+<script>/* comun/rendimiento.js */
+/* =====================================================================
+   comun/rendimiento.js — Modo liviano automático
+   ---------------------------------------------------------------------
+   Pone la clase "lite" en <html> cuando conviene una página simple:
+   - la persona pidió menos movimiento (prefers-reduced-motion)
+   - o pidió menos transparencias (prefers-reduced-transparency)
+   - el teléfono tiene "ahorro de datos" o la señal es 2G
+   - el teléfono es sencillo (poca memoria o pocos núcleos, en pantalla táctil)
+   - la batería está bajo 20 % y sin cargar (si el navegador lo informa)
+   Con "lite" se apagan el desenfoque (backdrop-filter), la inclinación 2.5D
+   y las animaciones; la página se ve igual de ordenada, pero más plana.
+   Para probar: agrega ?lite=1 (forzar) o ?lite=0 (nunca) al link.
+   Se incluye en línea al construir (build.py), así no suma descargas.
+   ===================================================================== */
+(function () {
+  var html = document.documentElement, motivos = [];
+  var mm = function (q) { try { return matchMedia(q).matches; } catch (e) { return false; } };
+  var forzar = null;
+  try { forzar = new URLSearchParams(location.search).get("lite"); } catch (e) {}
+
+  if (mm("(prefers-reduced-motion: reduce)")) motivos.push("menos movimiento");
+  if (mm("(prefers-reduced-transparency: reduce)")) motivos.push("menos transparencias");
+  var c = navigator.connection || {};
+  if (c.saveData) motivos.push("ahorro de datos");
+  if (/(^|-)2g$/.test(String(c.effectiveType || ""))) motivos.push("señal 2G");
+  var tactil = mm("(pointer: coarse)");
+  if (navigator.deviceMemory && navigator.deviceMemory <= 2) motivos.push("poca memoria");
+  if (tactil && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) motivos.push("teléfono sencillo");
+
+  function aplicar() {
+    var on = forzar === "1" ? true : forzar === "0" ? false : motivos.length > 0;
+    html.classList.toggle("lite", on);
+    window.HV_LITE = { activo: on, motivos: motivos.slice() };
+    try { document.dispatchEvent(new CustomEvent("hv:lite", { detail: window.HV_LITE })); } catch (e) {}
+  }
+  aplicar();
+
+  /* Batería: solo algunos navegadores la informan (Chrome en Android). */
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function (b) {
+      function rev() {
+        var i = motivos.indexOf("batería baja");
+        var baja = !b.charging && b.level <= 0.2;
+        if (baja && i < 0) motivos.push("batería baja");
+        if (!baja && i >= 0) motivos.splice(i, 1);
+        aplicar();
+      }
+      rev(); b.addEventListener("levelchange", rev); b.addEventListener("chargingchange", rev);
+    }).catch(function () {});
+  }
+  /* Si la persona cambia la preferencia con la página abierta */
+  ["(prefers-reduced-motion: reduce)", "(prefers-reduced-transparency: reduce)"].forEach(function (q, n) {
+    try {
+      matchMedia(q).addEventListener("change", function (e) {
+        var m = n ? "menos transparencias" : "menos movimiento", i = motivos.indexOf(m);
+        if (e.matches && i < 0) motivos.push(m); if (!e.matches && i >= 0) motivos.splice(i, 1);
+        aplicar();
+      });
+    } catch (e) {}
+  });
+})();
+</script>
+<script>/* comun/plantillas.js */
+/* =====================================================================
+   comun/plantillas.js — Los 4 estilos de la tienda pública
+   ---------------------------------------------------------------------
+   Lo usan el editor (tarjetas de recomendación y vista previa) y la
+   tienda (paleta de cada estilo). Se incluye en línea al construir.
+   En la planilla se guarda en la fila "plantilla" de la pestaña Tienda:
+   clasico | artesanal | glass | vitrina25d   (vacío = diseño de siempre)
+   ===================================================================== */
+(function () {
+  var PLANTILLAS = {
+    clasico: {
+      id: "clasico", nombre: "Clásico", apodo: "Ultra rápido",
+      ideal: "Catálogos simples y máxima velocidad",
+      texto: "Fondo blanco, letras del teléfono (no se descargan) y cero efectos. Carga al tiro aunque la señal esté mala en la feria.",
+      /* Paleta neutra. destacado/acento: se respetan los de la emprendedora
+         si se leen bien sobre blanco; si no, se usan estos. */
+      paleta: { fondo: "#F7F7F5", tarjetas: "#FFFFFF", texto: "#1E2329", destacado: "#A6402A", acento: "#2F6F62" },
+      mantieneAcentos: true
+    },
+    artesanal: {
+      id: "artesanal", nombre: "Realista artesanal", apodo: "Cálido y cercano",
+      ideal: "Comida, tejidos y manualidades",
+      texto: "Tonos tierra, crema y madera suave. Fotos grandes y directas, como mirar el producto en tu mesa.",
+      paleta: { fondo: "#F3EADB", tarjetas: "#FFF9EF", texto: "#3A2A1F", destacado: "#A4532B", acento: "#6C7A3B", fuente: "Fraunces", fuente_texto: "Instrument Sans" }
+    },
+    glass: {
+      id: "glass", nombre: "Minimal moderno", apodo: "Vidrio (glassmorphism)",
+      ideal: "Cosmética, accesorios y marcas modernas",
+      texto: "Tarjetas de vidrio con transparencias suaves y bordes limpios, sobre los colores de tu marca.",
+      paleta: null /* usa los colores que ya elegiste */
+    },
+    vitrina25d: {
+      id: "vitrina25d", nombre: "Vitrina interactiva 2.5D", apodo: "Para tus productos estrella",
+      ideal: "Destacar productos estrella",
+      texto: "La foto del producto se inclina suave al pasar el dedo o el mouse, con sombra que se mueve. Tu primer producto sale más grande.",
+      paleta: null
+    }
+  };
+  var ORDEN = ["clasico", "artesanal", "glass", "vitrina25d"];
+
+  /* Rubros del editor → estilo recomendado */
+  var POR_RUBRO = {
+    comida: "artesanal", pan: "artesanal", dulces: "artesanal", cafe: "artesanal", bebidas: "artesanal",
+    ropa: "artesanal", artesania: "artesanal", plantas: "artesanal",
+    cosmetica: "glass", joyas: "glass",
+    papeleria: "clasico"
+  };
+
+  /* info = { rubro, productos, conFoto, sinFondo }  → { id, porque } */
+  function recomendar(info) {
+    info = info || {};
+    var n = info.productos || 0;
+    if (n >= 15) return { id: "clasico", porque: "Tienes " + n + " productos: con el Clásico tu página carga más rápido y se recorre fácil." };
+    if ((info.sinFondo || 0) >= 1 && n > 0 && n <= 8) return { id: "vitrina25d", porque: "Tienes fotos sin fondo y pocos productos: la vitrina 2.5D los hace lucir como en un mostrador." };
+    var id = POR_RUBRO[info.rubro] || "clasico";
+    var por = {
+      artesanal: "Para lo que vendes, los tonos cálidos y naturales dan confianza y abren el apetito.",
+      glass: "Para cosmética y accesorios, el vidrio suave se ve moderno y deja brillar tus colores.",
+      clasico: "Para un catálogo simple, lo más claro y rápido es lo que mejor vende.",
+      vitrina25d: ""
+    }[id];
+    if (id !== "clasico" && (info.conFoto || 0) === 0 && n > 0) por += " Ojo: se luce mucho más con fotos reales de tus productos.";
+    return { id: id, porque: por };
+  }
+
+  /* Paleta final de un estilo, mezclando con la de la emprendedora.
+     propio = colores elegidos a mano (fondo, texto, …) — siempre ganan.
+     tema   = colores del tema actual (paper, ink, accent, sea). */
+  function paleta(id, propio, tema) {
+    var P = PLANTILLAS[id];
+    propio = propio || {};
+    if (!P || !P.paleta) return propio;
+    var out = {}, k;
+    for (k in P.paleta) out[k] = P.paleta[k];
+    if (P.mantieneAcentos && tema) {
+      if (tema.accent && contraste(tema.accent, "#FFFFFF") >= 3) out.destacado = tema.accent;
+      if (tema.sea && contraste(tema.sea, "#FFFFFF") >= 3) out.acento = tema.sea;
+    }
+    for (k in propio) if (propio[k]) out[k] = propio[k];
+    return out;
+  }
+  function lum(h) {
+    h = String(h || "").replace("#", ""); if (h.length !== 6) return 1;
+    var c = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+  }
+  function contraste(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  function normalizar(v) {
+    v = String(v || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+    if (/clasic|rapid/.test(v)) return "clasico";
+    if (/artesan|realis/.test(v)) return "artesanal";
+    if (/glass|vidrio|minimal/.test(v)) return "glass";
+    if (/vitrina|25d|interact/.test(v)) return "vitrina25d";
+    return "";
+  }
+  window.HV_PLANTILLAS = { lista: PLANTILLAS, orden: ORDEN, recomendar: recomendar, paleta: paleta, normalizar: normalizar, contraste: contraste };
+})();
+</script>
+<script>/* estilos_tienda/plantillas.js */
+/* =====================================================================
+   estilos_tienda/plantillas.js — Aplica el estilo elegido en la tienda
+   ---------------------------------------------------------------------
+   Orden para saber qué estilo usar:
+   1. ?plantilla=… en el link (la dueña lo prueba desde el editor)
+   2. lo que dice la planilla (fila "plantilla")
+   3. copia guardada en este teléfono de la última visita (evita parpadeo)
+   Necesita comun/plantillas.js (HV_PLANTILLAS) y comun/rendimiento.js.
+   ===================================================================== */
+(function () {
+  var html = document.documentElement;
+  var qp = new URLSearchParams(location.search);
+  var sid = (qp.get("s") || "").replace(/[^\w-]/g, "");
+  var CLAVE = "hv:plantilla:tienda:" + (sid || location.pathname);
+  var deLink = window.HV_PLANTILLAS ? HV_PLANTILLAS.normalizar(qp.get("plantilla")) : "";
+
+  function poner(id) {
+    if (id) html.setAttribute("data-plantilla", id); else html.removeAttribute("data-plantilla");
+  }
+  /* Llamar con el valor de la planilla. Devuelve el id aplicado. */
+  function aplicar(valorPlanilla) {
+    var id = deLink || (window.HV_PLANTILLAS ? HV_PLANTILLAS.normalizar(valorPlanilla) : "");
+    poner(id);
+    if (!deLink) { try { if (id) localStorage.setItem(CLAVE, id); else localStorage.removeItem(CLAVE); } catch (e) {} }
+    return id;
+  }
+  /* Al abrir: link o copia guardada, antes de pintar nada */
+  (function () {
+    var guardado = ""; try { guardado = localStorage.getItem(CLAVE) || ""; } catch (e) {}
+    poner(deLink || guardado);
+  })();
+  function actual() { return html.getAttribute("data-plantilla") || ""; }
+  function animaOK() { return !html.classList.contains("lite") && actual() !== "clasico"; }
+  function inclinaOK() { return actual() === "vitrina25d" && !html.classList.contains("lite"); }
+
+  /* ---------- Vitrina 2.5D: inclinación con dedo o mouse ---------- */
+  function activarInclinacion(grid) {
+    if (!grid || grid.__hvTilt) return; grid.__hvTilt = true;
+    var card = null, art = null, px = 0, py = 0, raf = 0;
+    function pintar() {
+      raf = 0; if (!card || !art) return;
+      var r = art.getBoundingClientRect();
+      var x = Math.min(1, Math.max(0, (px - r.left) / r.width)) - .5;
+      var y = Math.min(1, Math.max(0, (py - r.top) / r.height)) - .5;
+      var s = card.style;
+      s.setProperty("--ry", (x * 16).toFixed(2) + "deg");
+      s.setProperty("--rx", (-y * 13).toFixed(2) + "deg");
+      s.setProperty("--sx", (-x * 22).toFixed(1) + "px");
+      s.setProperty("--sy", (14 - y * 14).toFixed(1) + "px");
+      s.setProperty("--gx", ((x + .5) * 100).toFixed(0) + "%");
+      s.setProperty("--gy", ((y + .5) * 100).toFixed(0) + "%");
+    }
+    function soltar() {
+      if (!card) return;
+      ["--rx", "--ry", "--sx", "--sy", "--gx", "--gy"].forEach(function (k) { card.style.removeProperty(k); });
+      card.classList.remove("tilting"); card = art = null;
+    }
+    function mover(e) {
+      if (!inclinaOK()) return;
+      var a = e.target.closest && e.target.closest(".art"), c = a && a.closest(".card");
+      if (!c || c.classList.contains("out")) { if (e.pointerType === "mouse") soltar(); return; }
+      if (c !== card) { soltar(); card = c; art = a; card.classList.add("tilting"); }
+      px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(pintar);
+    }
+    grid.addEventListener("pointerdown", mover, { passive: true });
+    grid.addEventListener("pointermove", mover, { passive: true });
+    grid.addEventListener("pointerup", function (e) { if (e.pointerType !== "mouse") soltar(); }, { passive: true });
+    grid.addEventListener("pointercancel", soltar, { passive: true });
+    grid.addEventListener("pointerleave", soltar, { passive: true });
+    document.addEventListener("scroll", function () { if (card && card.classList.contains("tilting")) soltar(); }, { passive: true });
+  }
+
+  /* Marca el producto estrella (el primero de la lista completa) y lo hace saludar una vez */
+  var saludo = false;
+  function marcarEstrella(grid, mostrandoTodo) {
+    if (!grid) return;
+    var cards = grid.querySelectorAll(".card");
+    cards.forEach(function (c, i) { c.classList.toggle("estrella", actual() === "vitrina25d" && mostrandoTodo && i === 0); });
+    var e = grid.querySelector(".card.estrella");
+    if (e && !saludo && inclinaOK() && "IntersectionObserver" in window) {
+      saludo = true;
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { e.classList.add("saluda"); setTimeout(function () { e.classList.remove("saluda"); }, 1800); io.disconnect(); }
+      }, { threshold: .6 });
+      io.observe(e);
+    }
+  }
+  window.HV_TIENDA_ESTILO = { aplicar: aplicar, actual: actual, animaOK: animaOK, inclinaOK: inclinaOK, activarInclinacion: activarInclinacion, marcarEstrella: marcarEstrella };
+})();
+</script>
+<script>/* comun/metricas.js */
+/* =====================================================================
+   comun/metricas.js — Pedidos por WhatsApp y ventas concretadas
+   ---------------------------------------------------------------------
+   ¿Cómo se cuentan los pedidos sin un servidor?
+   1. La tienda pone un código corto en cada mensaje («Pedido #K7Q2»).
+   2. Cuando a la emprendedora le llega el WhatsApp, lo copia y lo pega
+      en su panel (o lo anota a mano). El panel lee productos y total.
+   3. Cuando la venta se cierra, toca «Venta concretada».
+   Así se cuentan los pedidos que de verdad llegaron, en su teléfono.
+   Los clics que NO terminan en mensaje solo se pueden contar con un
+   servidor: para eso está registrarClic() y "metricas_url" en
+   config.json (vacío = apagado; no se envía nada a ningún lado).
+   Datos guardados (Almacen, clave hv:metricas:<idPlanilla>):
+   { v:1, pedidos:[{ id, fecha, cliente, items:[{n,q,p}], total,
+                     estado:"pendiente"|"concretada"|"perdida", cerrado }] }
+   ===================================================================== */
+(function () {
+  var LETRAS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  function codigo() { var s = ""; for (var i = 0; i < 4; i++) s += LETRAS[Math.floor(Math.random() * LETRAS.length)]; return s; }
+  var pesos = function (t) { var d = String(t || "").replace(/[^\d]/g, ""); return d ? parseInt(d, 10) : 0; };
+
+  /* Lee el mensaje que arma la tienda:
+     «Pedido #K7Q2» · «• 2 x Mermelada — $7.000» · «Total: $7.000» · «Nombre: Ana» */
+  function leerMensaje(texto, productos) {
+    var t = String(texto || ""), out = { id: "", cliente: "", items: [], total: 0 };
+    var m = t.match(/pedido\s*#\s*([A-Z0-9]{3,8})/i); if (m) out.id = m[1].toUpperCase();
+    m = t.match(/^\s*nombre\s*:\s*(.+)$/im); if (m) out.cliente = m[1].trim().slice(0, 60);
+    t.split(/\r?\n|(?=•)/).forEach(function (l) {
+      var x = l.match(/^\s*[•\-*·]?\s*(\d+)\s*[x×]\s*(.+?)\s*[—–-]\s*\$?\s*([\d.,]+)\s*$/i);
+      if (x) { var q = parseInt(x[1], 10), sub = pesos(x[3]); out.items.push({ n: x[2].trim(), q: q, p: q ? Math.round(sub / q) : sub }); }
+    });
+    m = t.match(/total\s*:\s*\$?\s*([\d.,]+)/i);
+    out.total = m ? pesos(m[1]) : out.items.reduce(function (a, x) { return a + x.q * x.p; }, 0);
+    /* nombres parecidos a los productos de la planilla → nombre oficial */
+    if (productos && productos.length) out.items.forEach(function (it) {
+      var k = norm(it.n), hit = productos.find(function (p) { return norm(p.nombre) === k; }) ||
+        productos.find(function (p) { var a = norm(p.nombre); return a && (a.indexOf(k) >= 0 || k.indexOf(a) >= 0); });
+      if (hit) it.n = hit.nombre;
+    });
+    return out;
+  }
+  function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim(); }
+
+  function Libro(idPlanilla) { this.clave = "hv:metricas:" + (idPlanilla || "local"); this.datos = { v: 1, pedidos: [] }; }
+  Libro.prototype.cargar = function () {
+    var self = this;
+    return window.Almacen.leer(this.clave).then(function (d) { if (d && d.pedidos) self.datos = d; return self; });
+  };
+  Libro.prototype.guardar = function () { return window.Almacen.escribir(this.clave, this.datos); };
+  Libro.prototype.agregar = function (p) {
+    p = p || {};
+    var id = (p.id || codigo()).toUpperCase();
+    var ya = this.datos.pedidos.find(function (x) { return x.id === id; });
+    if (ya) return { pedido: ya, repetido: true };
+    var nuevo = { id: id, fecha: new Date().toISOString(), cliente: p.cliente || "", items: p.items || [], total: p.total || 0, estado: "pendiente", cerrado: "" };
+    this.datos.pedidos.unshift(nuevo); this.guardar();
+    return { pedido: nuevo, repetido: false };
+  };
+  Libro.prototype.existe = function (id) { id = String(id || "").toUpperCase(); return !!id && this.datos.pedidos.some(function (x) { return x.id === id; }); };
+  Libro.prototype.marcar = function (id, estado) {
+    var p = this.datos.pedidos.find(function (x) { return x.id === id; });
+    if (!p) return null;
+    p.estado = estado; p.cerrado = estado === "pendiente" ? "" : new Date().toISOString();
+    this.guardar(); return p;
+  };
+  Libro.prototype.borrar = function (id) {
+    this.datos.pedidos = this.datos.pedidos.filter(function (x) { return x.id !== id; }); this.guardar();
+  };
+  /* periodo: "hoy" | "7" | "30" | "todo" */
+  Libro.prototype.resumen = function (periodo) {
+    var desde = 0, ahora = new Date();
+    if (periodo === "hoy") desde = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()).getTime();
+    else if (periodo === "7" || periodo === "30") desde = ahora.getTime() - parseInt(periodo, 10) * 864e5;
+    var P = this.datos.pedidos.filter(function (x) { return new Date(x.fecha).getTime() >= desde; });
+    var ok = P.filter(function (x) { return x.estado === "concretada"; });
+    var ingresos = ok.reduce(function (a, x) { return a + (x.total || 0); }, 0);
+    var cuenta = {};
+    P.forEach(function (x) { (x.items || []).forEach(function (it) { cuenta[it.n] = (cuenta[it.n] || 0) + (it.q || 1); }); });
+    var top = Object.keys(cuenta).map(function (n) { return { n: n, q: cuenta[n] }; }).sort(function (a, b) { return b.q - a.q; }).slice(0, 5);
+    return {
+      pedidos: P.length, concretadas: ok.length,
+      pendientes: P.filter(function (x) { return x.estado === "pendiente"; }).length,
+      conversion: P.length ? Math.round(ok.length / P.length * 100) : 0,
+      ingresos: ingresos, ticket: ok.length ? Math.round(ingresos / ok.length) : 0, top: top
+    };
+  };
+
+  /* Desde la tienda: avisa de un clic en «Enviar pedido por WhatsApp».
+     Solo envía si hay un servidor configurado (metricas_url). */
+  function registrarClic(url, datos) {
+    if (!url) return false;
+    try {
+      var cuerpo = JSON.stringify({ tipo: "clic_whatsapp", fecha: new Date().toISOString(), tienda: datos.tienda || "", pedido: datos.pedido || "", total: datos.total || 0, items: datos.items || 0 });
+      if (navigator.sendBeacon) return navigator.sendBeacon(url, new Blob([cuerpo], { type: "text/plain" }));
+      fetch(url, { method: "POST", body: cuerpo, mode: "no-cors", keepalive: true }); return true;
+    } catch (e) { return false; }
+  }
+  window.HV_METRICAS = { Libro: Libro, leerMensaje: leerMensaje, codigo: codigo, registrarClic: registrarClic };
+})();
+</script>
 <script type="application/json" id="data">{"biz": {"slug": "tienda", "name": "Tu tienda", "rubro": "", "titulo": "", "tag": "", "place": "", "envio": "", "hoy": "", "wa": "", "tema": "marino", "universal": true}, "products": []}</script>
 <script>
 const DEV_DEFAULT="Si compraste a distancia (por esta página o WhatsApp), puedes arrepentirte dentro de 10 días desde que recibes el producto, devolviéndolo sin uso y en su estado original (derecho de retracto, Ley 19.496 del Consumidor).\nNo aplica a alimentos frescos o que vencen en menos de 10 días, productos hechos a pedido o personalizados, ni artículos de higiene personal con el sello abierto.\nSi un producto nuevo viene con fallas, tienes garantía legal de 6 meses desde que lo recibes: puedes elegir cambio, reparación o devolución del dinero.\nPara cualquier cambio o devolución, escríbenos por WhatsApp.";
@@ -293,6 +778,8 @@ const contraste=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math
 let TEMA=TEMAS.marino;
 function aplicarTema(nombre,o){o=o||{};
   const k=String(nombre||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
+  /* estilo de tienda (clásico, artesanal…): su paleta va debajo de los colores elegidos a mano */
+  const pl=document.documentElement.getAttribute("data-plantilla")||"";if(pl&&window.HV_PLANTILLAS)o=HV_PLANTILLAS.paleta(pl,o,TEMAS[k]||TEMAS.marino);
   const t={...(TEMAS[k]||TEMAS.marino)},ok=x=>hexOK(o[x])?o[x]:"";
   const custom=!!(ok("fondo")||ok("texto")||ok("tarjetas"));
   t.paper=ok("fondo")||t.paper;t.ink=ok("texto")||t.ink;t.accent=ok("destacado")||t.accent;t.sea=ok("acento")||t.sea;t.sheet=ok("tarjetas")||t.sheet||"#FFFFFF";
@@ -310,13 +797,14 @@ function aplicarTema(nombre,o){o=o||{};
   const fam={};fam[t.fuente]=new Set([t.dw]);(fam[t.fuenteX]=fam[t.fuenteX]||new Set());FUENTES_X[t.fuenteX].forEach(w=>fam[t.fuenteX].add(w));
   const url="https://fonts.googleapis.com/css2?"+Object.keys(fam).map(f=>`family=${f.replace(/ /g,"+")}:wght@${[...fam[f]].sort((a,b)=>a-b).join(";")}`).join("&")+"&display=swap";
   let l=document.getElementById("fontTema");if(!l){l=document.createElement("link");l.id="fontTema";l.rel="stylesheet";document.head.appendChild(l);}
-  if(l.href!==url)l.href=url;
+  if(pl!=="clasico"&&l.href!==url)l.href=url; /* el Clásico usa las letras del teléfono: no descarga fuentes */
   document.getElementById("themeColor").content=t.ink;
   window.__t=t;ponFavicon();
 }
 function ponFavicon(){const t=window.__t;if(!t)return;const i=String(window.__ini||"").replace(/[<>&'"]/g,"");
   document.getElementById("favicon").href="data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='31' fill='${t.ink}'/><circle cx='32' cy='32' r='26' fill='none' stroke='${t.accent}' stroke-width='2.5'/><text x='32' y='${i.length>1?41:44}' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='${i.length>1?25:34}' fill='${t.paper}'>${i}</text></svg>`);}
 (function(){const d=JSON.parse(document.getElementById("data").textContent);
+  if(!new URLSearchParams(location.search).get("s")&&window.HV_TIENDA_ESTILO)HV_TIENDA_ESTILO.aplicar(d.biz.plantilla);
   const q=new URLSearchParams(location.search).get("tema");aplicarTema(q||d.biz.tema,q?{}:d.biz.estilo);})();
 </script>
 </head>
@@ -532,9 +1020,10 @@ async function cargarTienda(){if(!TIENDA_CSV)return;
   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),8000);
   try{const r=await fetch(TIENDA_CSV+(TIENDA_CSV.includes("?")?"&":"?")+"t="+Date.now(),{signal:ctrl.signal,cache:"no-store"});
     if(!r.ok)throw new Error("http");const rows=parseCSV(await r.text()),b=state.biz;
-    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",logo:"logo",retrato:"retrato",devoluciones:"devoluciones",portada:"portada",envio:"envio",retiro:"retiro",numero_visible:"numero_visible"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
+    const map={nombre:"name",rubro:"rubro",titulo:"titulo",descripcion:"tag",lugar:"place",hoy:"hoy",whatsapp:"wa",tema:"tema",historia:"historia",logo:"logo",retrato:"retrato",devoluciones:"devoluciones",portada:"portada",envio:"envio",retiro:"retiro",numero_visible:"numero_visible",plantilla:"plantilla",estado:"estado"},est=["fondo","tarjetas","texto","destacado","acento","fuente","fuente_texto"];
     b.estilo=b.estilo||{};
     rows.forEach(x=>{const k0=norm(x[0]).replace(/ /g,"_"),k=map[k0];if(x[1]===undefined)return;const v=String(x[1]).trim();if(k)b[k]=v;else if(est.includes(k0))b.estilo[k0]=v;});
+    if(window.HV_TIENDA_ESTILO)HV_TIENDA_ESTILO.aplicar(b.plantilla||"");
     if(!new URLSearchParams(location.search).get("tema"))aplicarTema(b.tema,b.estilo);}
   catch(e){}finally{clearTimeout(timer);}}
 
@@ -544,7 +1033,11 @@ function renderBiz(){const b=state.biz;document.title=b.rubro?`${b.name} · ${b.
   $("h1").textContent=b.titulo||b.rubro||b.name;$("tagline").textContent=b.tag||"";$("tagline").hidden=!b.tag;
   $("place").textContent=b.place||"";$("place").parentElement.hidden=!b.place;$("fPlace").textContent=b.place?b.place+".":"";
   $("envio").textContent=b.envio||"";$("envioMeta").hidden=!b.envio;
-  $("hoy").hidden=!b.hoy;$("hoyTxt").textContent=b.hoy?"Hoy estoy en: "+b.hoy:"";
+  /* estado del día: feria/muelle · casa · cerrado (lo cambia la emprendedora en su panel) */
+  {const es=norm(b.estado||""),h=$("hoy"),cerr=es.startsWith("cerr"),casa=es.startsWith("casa");
+   h.classList.toggle("casa",casa);h.classList.toggle("cerrado",cerr);
+   const tx=cerr?"Hoy no estoy atendiendo. Deja tu pedido y te respondo apenas pueda.":casa?"Hoy atiendo desde casa"+(b.hoy?": "+b.hoy:"")+" · pide por WhatsApp":b.hoy?"Hoy estoy en: "+b.hoy:"";
+   h.hidden=!tx;$("hoyTxt").textContent=tx;}
   $("devTxt").textContent=(b.devoluciones&&b.devoluciones.trim())||DEV_DEFAULT;$("about").hidden=!b.historia;$("aboutTxt").textContent=b.historia||"";
   {const ru=fotoURL(b.retrato),ri=$("retratoImg");$("retrato").hidden=!ru;if(ru){ri.alt="Foto de "+b.name;ri.onerror=()=>{$("retrato").hidden=true;};if(ri.getAttribute("src")!==ru)ri.src=ru;}
    const ini=iniciales(b.name),mk=$("mark"),lu=fotoURL(b.logo);window.__ini=ini;ponFavicon();mk.className="mark"+(ini.length<2?" uno":"");mk.textContent=ini;
@@ -562,18 +1055,20 @@ function renderGrid(){const g=$("grid");$("notice").hidden=!aviso;$("notice").te
     <div class="body">${p.cat?`<span class="kind">${esc(p.cat)}</span>`:""}<h3>${esc(p.n)}</h3><p>${esc(p.d)}</p>
       <div class="buy">${!p.ok?`<button class="add" type="button" disabled>Sin stock</button>`
         :n?`<div class="stepper"><button type="button" data-dec="${esc(p.id)}" aria-label="Quitar uno de ${esc(p.n)}">−</button><output aria-live="polite" aria-label="${n} en tu pedido">${n}</output><button type="button" data-inc="${esc(p.id)}" aria-label="Agregar otro ${esc(p.n)}">+</button></div>`
-        :`<button class="add" type="button" data-inc="${esc(p.id)}">Agregar</button>`}</div></div></article>`;}).join("");window.__cine&&window.__cine();if(vitrinaOn()&&!$("vitrina").hidden&&vList.length){const p=vList[vIdx],n=p?cart[p.id]||0:0;if(p)$("vadd").textContent=n?`Agregar otro (${n} en tu pedido)`:"Agregar a mi pedido";}}
+        :`<button class="add" type="button" data-inc="${esc(p.id)}">Agregar</button>`}</div></div></article>`;}).join("");window.__cine&&window.__cine();window.HV_TIENDA_ESTILO&&HV_TIENDA_ESTILO.marcarEstrella(g,filtro==="Todas"&&!qn);if(vitrinaOn()&&!$("vitrina").hidden&&vList.length){const p=vList[vIdx],n=p?cart[p.id]||0:0;if(p)$("vadd").textContent=n?`Agregar otro (${n} en tu pedido)`:"Agregar a mi pedido";}}
 
 /* ---------- pedido ---------- */
 const items=()=>state.products.filter(p=>p.ok&&cart[p.id]>0).map(p=>({p,n:cart[p.id]}));
 const total=()=>items().reduce((a,x)=>a+x.p.p*x.n,0);
 function mensaje(){const it=items();if(!it.length)return"";
-  const L=[`Hola ${state.biz.name}! Quiero hacer este pedido:`,"",...it.map(x=>`• ${x.n} x ${x.p.n} — ${clp(x.p.p*x.n)}`),"",`Total: ${clp(total())}`];
+  if(!form.pedido&&window.HV_METRICAS)form.pedido=HV_METRICAS.codigo();
+  const L=[`Hola ${state.biz.name}! Quiero hacer este pedido${form.pedido?` (Pedido #${form.pedido})`:""}:`,"",...it.map(x=>`• ${x.n} x ${x.p.n} — ${clp(x.p.p*x.n)}`),"",`Total: ${clp(total())}`];
   if(form.nombre.trim())L.push(`Nombre: ${form.nombre.trim()}`);
   L.push(form.entrega==="despacho"?`Entrega: despacho${form.ciudad.trim()?" a "+form.ciudad.trim():""}`:"Entrega: "+String(state.biz.retiro||"retiro en la feria").toLowerCase());
   if(form.nota.trim())L.push(`Comentario: ${form.nota.trim()}`);return L.join("\n");}
 function renderCart(){
   Object.keys(cart).forEach(id=>{const p=state.products.find(x=>x.id===id);if(!p||!p.ok||!(cart[id]>0))delete cart[id];});
+  if(!Object.keys(cart).length)form.pedido=""; /* carrito vacío → el próximo pedido lleva código nuevo */
   const it=items(),count=it.reduce((a,x)=>a+x.n,0),tot=total();
   $("cartCount").textContent=count;$("obText").textContent=count?`Ver pedido · ${count} producto${count>1?"s":""}`:"Ver pedido";$("obTotal").textContent=clp(tot);
   $("orderbar").hidden=!count||$("drawer").dataset.state==="open";$("dTotal").textContent=clp(tot);
@@ -603,7 +1098,7 @@ function vWord(p){const all=String(p.n||"").split(/\s+/),ws=all.filter(w=>w.leng
 function fitWord(){const v=$("vitrina"),w=$("vword"),sp=w.firstElementChild;if(v.hidden||!sp)return;w.style.setProperty("--vfs","100px");const tw=sp.getBoundingClientRect().width;if(!tw)return;
   const mob=innerWidth<=820,cap=v.clientHeight*(mob?.135:.27),fs=Math.min(cap,100*(v.clientWidth*(mob?.92:.62))/tw);w.style.setProperty("--vfs",Math.max(48,Math.round(fs))+"px");}
 addEventListener("resize",()=>fitWord());document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>fitWord());
-function vitrinaOn(){return /vitrina/i.test(String(state.biz.portada||""));}
+function vitrinaOn(){return /vitrina/i.test(String(state.biz.portada||""))&&!(window.HV_TIENDA_ESTILO&&HV_TIENDA_ESTILO.actual()==="clasico");}
 function renderVitrina(anim){const v=$("vitrina");if(!vitrinaOn()||cargando){v.hidden=true;return;}
   vList=state.products.filter(p=>p.ok).sort((a,b)=>(b.badge?1:0)-(a.badge?1:0)).slice(0,6);if(!vList.length){v.hidden=true;return;}
   v.hidden=false;v.classList.toggle("nat",!vViva());vIdx=(vIdx+vList.length)%vList.length;const p=vList[vIdx],pap=getComputedStyle(document.documentElement).getPropertyValue("--paper").trim(),osc=!vViva()&&hexOK(pap)&&contraste("#FFFFFF",pap)>=7,bg=osc?shade(vColor(p),-.5):vColor(p),dark=contraste("#FFFFFF",bg)>=4.5;
@@ -646,8 +1141,13 @@ $("q").addEventListener("input",e=>{busqueda=e.target.value;renderGrid();});
 if(matchMedia("(hover:hover) and (pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
   const st=document.querySelector(".still"),hr=document.querySelector(".hero");
   if(st&&hr){hr.addEventListener("pointermove",e=>{const r=st.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;st.style.setProperty("--ry",(x*10).toFixed(2)+"deg");st.style.setProperty("--rx",(-y*8).toFixed(2)+"deg");});hr.addEventListener("pointerleave",()=>{st.style.setProperty("--ry","0deg");st.style.setProperty("--rx","0deg");});}
-  const g=$("grid");g.addEventListener("pointermove",e=>{const c=e.target.closest(".card");if(!c||c.classList.contains("out"))return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateY(-3px)`;});
+  const g=$("grid");g.addEventListener("pointermove",e=>{const c=e.target.closest(".card");if(!c||c.classList.contains("out"))return;if(/clasico|vitrina25d/.test(document.documentElement.getAttribute("data-plantilla")||"")||document.documentElement.classList.contains("lite"))return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateY(-3px)`;});
   g.addEventListener("pointerout",e=>{const c=e.target.closest(".card");if(c&&!c.contains(e.relatedTarget))c.style.transform="";});}
+window.HV_TIENDA_ESTILO&&HV_TIENDA_ESTILO.activarInclinacion($("grid"));
+/* clic en «Enviar pedido»: solo se informa si hay servidor de métricas (config.json → metricas_url) */
+const METRICAS_URL="".startsWith("{{")?"":"";
+$("send").addEventListener("click",()=>{if($("send").getAttribute("aria-disabled")==="true"||!window.HV_METRICAS)return;
+  HV_METRICAS.registrarClic(METRICAS_URL,{tienda:SID||location.pathname,pedido:form.pedido,total:total(),items:items().length});});
 new IntersectionObserver(([en])=>$("toolbar").classList.toggle("stuck",!en.isIntersecting),{rootMargin:"-65px 0px 0px 0px"}).observe(document.querySelector(".hero"));
 
 /* ---------- personalizar (abre la página con ?editar) ---------- */
@@ -682,11 +1182,10 @@ if(new URLSearchParams(location.search).has("editar")){
 }
 renderAll();Promise.all([cargarTienda()]).then(()=>{renderAll();if(window.__sync)window.__sync();});cargarPlanilla();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script>
-/* ---------- animación cinemática (GSAP + ScrollTrigger). Si no carga, la página funciona igual ---------- */
-document.addEventListener("DOMContentLoaded",()=>{if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);
+/* ---------- animación cinemática (GSAP + ScrollTrigger). Si no carga, la página funciona igual ----------
+   Solo se descarga si conviene: no en el estilo Clásico ni en modo liviano (comun/rendimiento.js). */
+function iniciarCine(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",()=>{
     const E="power3.out",tl=gsap.timeline({defaults:{ease:E}});
     tl.fromTo(".still",{clipPath:"inset(16% 12% 16% 12% round 32px)"},{clipPath:"inset(0% 0% 0% 0% round 24px)",duration:1.3,clearProps:"clipPath"})
@@ -707,7 +1206,15 @@ document.addEventListener("DOMContentLoaded",()=>{if(!window.gsap||!window.Scrol
       ScrollTrigger.refresh();};
     window.__cine();
     document.querySelectorAll(".steps li, .about .wrap").forEach(el=>gsap.from(el,{y:40,autoAlpha:0,duration:.9,ease:E,scrollTrigger:{trigger:el,start:"top 90%",once:true}}));
-    return()=>{window.__cine=null;};});});
+    return()=>{window.__cine=null;};});}
+(function(){const E=window.HV_TIENDA_ESTILO;if(E&&!E.animaOK())return;
+  const cargar=src=>new Promise((ok,no)=>{const x=document.createElement("script");x.src=src;x.async=false;x.onload=ok;x.onerror=no;document.head.appendChild(x);});
+  cargar("https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js").then(()=>cargar("https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"))
+    .then(()=>{const go=()=>{if(E&&!E.animaOK())return;iniciarCine();};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",go):go();}).catch(()=>{});})();
+/* si la planilla dice «Clásico» o el teléfono pasa a modo liviano: se apagan las animaciones ya puestas */
+function apagarCine(){if(!window.gsap)return;window.__cine=null;if(window.ScrollTrigger)ScrollTrigger.getAll().forEach(t=>t.kill());
+  gsap.killTweensOf("*");gsap.set("#grid .card, .hero h1, .hero .wrap > div:first-child > *, .steps li, .about .wrap, .still, .still svg",{clearProps:"all"});}
+new MutationObserver(()=>{if(window.HV_TIENDA_ESTILO&&!HV_TIENDA_ESTILO.animaOK())apagarCine();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-plantilla","class"]});
 </script>
 </body>
 </html>

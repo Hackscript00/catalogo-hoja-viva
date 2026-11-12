@@ -1,0 +1,58 @@
+/* =====================================================================
+   panel/recomendador.css — Tarjetas «¿Cómo verán tu tienda?» (pestaña Estilo)
+   Cada tarjeta trae una mini tienda de muestra con los productos reales.
+   ===================================================================== */
+.pl-grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:620px){.pl-grid{grid-template-columns:1fr 1fr}}
+.pl-card{position:relative;display:grid;gap:10px;border:1.5px solid var(--line);border-radius:18px;padding:10px;background:var(--sheet)}
+.pl-card.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.pl-txt{display:grid;gap:3px;padding:0 4px}
+.pl-txt b{font:400 19px/1.2 var(--display)}
+.pl-txt small{color:var(--soft);font-weight:600}
+.pl-txt p{margin:0;font-size:14px;color:var(--soft)}
+.pl-txt p.pl-ideal{color:var(--ink);font-weight:600}
+.pl-badge{justify-self:start;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--ok);color:#fff}
+.pl-sel{justify-self:start;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--ink);color:var(--paper)}
+.pl-acc{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 2px 2px}
+.pl-porque{margin:0;font-size:14px;border-radius:12px;background:var(--wash);padding:10px 12px}
+
+/* ---------- mini tienda ---------- */
+.pl-mini{--m-paper:#F5F6F2;--m-sheet:#fff;--m-ink:#13313B;--m-acc:#F2B33D;--m-sea:#2F6F73;
+  position:relative;height:178px;border-radius:12px;overflow:hidden;background:var(--m-paper);color:var(--m-ink);
+  font:500 11px/1.25 "Instrument Sans",system-ui,sans-serif;isolation:isolate;border:1px solid rgba(0,0,0,.06)}
+.m-top{display:flex;align-items:center;gap:6px;padding:8px 10px;font-weight:700;font-size:12px}
+.m-top i{width:16px;height:16px;border-radius:50%;background:var(--m-ink)}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px}
+.m-card{background:var(--m-sheet);border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.07)}
+.m-art{position:relative;height:84px;background:var(--m-sheet);overflow:hidden}
+.m-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m-art .m-color{position:absolute;inset:18% 26%;border-radius:10px;background:var(--c,#7A9E7E)}
+.m-b{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:6px 7px}
+.m-b b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.m-tag{flex:none;background:var(--m-acc);color:var(--m-onacc,#14161A);border-radius:4px;padding:2px 5px;font-weight:700}
+
+/* clásico: blanco y letras del sistema */
+.pl-clasico{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.pl-clasico .m-card{box-shadow:none}
+/* artesanal: crema y madera */
+.pl-artesanal .m-top{font-family:Georgia,serif}
+.pl-artesanal .m-card{border-radius:8px;border-color:rgba(58,42,31,.14);box-shadow:0 8px 14px -10px rgba(58,42,31,.5)}
+.pl-artesanal .m-art{height:96px;background:repeating-linear-gradient(92deg,rgba(120,80,40,.06) 0 2px,transparent 2px 9px),linear-gradient(#EFE2CC,#E4D2B4)}
+.pl-artesanal .m-tag{background:var(--m-sheet);color:var(--m-acc);border:1px dashed var(--m-acc)}
+.pl-artesanal .m-b b{font-family:Georgia,serif}
+/* vidrio */
+.pl-glass{background:radial-gradient(80% 70% at 0% 0%,color-mix(in srgb,var(--m-acc) 45%,transparent),transparent 70%),radial-gradient(70% 70% at 100% 60%,color-mix(in srgb,var(--m-sea) 40%,transparent),transparent 70%),var(--m-paper)}
+.pl-glass .m-card{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.75);border-radius:14px;backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);box-shadow:0 8px 20px -12px rgba(0,0,0,.35)}
+.pl-glass .m-art{background:rgba(255,255,255,.3)}
+.pl-glass .m-tag{border-radius:999px}
+html.lite .pl-glass .m-card{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--m-sheet)}
+/* vitrina 2.5D: el primero grande y se inclina */
+.pl-vitrina25d .m-grid{grid-template-columns:1.6fr 1fr}
+.pl-vitrina25d .m-card{border-radius:12px;box-shadow:var(--sx,0px) var(--sy,10px) 18px -10px rgba(0,0,0,.4)}
+.pl-vitrina25d .m-art{perspective:420px;background:radial-gradient(120% 90% at 50% 20%,var(--m-sheet),#EEF0EC);cursor:grab;touch-action:pan-y}
+.pl-vitrina25d .m-art img,.pl-vitrina25d .m-art .m-color{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.05);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.pl-vitrina25d .m-card.tilting .m-art img,.pl-vitrina25d .m-card.tilting .m-art .m-color{transition:transform .06s linear}
+.pl-vitrina25d .m-hint{position:absolute;right:8px;bottom:8px;font-size:10.5px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;padding:3px 8px;pointer-events:none}
+html.lite .pl-vitrina25d .m-art img,html.lite .pl-vitrina25d .m-art .m-color{transform:none!important}
+html.lite .pl-vitrina25d .m-hint{display:none}
+@media (prefers-reduced-motion:reduce){.pl-vitrina25d .m-art img{transition:none}}
