@@ -1,0 +1,4 @@
+Copia de PRUEBA del editor y la tienda (guardado seguro + vista 360°).
+No es la versión publicada. Úsala solo con una cuenta Google de demostración.
+Una planilla editada aquí no debe volver a editarse con el editor publicado (/editor/),
+porque ese editor no conoce la columna I «angulos».
