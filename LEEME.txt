@@ -1,0 +1,1 @@
+Rama temporal: video base (sin voz) para armar el video del taller. Se borra al terminar.
